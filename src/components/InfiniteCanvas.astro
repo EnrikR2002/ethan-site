@@ -77,6 +77,15 @@ const { items = [] } = Astro.props;
         <div class="deck-item" data-index={i}>
           {it.type === "image" ? (
             <img src={it.src} alt={it.title || ""} loading="lazy" />
+          ) : it.type === "youtube" ? (
+            <iframe
+              src={it.src}
+              title={it.title || "YouTube video"}
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              style="width:100%;height:100%;display:block;border:0;"
+            />
           ) : (
             <video src={it.src} preload="metadata" />
           )}
@@ -165,11 +174,11 @@ const { items = [] } = Astro.props;
     viewport.addEventListener(
       "wheel",
       function (e) {
-        // allow vertical page scroll when inside viewport if deltaX is ~0 and we don't navigate
         var dy = e.deltaY;
-        if (wheelCooldown) return;
-        if (Math.abs(dy) < 5) return; // ignore tiny jitters
+        //if (Math.abs(dy) < 1) return; // ignore tiny jitters, let page scroll
+        // Consume the scroll while over the viewport so the page doesn't scroll
         e.preventDefault();
+        if (wheelCooldown) return; // do not navigate repeatedly during cooldown
         wheelCooldown = true;
         if (dy > 0) next();
         else prev();
