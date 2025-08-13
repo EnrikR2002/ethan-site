@@ -1,0 +1,171 @@
+---
+/**
+ * Lightweight pan/zoom infinite canvas for images & videos.
+ * No external deps. Place absolutely-positioned tiles on a large plane and transform it.
+ * Props:
+ * - items: Array<{ id, type: 'image'|'video', src, x, y, w, h, title? }>
+ */
+type CanvasItem = {
+  id: string;
+  type: "image" | "video";
+  src: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  title?: string;
+};
+const { items = [] as CanvasItem[] } = Astro.props as { items?: CanvasItem[] };
+---
+
+<style>
+  .canvas-viewport {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+  .canvas-plane {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-origin: 0 0;
+  }
+  .canvas-tile {
+    position: absolute;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .canvas-tile img,
+  .canvas-tile video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .canvas-hint {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    font-size: 12px;
+    opacity: 0.75;
+    background: rgba(255, 255, 255, 0.7);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    padding: 0.25rem 0.5rem; /* px-2 py-1 */
+    border-radius: 0.25rem; /* rounded */
+  }
+  @media (prefers-color-scheme: dark) {
+    .canvas-hint {
+      background: rgba(24, 24, 27, 0.7); /* zinc-900/70 */
+      color: white;
+    }
+  }
+</style>
+
+<div class="canvas-viewport" id="viewport">
+  <div class="canvas-plane" id="plane">
+    {
+      items.map((it) => (
+        <div
+          class="canvas-tile"
+          style={`left:${it.x}px; top:${it.y}px; width:${it.w}px; height:${it.h}px`}
+        >
+          {it.type === "image" ? (
+            <img src={it.src} alt={it.title || ""} loading="lazy" />
+          ) : (
+            <video src={it.src} controls preload="metadata" />
+          )}
+        </div>
+      ))
+    }
+  </div>
+  <div class="canvas-hint">
+    Scroll to zoom · Drag to pan · Double‑click to reset
+  </div>
+</div>
+
+<script>
+  const viewport = document.getElementById("viewport");
+  const plane = document.getElementById("plane");
+  let scale = 1;
+  let tx = 0;
+  let ty = 0;
+  let dragging = false;
+  let lastX = 0;
+  let lastY = 0;
+
+  function apply() {
+    if (!plane) return;
+    (plane as HTMLElement).style.transform =
+      `translate(${tx}px, ${ty}px) scale(${scale})`;
+  }
+
+  // Pan
+  if (!viewport) {
+    // Not mounted
+    return;
+  }
+  viewport.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    (viewport as HTMLElement).setPointerCapture(e.pointerId);
+  });
+  viewport.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    tx += dx;
+    ty += dy;
+    apply();
+  });
+  viewport.addEventListener("pointerup", () => (dragging = false));
+  viewport.addEventListener("pointercancel", () => (dragging = false));
+
+  // Zoom (centered around cursor)
+  viewport.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+      const rect = (viewport as HTMLElement).getBoundingClientRect();
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
+      const prevScale = scale;
+      // Trackpad: small deltaY, mouse: larger, pinch: ctrlKey
+      let delta = 0;
+      if (e.ctrlKey) {
+        // Pinch-to-zoom (ctrl+wheel): use smaller increments
+        delta = -e.deltaY * 0.01;
+      } else {
+        // Normal wheel/trackpad: use even smaller increments for smoothness
+        delta = -e.deltaY * 0.0025;
+      }
+      if (delta === 0) return;
+      scale = Math.min(4, Math.max(0.25, scale + delta));
+      // keep point under cursor stationary
+      tx -= (cx - tx) * (scale / prevScale - 1);
+      ty -= (cy - ty) * (scale / prevScale - 1);
+      apply();
+    },
+    { passive: false }
+  );
+
+  // Reset
+  viewport.addEventListener("dblclick", () => {
+    scale = 1;
+    tx = 0;
+    ty = 0;
+    apply();
+  });
+
+  apply();
+</script>

@@ -1,0 +1,25 @@
+---
+import "../../styles/globals.css";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import Section from "../../components/Section.astro";
+const { slug } = Astro.params;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Case Study — {slug}</title>
+  </head>
+  <body>
+    <Nav />
+    <Section title={`Case Study: ${slug}`} eyebrow="Work" prose>
+      <p>
+        Swap this page to a Markdown‑driven layout later. Use:
+        who/industry/problem → actions → outcomes.
+      </p>
+    </Section>
+    <Footer />
+  </body>
+</html>

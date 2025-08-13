@@ -1,11 +1,133 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Welcome from "../components/Welcome.astro";
+import Layout from "../layouts/Layout.astro";
 
+import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Section from "../components/Section.astro";
+import Stat from "../components/Stat.astro";
+import CaseCard from "../components/CaseCard.astro";
+import InfiniteCanvas from "../components/InfiniteCanvas.astro";
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+
+// ...existing code...
+
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+
+// Data for the InfiniteCanvas component
+const canvasItems = [
+  {
+    id: "p1",
+    type: "image",
+    src: "/media/sample-1.jpg",
+    x: 0,
+    y: 0,
+    w: 360,
+    h: 220,
+    title: "Thumb 1",
+  },
+  {
+    id: "p2",
+    type: "image",
+    src: "/media/sample-2.jpg",
+    x: 420,
+    y: 60,
+    w: 320,
+    h: 240,
+    title: "Thumb 2",
+  },
+  {
+    id: "v1",
+    type: "video",
+    src: "/media/sample-3.mp4",
+    x: 180,
+    y: 360,
+    w: 400,
+    h: 240,
+    title: "Video Demo",
+  },
+];
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Ethan — Portfolio</title>
+    <meta
+      name="description"
+      content="Video + digital growth that converts: case studies, services, and booking."
+    />
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body class="bg-white text-zinc-900 dark:bg-zinc-950 dark:text-white">
+    <Nav />
+
+    <main>
+      <section class="section">
+        <div class="container grid md:grid-cols-12 gap-10 items-center px-4">
+          <div class="md:col-span-7">
+            <div class="eyebrow mb-3">Video • Growth • Brand</div>
+            <h1 class="h1">
+              I turn attention into <span class="text-brand-600">pipeline</span
+              >.
+            </h1>
+            <p class="sub mt-4">
+              Short‑form engines, long‑form trust, measurable outcomes. Book a
+              15‑min intro and see if we can add revenue in 90 days.
+            </p>
+            <div class="mt-6 flex gap-3">
+              <a href="#contact" class="btn">Book a call</a>
+              <a href="#work" class="btn-secondary">See case studies</a>
+            </div>
+          </div>
+          <div class="md:col-span-5">
+            <div class="grid grid-cols-3 gap-3">
+              <Stat value="425%" label="YT subscriber growth" />
+              <Stat value="24M+" label="Cross‑platform views" />
+              <Stat value="120M" label="Project views" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Section
+        id="canvas"
+        title="Infinite Canvas — Highlights"
+        eyebrow="Explore"
+      >
+        <p class="sub mb-6">
+          Pan, zoom, and play. Drag to move. Scroll to zoom. Double‑click to
+          reset.
+        </p>
+        <InfiniteCanvas items={canvasItems} />
+      </Section>
+
+      <Section id="work" title="Featured Work" eyebrow="Case Studies">
+        <div class="grid md:grid-cols-3 gap-6">
+          <CaseCard
+            title="Clinic Growth: 425% YT"
+            metric="24M+ views across platforms"
+            href="/work/clinic-growth"
+          />
+          <CaseCard
+            title="UFC Shorts Engine"
+            metric="120M views in < 12 months"
+            href="/work/ufc-shorts"
+          />
+          <CaseCard
+            title="Breakcore Community"
+            metric="330k Twitter, 8k subreddit"
+            href="/work/breakcore"
+          />
+        </div>
+      </Section>
+
+      <Section id="services" title="Services" eyebrow="Productized">
+        <!-- Add your services content here -->
+      </Section>
+    </main>
+    <Footer />
+  </body>
+</html>

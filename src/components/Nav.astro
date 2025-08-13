@@ -1,0 +1,28 @@
+---
+const links = [
+  { href: "#work", label: "Work" },
+  { href: "/services", label: "Services" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+---
+
+<header
+  class="sticky top-0 z-50 bg-white/70 dark:bg-zinc-900/70 backdrop-blur supports-[backdrop-filter]:bg-white/60"
+>
+  <nav class="container flex items-center justify-between py-4 px-4">
+    <a href="/" class="font-extrabold text-lg tracking-tight">ETHAN</a>
+    <ul class="hidden md:flex items-center gap-6">
+      {
+        links.map((l) => (
+          <li>
+            <a class="hover:underline" href={l.href}>
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a href="#contact" class="btn">Book a call</a>
+  </nav>
+</header>
