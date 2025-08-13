@@ -1,21 +1,10 @@
 ---
 /**
- * Lightweight pan/zoom infinite canvas for images & videos.
- * No external deps. Place absolutely-positioned tiles on a large plane and transform it.
- * Props:
- * - items: Array<{ id, type: 'image'|'video', src, x, y, w, h, title? }>
+ * Deck-style navigator for images & videos.
+ * One item is centered as current; neighbors form a subtle spiral/depth effect.
+ * Navigate with wheel/trackpad, arrow keys, or swipe.
  */
-type CanvasItem = {
-  id: string;
-  type: "image" | "video";
-  src: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  title?: string;
-};
-const { items = [] as CanvasItem[] } = Astro.props as { items?: CanvasItem[] };
+const { items = [] } = Astro.props;
 ---
 
 <style>
@@ -29,21 +18,33 @@ const { items = [] as CanvasItem[] } = Astro.props as { items?: CanvasItem[] };
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(4px);
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    touch-action: pan-y; /* allow page to scroll vertically */
   }
   .canvas-plane {
-    position: absolute;
-    left: 0;
-    top: 0;
-    transform-origin: 0 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
   }
-  .canvas-tile {
+  .deck-item {
     position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.08);
+    transition:
+      transform 220ms ease,
+      opacity 220ms ease,
+      filter 220ms ease;
+    will-change: transform, opacity;
+    max-width: min(90vw, 960px);
+    max-height: min(70vh, 540px);
+    aspect-ratio: 16/9;
+    background: #000;
   }
-  .canvas-tile img,
-  .canvas-tile video {
+  .deck-item img,
+  .deck-item video {
     display: block;
     width: 100%;
     height: 100%;
@@ -69,103 +70,164 @@ const { items = [] as CanvasItem[] } = Astro.props as { items?: CanvasItem[] };
   }
 </style>
 
-<div class="canvas-viewport" id="viewport">
+<div class="canvas-viewport" id="viewport" tabindex="0">
   <div class="canvas-plane" id="plane">
     {
-      items.map((it) => (
-        <div
-          class="canvas-tile"
-          style={`left:${it.x}px; top:${it.y}px; width:${it.w}px; height:${it.h}px`}
-        >
+      items.map((it: any, i: number) => (
+        <div class="deck-item" data-index={i}>
           {it.type === "image" ? (
             <img src={it.src} alt={it.title || ""} loading="lazy" />
           ) : (
-            <video src={it.src} controls preload="metadata" />
+            <video src={it.src} preload="metadata" />
           )}
         </div>
       ))
     }
   </div>
-  <div class="canvas-hint">
-    Scroll to zoom · Drag to pan · Double‑click to reset
-  </div>
+  <div class="canvas-hint">Scroll / Swipe / ← → to navigate</div>
 </div>
 
 <script>
-  const viewport = document.getElementById("viewport");
-  const plane = document.getElementById("plane");
-  let scale = 1;
-  let tx = 0;
-  let ty = 0;
-  let dragging = false;
-  let lastX = 0;
-  let lastY = 0;
+  // @ts-nocheck
+  (function () {
+    var viewport = document.getElementById("viewport");
+    var plane = document.getElementById("plane");
+    if (!viewport || !plane) return;
+    var children = Array.prototype.slice.call(
+      plane.querySelectorAll(".deck-item")
+    );
+    var n = children.length;
+    if (n === 0) return;
+    var current = 0;
+    var wheelCooldown = false;
+    var swipeStartX = 0;
+    var swiping = false;
 
-  function apply() {
-    if (!plane) return;
-    (plane as HTMLElement).style.transform =
-      `translate(${tx}px, ${ty}px) scale(${scale})`;
-  }
+    function mod(a, b) {
+      return ((a % b) + b) % b;
+    }
+    function signedWrapDistance(i, j, len) {
+      var diff = i - j;
+      var alt = diff > 0 ? diff - len : diff + len;
+      return Math.abs(alt) < Math.abs(diff) ? alt : diff;
+    }
 
-  // Pan
-  if (!viewport) {
-    // Not mounted
-    return;
-  }
-  viewport.addEventListener("pointerdown", (e) => {
-    dragging = true;
-    lastX = e.clientX;
-    lastY = e.clientY;
-    (viewport as HTMLElement).setPointerCapture(e.pointerId);
-  });
-  viewport.addEventListener("pointermove", (e) => {
-    if (!dragging) return;
-    const dx = e.clientX - lastX;
-    const dy = e.clientY - lastY;
-    lastX = e.clientX;
-    lastY = e.clientY;
-    tx += dx;
-    ty += dy;
-    apply();
-  });
-  viewport.addEventListener("pointerup", () => (dragging = false));
-  viewport.addEventListener("pointercancel", () => (dragging = false));
-
-  // Zoom (centered around cursor)
-  viewport.addEventListener(
-    "wheel",
-    (e) => {
-      e.preventDefault();
-      const rect = (viewport as HTMLElement).getBoundingClientRect();
-      const cx = e.clientX - rect.left;
-      const cy = e.clientY - rect.top;
-      const prevScale = scale;
-      // Trackpad: small deltaY, mouse: larger, pinch: ctrlKey
-      let delta = 0;
-      if (e.ctrlKey) {
-        // Pinch-to-zoom (ctrl+wheel): use smaller increments
-        delta = -e.deltaY * 0.01;
-      } else {
-        // Normal wheel/trackpad: use even smaller increments for smoothness
-        delta = -e.deltaY * 0.0025;
+    function update() {
+      for (var i = 0; i < n; i++) {
+        var el = children[i];
+        var d = signedWrapDistance(i, current, n); // negative: left, positive: right
+        var ad = Math.abs(d);
+        var maxShow = 4; // how many neighbors to show before fade
+        var s = Math.max(0.5, 1 - 0.12 * ad);
+        var offsetX = d * 70; // px shift horizontally
+        var offsetY = ad * 18; // slight vertical drift
+        var rot = d * 5; // degrees
+        var op = ad > maxShow ? 0 : Math.max(0, 1 - 0.22 * ad);
+        el.style.transform =
+          "translate(-50%, -50%) translate(" +
+          offsetX +
+          "px," +
+          offsetY +
+          "px) rotate(" +
+          rot +
+          "deg) scale(" +
+          s +
+          ")";
+        el.style.opacity = String(op);
+        el.style.zIndex = String(100 - ad);
+        el.style.pointerEvents = d === 0 ? "auto" : "none";
+        if (op === 0) {
+          el.style.filter = "blur(2px)";
+        } else {
+          el.style.filter = "none";
+        }
+        // video controls only on current
+        var v = el.querySelector("video");
+        if (v) {
+          v.controls = d === 0;
+          if (d !== 0) {
+            v.pause();
+          }
+        }
       }
-      if (delta === 0) return;
-      scale = Math.min(4, Math.max(0.25, scale + delta));
-      // keep point under cursor stationary
-      tx -= (cx - tx) * (scale / prevScale - 1);
-      ty -= (cy - ty) * (scale / prevScale - 1);
-      apply();
-    },
-    { passive: false }
-  );
+    }
 
-  // Reset
-  viewport.addEventListener("dblclick", () => {
-    scale = 1;
-    tx = 0;
-    ty = 0;
-    apply();
-  });
+    function next() {
+      current = mod(current + 1, n);
+      update();
+    }
+    function prev() {
+      current = mod(current - 1, n);
+      update();
+    }
 
-  apply();
+    // Wheel / trackpad navigate with cooldown
+    viewport.addEventListener(
+      "wheel",
+      function (e) {
+        // allow vertical page scroll when inside viewport if deltaX is ~0 and we don't navigate
+        var dy = e.deltaY;
+        if (wheelCooldown) return;
+        if (Math.abs(dy) < 5) return; // ignore tiny jitters
+        e.preventDefault();
+        wheelCooldown = true;
+        if (dy > 0) next();
+        else prev();
+        setTimeout(function () {
+          wheelCooldown = false;
+        }, 180);
+      },
+      { passive: false }
+    );
+
+    // Arrow keys
+    viewport.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        next();
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        prev();
+      }
+    });
+
+    // Swipe (pointer) left/right
+    viewport.addEventListener("pointerdown", function (e) {
+      swiping = true;
+      swipeStartX = e.clientX;
+      viewport.setPointerCapture(e.pointerId);
+    });
+    viewport.addEventListener("pointerup", function (e) {
+      if (!swiping) return;
+      var dx = e.clientX - swipeStartX;
+      swiping = false;
+      if (Math.abs(dx) > 40) {
+        if (dx < 0) next();
+        else prev();
+      }
+    });
+    viewport.addEventListener("pointercancel", function () {
+      swiping = false;
+    });
+
+    // Click-to-play current video
+    plane.addEventListener("click", function (e) {
+      var target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+      var itemEl = target.closest(".deck-item");
+      if (!itemEl) return;
+      var idxAttr = itemEl.getAttribute("data-index");
+      var idx = idxAttr ? parseInt(idxAttr, 10) : -1;
+      if (idx !== current) return;
+      var vid = itemEl.querySelector("video");
+      if (vid) {
+        if (vid.paused) vid.play();
+        else vid.pause();
+      }
+    });
+
+    // Focus to enable arrow keys
+    viewport.focus();
+    update();
+  })();
 </script>
