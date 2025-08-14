@@ -1,0 +1,143 @@
+---
+const STATS = [
+  {
+    head: "2× YouTube Silver Play Buttons",
+    caption: "Music Promotion & Gaming Video Editing",
+  },
+  {
+    head: "425% YouTube growth",
+    caption: "Medical brand in under a year (8K → 42K)",
+  },
+  {
+    head: "120M+ views",
+    caption: "UFC/MMA content verticals",
+  },
+  {
+    head: "45M+ long-form views",
+    caption: "Gaming channels",
+  },
+  {
+    head: "330K+ Twitter followers",
+    caption: "Built in the Breakcore/Music niche",
+  },
+  {
+    head: "24M+ views",
+    caption: "Medical vertical alone",
+  },
+];
+---
+
+<style>
+  .stats-card {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.7),
+      rgba(255, 255, 255, 0.6)
+    );
+    border-radius: 1rem;
+    padding: 0.75rem 0.5rem;
+    position: relative;
+  }
+
+  /* gradient fade edges container */
+  .strip-wrap {
+    position: relative;
+  }
+  .fade-left,
+  .fade-right {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3rem;
+  }
+  .fade-left {
+    left: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0)
+    );
+  }
+  .fade-right {
+    right: 0;
+    background: linear-gradient(
+      270deg,
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0)
+    );
+  }
+
+  /* Mobile: horizontal scroll + snap */
+  .stats-list {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.5rem 1rem;
+  }
+  .stats-list::-webkit-scrollbar {
+    display: none;
+  }
+  .stat-pill {
+    scroll-snap-align: center;
+    min-width: 220px;
+    flex: 0 0 auto;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: flex-start;
+    justify-content: center;
+    cursor: default;
+  }
+  .stat-head {
+    font-weight: 800;
+    font-size: 1.05rem;
+  }
+  .stat-caption {
+    font-size: 0.85rem;
+    color: #6b7280;
+  }
+
+  /* Desktop: grid layout */
+  @media (min-width: 768px) {
+    .stats-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      overflow: visible;
+      padding: 0;
+    }
+    .strip-wrap .fade-left,
+    .strip-wrap .fade-right {
+      display: none;
+    }
+  }
+
+  /* increased tap targets */
+  .stat-pill {
+    touch-action: manipulation;
+  }
+</style>
+
+<section class="stats-card">
+  <div class="strip-wrap">
+    <ul class="stats-list" aria-label="Key results">
+      {
+        STATS.map((s) => (
+          <li class="stat-pill" role="listitem">
+            <div class="stat-head">{s.head}</div>
+            <div class="stat-caption">{s.caption}</div>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="fade-left" aria-hidden="true"></div>
+    <div class="fade-right" aria-hidden="true"></div>
+  </div>
+</section>

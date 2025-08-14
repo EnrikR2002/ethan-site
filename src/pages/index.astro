@@ -9,6 +9,8 @@ import Section from "../components/Section.astro";
 import Stat from "../components/Stat.astro";
 import CaseCard from "../components/CaseCard.astro";
 import InfiniteCanvas from "../components/InfiniteCanvas.astro";
+import StatsStrip from "../components/StatsStrip.astro";
+import ServicesGrid from "../components/ServicesGrid.astro";
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 
 // ...existing code...
@@ -65,67 +67,111 @@ const canvasItems = [
     <Nav />
 
     <main>
-      <section class="section">
-        <div class="container grid md:grid-cols-12 gap-10 items-center px-4">
-          <div class="md:col-span-7">
-            <div class="eyebrow mb-3">Video • Growth • Brand</div>
-            <h1 class="h1">
-              I turn attention into <span class="text-brand-600">pipeline</span
-              >.
-            </h1>
-            <p class="sub mt-4">
-              Short‑form engines, long‑form trust, measurable outcomes. Book a
-              15‑min intro and see if we can add revenue in 90 days.
-            </p>
-            <div class="mt-6 flex gap-3">
-              <a href="#contact" class="btn">Book a call</a>
-              <a href="#work" class="btn-secondary">See case studies</a>
+      <!-- Hero -->
+      <section id="hero" class="section">
+        <div class="container px-6 md:px-8 lg:px-10">
+          <div class="grid md:grid-cols-12 gap-10 items-center">
+            <div class="md:col-span-7">
+              <div class="eyebrow mb-3">Video • Growth • Brand</div>
+              <h1 class="h1">
+                I turn attention into <span class="text-brand-600"
+                  >pipeline</span
+                >.
+              </h1>
+              <p class="sub mt-4">
+                Short‑form engines, long‑form trust, measurable outcomes. Book a
+                15‑min intro and see if we can add revenue in 90 days.
+              </p>
+              <div class="mt-6 flex gap-3">
+                <a href="#contact" class="btn">Book a call</a>
+                <a href="#case-studies" class="btn-secondary"
+                  >See case studies</a
+                >
+              </div>
             </div>
-          </div>
-          <div class="md:col-span-5">
-            <div class="grid grid-cols-3 gap-3">
-              <Stat value="425%" label="YT subscriber growth" />
-              <Stat value="24M+" label="Cross‑platform views" />
-              <Stat value="120M" label="Project views" />
+            <div class="md:col-span-5">
+              <div class="grid grid-cols-3 gap-3">
+                <Stat value="425%" label="YT subscriber growth" />
+                <Stat value="24M+" label="Cross‑platform views" />
+                <Stat value="120M" label="Project views" />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <Section
-        id="canvas"
-        title="Infinite Canvas — Highlights"
-        eyebrow="Explore"
-      >
-        <p class="sub mb-6">
-          Pan, zoom, and play. Drag to move. Scroll to zoom. Double‑click to
-          reset.
-        </p>
-        <InfiniteCanvas items={canvasItems} />
-      </Section>
+      <!-- Key Stats Strip -->
+      <section id="stats" class="section">
+        <div class="container px-6 md:px-8 lg:px-10">
+          <StatsStrip />
+        </div>
+      </section>
 
-      <Section id="work" title="Featured Work" eyebrow="Case Studies">
-        <div class="grid md:grid-cols-3 gap-6">
-          <CaseCard
-            title="Clinic Growth: 425% YT"
-            metric="24M+ views across platforms"
-            href="/work/clinic-growth"
-          />
-          <CaseCard
-            title="UFC Shorts Engine"
-            metric="120M views in < 12 months"
-            href="/work/ufc-shorts"
-          />
-          <CaseCard
-            title="Breakcore Community"
-            metric="330k Twitter, 8k subreddit"
-            href="/work/breakcore"
-          />
+      <!-- Taste -->
+      <Section id="taste" title="Taste is the Multiplier" eyebrow="Ideas">
+        <div class="container px-6 md:px-8 lg:px-10">
+          <p>I will replace this placeholder paragraph with final copy.</p>
         </div>
       </Section>
 
-      <Section id="services" title="Services" eyebrow="Productized">
-        <!-- Add your services content here -->
+      <!-- Services -->
+      <section id="services" class="section">
+        <div class="container px-6 md:px-8 lg:px-10">
+          <ServicesGrid />
+        </div>
+      </section>
+
+      <!-- Infinite Canvas -->
+      <Section
+        id="canvas"
+        title="Highlights — Infinite Canvas (Flip to explore)"
+        eyebrow="Explore"
+      >
+        <div class="container px-6 md:px-8 lg:px-10">
+          <InfiniteCanvas items={canvasItems} />
+        </div>
+      </Section>
+
+      <!-- Case Studies -->
+      <section id="case-studies" class="section">
+        <div class="container px-6 md:px-8 lg:px-10">
+          <h2 class="h2 mb-6">Featured Work</h2>
+          <div class="grid md:grid-cols-3 gap-6">
+            <CaseCard
+              title="Clinic Growth: 425% YT"
+              metric="24M+ views across platforms"
+              href="/work/clinic-growth"
+            />
+            <CaseCard
+              title="UFC Shorts Engine"
+              metric="120M views in < 12 months"
+              href="/work/ufc-shorts"
+            />
+            <CaseCard
+              title="Breakcore Community"
+              metric="330k Twitter, 8k subreddit"
+              href="/work/breakcore"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section id="cta" class="section">
+        <div class="container px-6 md:px-8 lg:px-10 text-center">
+          <h2 class="h2 mb-4">
+            Let’s talk — bring me your vision, I’ll bring the taste.
+          </h2>
+          <a href="#contact" class="btn">Book a call</a>
+        </div>
+      </section>
+
+      <!-- Keep existing contact form / section if present below -->
+      <Section id="contact" title="Contact" eyebrow="Get in touch">
+        <div class="container px-6 md:px-8 lg:px-10">
+          <!-- existing contact form will remain here if present -->
+          <slot name="contact" />
+        </div>
       </Section>
     </main>
     <Footer />

@@ -74,7 +74,11 @@ const { items = [] } = Astro.props;
   <div class="canvas-plane" id="plane">
     {
       items.map((it: any, i: number) => (
-        <div class="deck-item" data-index={i}>
+        <div
+          class="deck-item"
+          data-index={i}
+          style={`width:${it.w ? it.w + "px" : "auto"};height:${it.h ? it.h + "px" : "auto"};`}
+        >
           {it.type === "image" ? (
             <img src={it.src} alt={it.title || ""} loading="lazy" />
           ) : it.type === "youtube" ? (
