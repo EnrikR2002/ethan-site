@@ -17,37 +17,25 @@ import ServicesGrid from "../components/ServicesGrid.astro";
 
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 
-// Data for the InfiniteCanvas component
+// Data for the InfiniteCanvas component (simplified shape)
 const canvasItems = [
   {
     id: "p1",
     type: "image",
     src: "/media/syfer-music.PNG",
-    x: 0,
-    y: 0,
-    w: 860,
-    h: 220,
-    title: "Syfer Music",
+    title: "Placeholder 1",
   },
   {
     id: "p2",
     type: "image",
-    src: "/media/sample-2.jpg",
-    x: 420,
-    y: 60,
-    w: 320,
-    h: 240,
-    title: "Thumb 2",
+    src: "/media/syfer-music.PNG",
+    title: "Placeholder 2",
   },
   {
-    id: "v1",
-    type: "youtube",
-    src: "https://www.youtube.com/embed/XOYCQDbc1C0",
-    x: 180,
-    y: 360,
-    w: 400,
-    h: 240,
-    title: "Video Demo",
+    id: "p3",
+    type: "image",
+    src: "/media/syfer-music.PNG",
+    title: "Placeholder 3",
   },
 ];
 ---
@@ -61,7 +49,7 @@ const canvasItems = [
       name="description"
       content="Video + digital growth that converts: case studies, services, and booking."
     />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="bg-white text-zinc-900 dark:bg-zinc-950 dark:text-white">
     <Nav />
@@ -103,6 +91,7 @@ const canvasItems = [
       <!-- Key Stats Strip -->
       <section id="stats" class="section">
         <div class="container px-6 md:px-8 lg:px-10">
+          <h2 class="h2 mb-4">Key Results</h2>
           <StatsStrip />
         </div>
       </section>
@@ -143,6 +132,7 @@ const canvasItems = [
       <!-- Services -->
       <section id="services" class="section">
         <div class="container px-6 md:px-8 lg:px-10">
+          <h2 class="h2 mb-6">Services</h2>
           <ServicesGrid />
         </div>
       </section>
@@ -164,33 +154,43 @@ const canvasItems = [
           <h2 class="h2 mb-6">Featured Work</h2>
           <div class="grid md:grid-cols-3 gap-6">
             <CaseCard
-              title="Clinic Growth: 425% YT"
-              metric="24M+ views across platforms"
-              href="/work/clinic-growth"
+              title="Medical Brand Growth (YouTube)"
+              metric="425% growth; 24M+ views in vertical"
+              href="/work/medical-brand"
+              thumb="/media/case-medical.svg"
             />
             <CaseCard
-              title="UFC Shorts Engine"
-              metric="120M views in < 12 months"
-              href="/work/ufc-shorts"
+              title="UFC/MMA Shorts Engine"
+              metric="120M+ views in vertical"
+              href="/work/ufc-mma-channel"
+              thumb="/media/case-ufc.svg"
             />
             <CaseCard
-              title="Breakcore Community"
-              metric="330k Twitter, 8k subreddit"
-              href="/work/breakcore"
+              title="Gaming Channel Long-Form"
+              metric="45M+ long-form views"
+              href="/work/gaming-channel"
+              thumb="/media/case-gaming.svg"
             />
           </div>
         </div>
       </section>
 
       <!-- CTA -->
-      <section id="cta" class="section">
+      <Section
+        id="cta"
+        title="Let’s talk — bring me your vision, I’ll bring the taste."
+      >
         <div class="container px-6 md:px-8 lg:px-10 text-center">
-          <h2 class="h2 mb-4">
-            Let’s talk — bring me your vision, I’ll bring the taste.
-          </h2>
-          <a href="#contact" class="btn">Book a call</a>
+          <p class="sub max-w-2xl mx-auto mb-6">
+            Book a quick 15‑minute intro and we’ll scope a plan that moves the
+            needle.
+          </p>
+          <div class="flex justify-center gap-3">
+            <a href="#contact" class="btn">Book a call</a>
+            <a href="#case-studies" class="btn-secondary">See case studies</a>
+          </div>
         </div>
-      </section>
+      </Section>
 
       <!-- Keep existing contact form / section if present below -->
       <Section id="contact" title="Contact" eyebrow="Get in touch">

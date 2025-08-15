@@ -1,8 +1,9 @@
 ---
 /**
- * Deck-style navigator for images & videos.
- * One item is centered as current; neighbors form a subtle spiral/depth effect.
- * Navigate with wheel/trackpad, arrow keys, or swipe.
+ * Deck-style navigator (flip) for images & videos.
+ * Accepts items shaped as { id, type: 'image'|'video', src, title? }
+ * Centers one current item; neighbors have spiral/depth effect.
+ * Supports scroll, arrow keys, swipe, and on-screen Prev/Next buttons.
  */
 const { items = [] } = Astro.props;
 ---
@@ -50,6 +51,16 @@ const { items = [] } = Astro.props;
     height: 100%;
     object-fit: cover;
   }
+  @media (max-width: 640px) {
+    .canvas-viewport {
+      padding-bottom: 56px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .deck-item {
+      transition: none !important;
+    }
+  }
   .canvas-hint {
     position: absolute;
     right: 12px;
@@ -61,6 +72,57 @@ const { items = [] } = Astro.props;
     backdrop-filter: blur(4px);
     padding: 0.25rem 0.5rem; /* px-2 py-1 */
     border-radius: 0.25rem; /* rounded */
+  }
+  .canvas-controls {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    display: flex;
+    gap: 8px;
+    z-index: 200;
+  }
+  .canvas-controls .nav-btn {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .canvas-ctas {
+    position: absolute;
+    right: 12px;
+    top: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 200;
+  }
+  .canvas-ctas .cta-btn {
+    background: rgba(20, 20, 24, 0.95);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 13px;
+    text-decoration: none;
+  }
+  /* Mobile: place CTAs at bottom center */
+  @media (max-width: 640px) {
+    .canvas-ctas {
+      right: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 12px;
+      top: auto;
+      flex-direction: row;
+    }
+    .canvas-controls {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      bottom: 52px; /* sit just above CTAs */
+      top: auto;
+    }
   }
   @media (prefers-color-scheme: dark) {
     .canvas-hint {
@@ -74,28 +136,35 @@ const { items = [] } = Astro.props;
   <div class="canvas-plane" id="plane">
     {
       items.map((it: any, i: number) => (
-        <div
-          class="deck-item"
-          data-index={i}
-          style={`width:${it.w ? it.w + "px" : "auto"};height:${it.h ? it.h + "px" : "auto"};`}
-        >
+        <div class="deck-item" data-index={i}>
           {it.type === "image" ? (
-            <img src={it.src} alt={it.title || ""} loading="lazy" />
-          ) : it.type === "youtube" ? (
-            <iframe
+            <img
               src={it.src}
-              title={it.title || "YouTube video"}
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              style="width:100%;height:100%;display:block;border:0;"
+              alt={it.title || "Gallery item"}
+              loading="lazy"
+              decoding="async"
             />
+          ) : it.type === "video" ? (
+            <video src={it.src} preload="metadata" playsinline />
           ) : (
-            <video src={it.src} preload="metadata" />
+            // fallback: try video
+            <video src={it.src} preload="metadata" playsinline />
           )}
         </div>
       ))
     }
+  </div>
+  <div class="canvas-controls" role="group" aria-label="Canvas navigation">
+    <button id="prev-btn" class="nav-btn" type="button" aria-label="Previous"
+      >← Prev</button
+    >
+    <button id="next-btn" class="nav-btn" type="button" aria-label="Next"
+      >Next →</button
+    >
+  </div>
+  <div class="canvas-ctas">
+    <button id="showreel-a" class="cta-btn">Play Showreel A</button>
+    <button id="showreel-b" class="cta-btn">Play Showreel B</button>
   </div>
   <div class="canvas-hint">Scroll / Swipe / ← → to navigate</div>
 </div>
@@ -193,7 +262,7 @@ const { items = [] } = Astro.props;
       { passive: false }
     );
 
-    // Arrow keys
+    // Arrow keys and Space/Enter
     viewport.addEventListener("keydown", function (e) {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         e.preventDefault();
@@ -201,6 +270,9 @@ const { items = [] } = Astro.props;
       } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         e.preventDefault();
         prev();
+      } else if (e.key === " " || e.key === "Spacebar" || e.key === "Enter") {
+        e.preventDefault();
+        next();
       }
     });
 
@@ -239,8 +311,35 @@ const { items = [] } = Astro.props;
       }
     });
 
-    // Focus to enable arrow keys
-    viewport.focus();
+    // Prev/Next button wiring
+    var prevBtn = document.getElementById("prev-btn");
+    var nextBtn = document.getElementById("next-btn");
+    if (prevBtn)
+      prevBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        prev();
+      });
+    if (nextBtn)
+      nextBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        next();
+      });
+
+    // Showreel CTAs - simplest behavior: open media in new tab
+    var showA = document.getElementById("showreel-a");
+    var showB = document.getElementById("showreel-b");
+    if (showA)
+      showA.addEventListener("click", function (e) {
+        e.preventDefault();
+        window.open("/media/showreel-a.mp4", "_blank");
+      });
+    if (showB)
+      showB.addEventListener("click", function (e) {
+        e.preventDefault();
+        window.open("/media/showreel-b.mp4", "_blank");
+      });
+
+    // Focus is available via Tab; avoid auto-focus to respect user expectation
     update();
   })();
 </script>
