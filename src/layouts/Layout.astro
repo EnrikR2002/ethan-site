@@ -15,51 +15,99 @@ import "../styles/global.css";
     <slot />
 
     <script>
+      /* @ts-nocheck */
       // Keep scroll restoration manual so reloads don't preserve previous scroll
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
-      document.addEventListener("DOMContentLoaded", function () {
-        // ensure we start at the top on load
-        window.scrollTo(0, 0);
+      // Ensure we start at the top on load and when navigating back/forward
+      function resetScrollToTop() {
+        // run after restoration to be safe
+        setTimeout(function () {
+          window.scrollTo(0, 0);
+        }, 0);
+      }
+      window.addEventListener("load", resetScrollToTop);
+      window.addEventListener("pageshow", function (e) {
+        if (e.persisted) resetScrollToTop();
       });
 
-      // Delegate anchor handling: smooth-scroll for same-page hashes, open external links in new tab
-      document.addEventListener("click", function (e) {
-        var a = e.target.closest && e.target.closest("a");
-        if (!a) return;
-        var href = a.getAttribute("href");
-        if (!href) return;
+      // Smooth scroll duration: native smooth used (browser controls timing)
+      document.addEventListener(
+        "click",
+        function (e) {
+          var a = e.target instanceof Element ? e.target.closest("a") : null;
+          if (!a) return;
+          var href = a.getAttribute("href");
+          if (!href) return;
 
-        // same-page hash navigation
-        if (href.charAt(0) === "#") {
-          e.preventDefault();
-          var target = document.querySelector(href);
-          if (target) {
-            // quick smooth scroll
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          // Determine if this is a same-page hash (e.g. #taste or /#taste)
+          var samePageHash = false;
+          if (href.charAt(0) === "#") samePageHash = true;
+          else {
+            try {
+              var tmp = new URL(href, location.href);
+              samePageHash =
+                tmp.origin === location.origin &&
+                tmp.pathname === location.pathname &&
+                !!tmp.hash &&
+                tmp.hash.length > 1;
+            } catch (err) {
+              samePageHash = false;
+            }
           }
-          return;
-        }
 
-        // otherwise open links in a new tab (external or internal absolute links)
-        // keep mailto and tel as-is
-        if (href.startsWith("mailto:") || href.startsWith("tel:")) return;
-        // allow same-origin anchors that navigate to a different page to open in same tab
-        try {
-          var url = new URL(href, location.href);
-          if (url.origin === location.origin) {
-            // internal link — open in new tab per your request
-            a.setAttribute("target", "_blank");
-            a.setAttribute("rel", "noopener noreferrer");
+          if (samePageHash) {
+            e.preventDefault();
+            var hash =
+              href.charAt(0) === "#" ? href : new URL(href, location.href).hash;
+            try {
+              var target = document.querySelector(hash);
+              if (target) {
+                // custom smooth scroll using rAF for consistency across browsers
+                var targetY =
+                  target.getBoundingClientRect().top + window.scrollY;
+                var startY = window.scrollY;
+                var duration = 300; // ms
+                var startT = performance.now();
+                /** @type {(t: number) => number} */
+                var easeOut = function (t) {
+                  return 1 - Math.pow(1 - t, 3);
+                };
+                /** @type {(currentTime: number) => void} */
+                var step = function (currentTime) {
+                  var p = Math.min(1, (currentTime - startT) / duration);
+                  window.scrollTo(0, startY + (targetY - startY) * easeOut(p));
+                  if (p < 1) requestAnimationFrame(step);
+                  else {
+                    try {
+                      history.pushState(null, "", hash);
+                    } catch (e) {}
+                  }
+                };
+                requestAnimationFrame(step);
+              }
+            } catch (err) {
+              // fallback: jump
+              location.hash = hash;
+            }
             return;
           }
-        } catch (err) {
-          // malformed URL, ignore
-        }
-        // external links: ensure they open in new tab
-        a.setAttribute("target", "_blank");
-        a.setAttribute("rel", "noopener noreferrer");
-      });
+
+          // keep mailto and tel as-is
+          if (href.startsWith("mailto:") || href.startsWith("tel:")) return;
+
+          // For all other links, ensure they open in a new tab per request
+          try {
+            var url = new URL(href, location.href);
+            // set attributes for internal and external links
+            a.setAttribute("target", "_blank");
+            a.setAttribute("rel", "noopener noreferrer");
+          } catch (err) {
+            // malformed URL, leave it
+          }
+        },
+        true
+      );
     </script>
   </body>
 </html>

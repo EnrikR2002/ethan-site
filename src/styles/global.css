@@ -5,6 +5,7 @@
 
 /* Smooth text + focus outlines */
 :root { color-scheme: light dark; }
+html { scroll-behavior: smooth; }
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 :focus-visible { outline: 2px solid #6470f6; outline-offset: 2px; }
 
