@@ -19,11 +19,29 @@ import ServicesGrid from "../components/ServicesGrid.astro";
 
 // Placeholder items for InfiniteLoopCarousel (images only)
 const highlightItems = [
-  { id: "h01", src: "/media/highlight-01.svg", alt: "Highlight 01" },
-  { id: "h02", src: "/media/highlight-02.svg", alt: "Highlight 02" },
-  { id: "h03", src: "/media/highlight-03.svg", alt: "Highlight 03" },
-  { id: "h04", src: "/media/highlight-04.svg", alt: "Highlight 04" },
-  { id: "h05", src: "/media/highlight-05.svg", alt: "Highlight 05" },
+  { id: "h01", src: "/media/ethan_playbuttons2.jpg", alt: "Play Buttons" },
+  // example: this image needs the focal point shifted up and left
+  {
+    id: "h02",
+    src: "/media/breakcore-333.png",
+    alt: "Breakcore 333k",
+    objectFit: "cover",
+    objectPosition: "20% 90%",
+  },
+  { id: "h03", src: "/media/syfer-music.PNG", alt: "Syfer Music" },
+  {
+    id: "h04",
+    src: "/media/plastic_surgery_subs.png",
+    alt: "Plastic Surgery Subs",
+  },
+  // example: this image is tall and should be contained to show the full image
+  {
+    id: "h05",
+    src: "/media/mma_subs.png",
+    alt: "MMA Subs",
+    objectFit: "contain",
+    objectPosition: "50% 50%",
+  },
   { id: "h06", src: "/media/highlight-06.svg", alt: "Highlight 06" },
   { id: "h07", src: "/media/highlight-07.svg", alt: "Highlight 07" },
   { id: "h08", src: "/media/highlight-08.svg", alt: "Highlight 08" },
@@ -142,19 +160,19 @@ const highlightItems = [
               title="Medical Brand Growth (YouTube)"
               metric="425% growth; 24M+ views in vertical"
               href="https://www.youtube.com/@FaceliftExpert"
-              thumb="/media/case-medical.svg"
+              thumb="/media/plastic-surgery.PNG"
             />
             <CaseCard
               title="UFC/MMA Shorts Engine"
               metric="120M+ views in vertical"
               href="https://www.youtube.com/@MMA"
-              thumb="/media/case-ufc.svg"
+              thumb="/media/UFC_MMA_banner.png"
             />
             <CaseCard
               title="Gaming Channel Long-Form"
               metric="45M+ long-form views"
               href="https://www.youtube.com/@Yamikaze"
-              thumb="/media/case-gaming.svg"
+              thumb="/media/yamikaze_logo_talon.jpg"
             />
           </div>
         </div>

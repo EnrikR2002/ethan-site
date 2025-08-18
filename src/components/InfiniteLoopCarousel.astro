@@ -3,6 +3,9 @@ interface Item {
   id: string;
   src: string;
   alt?: string;
+  // optional per-image fit/position to control cropping (e.g. 'contain' or 'cover', and '20% 30%')
+  objectFit?: string;
+  objectPosition?: string;
 }
 const {
   items = [] as Item[],
@@ -196,6 +199,7 @@ const {
               alt={it.alt || "Carousel image"}
               loading="lazy"
               decoding="async"
+              style={`object-fit:${it.objectFit || "cover"};object-position:${it.objectPosition || "50% 50%"};`}
             />
           </li>
         ))
