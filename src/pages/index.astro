@@ -56,7 +56,7 @@ const canvasItems = [
 
     <main>
       <!-- Hero -->
-      <section id="hero" class="section">
+      <section id="hero" class="pt-8 md:pt-10 pb-12 md:pb-16">
         <div class="container px-6 md:px-8 lg:px-10">
           <div
             class="grid md:grid-cols-1 gap-10 items-center justify-items-center text-center"
@@ -72,19 +72,14 @@ const canvasItems = [
                 Short‑form engines, long‑form trust, measurable outcomes. Book a
                 15‑min intro and see if we can add revenue in 90 days.
               </p>
-              <div class="mt-6 flex gap-3 justify-center">
-                <a href="#contact" class="btn">Book a call</a>
-                <a href="#case-studies" class="btn-secondary"
-                  >See case studies</a
-                >
-              </div>
+              <!-- hero CTAs removed; primary CTA kept in the CTA section -->
             </div>
           </div>
         </div>
       </section>
 
       <!-- Key Stats Strip -->
-      <section id="stats" class="section">
+      <section id="stats" class="pt-6 md:pt-8 pb-16 md:pb-24">
         <div class="container px-6 md:px-8 lg:px-10">
           <h2 class="h2 mb-4">Key Results</h2>
           <StatsStrip />
@@ -94,7 +89,7 @@ const canvasItems = [
       <!-- Taste -->
       <Section id="taste" title="Taste is the Multiplier" eyebrow="Ideas">
         <div class="container px-6 md:px-8 lg:px-10">
-          <div class="prose taste-copy max-w-3xl mx-auto">
+          <div class="prose taste-copy text-center max-w-3xl mx-auto">
             <!-- REPLACE_ME: taste para 1 -->
             <p>
               In every industry, taste separates the forgettable from the
@@ -183,9 +178,13 @@ const canvasItems = [
             Book a quick 15‑minute intro and we’ll scope a plan that moves the
             needle.
           </p>
-          <div class="flex justify-center gap-3">
-            <a href="#contact" class="btn">Book a call</a>
-            <a href="#case-studies" class="btn-secondary">See case studies</a>
+          <div class="flex justify-center">
+            <a
+              href="https://example.com/schedule"
+              class="btn"
+              target="_blank"
+              rel="noopener noreferrer">Book a call</a
+            >
           </div>
         </div>
       </Section>
@@ -202,12 +201,14 @@ const canvasItems = [
               <li>
                 <a
                   href="mailto:Ethan.alfandary@gmail.com"
-                  class="hover:underline text-lg font-medium">Email</a>
+                  class="hover:underline text-lg font-medium">Email</a
+                >
               </li>
               <li>
                 <a
                   href="https://linkedin.com/in/ethanialfandary"
-                  class="hover:underline text-lg font-medium">LinkedIn</a>
+                  class="hover:underline text-lg font-medium">LinkedIn</a
+                >
               </li>
               <!-- Add more links here: Discord, Twitter, etc. -->
             </ul>
