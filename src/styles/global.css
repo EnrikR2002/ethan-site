@@ -28,9 +28,29 @@
 	backdrop-filter: blur(4px);
 	box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 }
+/* make services grid cards slightly thicker and darker to stand out */
+.services-grid .card {
+	border-width: 2px;
+	border-style: solid;
+	border-color: rgba(0,0,0,0.9);
+}
 @media (prefers-color-scheme: dark) {
 	.card {
 		border: 1px solid #1e293b;
 		background: rgba(24,24,27,0.7);
 	}
+}
+
+/* Simple bold underline for section headings */
+.h2.underline {
+	display: block;
+	text-align: center;
+	text-decoration-line: underline;
+	text-decoration-thickness: 3px;
+	text-decoration-color: currentColor;
+	text-underline-offset: 8px;
+	font-weight: 700;
+}
+@media (prefers-color-scheme: dark) {
+	.services-grid .card { border-color: rgba(255,255,255,0.08); }
 }

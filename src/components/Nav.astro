@@ -12,11 +12,17 @@ const links = [
   class="sticky top-0 z-50 bg-white/70 dark:bg-zinc-900/70 backdrop-blur supports-[backdrop-filter]:bg-white/60"
 >
   <nav
-    class="container flex items-center justify-between py-4 px-6 md:px-8 lg:px-10"
+    class="container flex items-center justify-between py-4 px-2 md:px-4 lg:px-6"
     aria-label="Primary"
   >
-    <a href="/" class="font-extrabold text-lg tracking-tight">ETHAN ALFANDARY</a
-    >
+    <a href="/" class="flex items-center gap-3">
+      <img
+        src="/media/syfer_logo.png"
+        alt="Syfer logo"
+        class="w-16 h-16 object-contain"
+      />
+      <span class="font-extrabold text-lg tracking-tight">ETHAN ALFANDARY</span>
+    </a>
     <ul class="hidden md:flex items-center gap-6">
       {
         links.map((l) => (
