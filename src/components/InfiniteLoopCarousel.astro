@@ -1,0 +1,437 @@
+---
+interface Item {
+  id: string;
+  src: string;
+  alt?: string;
+}
+const {
+  items = [] as Item[],
+  speed = 28,
+  gap = 16,
+  itemWidth = 360,
+  snap = true,
+  autoplay = true,
+} = Astro.props;
+---
+
+<style>
+  .carousel {
+    position: relative;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    overflow: hidden;
+  }
+  @media (prefers-color-scheme: dark) {
+    .carousel {
+      border-color: #1e293b;
+      background: rgba(24, 24, 27, 0.7);
+    }
+  }
+  .viewport {
+    position: relative;
+    width: 100%;
+    height: clamp(200px, 48vh, 480px);
+  }
+  .track {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: var(--gap, 16px);
+    will-change: transform;
+  }
+  .item {
+    flex: 0 0 auto;
+    width: min(90vw, var(--itemWidth, 360px));
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0b0b0b;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* edge fades */
+  .fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 64px;
+    pointer-events: none;
+  }
+  .fade.left {
+    left: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0)
+    );
+  }
+  .fade.right {
+    right: 0;
+    background: linear-gradient(
+      270deg,
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0)
+    );
+  }
+  @media (prefers-color-scheme: dark) {
+    .fade.left {
+      background: linear-gradient(
+        90deg,
+        rgba(24, 24, 27, 1),
+        rgba(24, 24, 27, 0)
+      );
+    }
+    .fade.right {
+      background: linear-gradient(
+        270deg,
+        rgba(24, 24, 27, 1),
+        rgba(24, 24, 27, 0)
+      );
+    }
+  }
+
+  /* nav buttons */
+  .nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+  .nav-btn:focus-visible {
+    outline: 2px solid #6470f6;
+    outline-offset: 2px;
+  }
+  .nav-btn:hover {
+    opacity: 1;
+  }
+  .carousel:hover .nav-btn,
+  .carousel:focus-within .nav-btn {
+    opacity: 1;
+  }
+  .nav-btn.left {
+    left: 8px;
+  }
+  .nav-btn.right {
+    right: 8px;
+  }
+  @media (max-width: 640px) {
+    .nav-btn {
+      opacity: 1;
+    }
+  }
+
+  /* hidden live region */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track,
+    .item {
+      transition: none !important;
+    }
+  }
+</style>
+
+<section
+  class="carousel"
+  role="region"
+  aria-label="Portfolio highlights carousel"
+>
+  <div
+    class="viewport"
+    id="viewport"
+    tabindex="0"
+    data-autoplay={autoplay ? "1" : "0"}
+    data-snap={snap ? "1" : "0"}
+    data-speed={String(speed)}
+    data-gap={String(gap)}
+    data-item-width={String(itemWidth)}
+  >
+    <ul
+      class="track"
+      id="track"
+      role="list"
+      style={`--gap:${gap}px; --itemWidth:${itemWidth}px`}
+    >
+      {
+        [...items, ...items].map((it, i) => (
+          <li
+            class="item"
+            data-base-index={i % items.length}
+            role="listitem"
+            tabindex="-1"
+          >
+            <img
+              src={it.src}
+              alt={it.alt || "Carousel image"}
+              loading="lazy"
+              decoding="async"
+            />
+          </li>
+        ))
+      }
+    </ul>
+    <button class="nav-btn left" id="prev" type="button" aria-label="Previous"
+      >◄</button
+    >
+    <button class="nav-btn right" id="next" type="button" aria-label="Next"
+      >►</button
+    >
+    <div class="fade left" aria-hidden="true"></div>
+    <div class="fade right" aria-hidden="true"></div>
+    <div id="live" class="sr-only" aria-live="polite"></div>
+  </div>
+</section>
+
+<script>
+  // @ts-nocheck
+  (function () {
+    var viewport = document.getElementById("viewport");
+    var track = document.getElementById("track");
+    var prevBtn = document.getElementById("prev");
+    var nextBtn = document.getElementById("next");
+    var live = document.getElementById("live");
+    if (!viewport || !track || !live) return;
+
+    var baseCount = track.querySelectorAll(".item").length / 2;
+    if (baseCount === 0) return;
+
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var auto = viewport.dataset.autoplay === "1" && !reduced;
+    var doSnap = viewport.dataset.snap === "1";
+    var speedPx = parseFloat(viewport.dataset.speed || "28");
+
+    var pointerActive = false;
+    var hover = false;
+    var focusWithin = false;
+    var rafId = 0;
+    var last = performance.now();
+    var trackX = 0;
+    var startX = 0;
+    var startTrack = 0;
+    var itemW = 0; // measured item width in px
+    var gapPx = 0; // measured gap in px
+    var totalW = 0; // one set width
+
+    function measure() {
+      var first = track.querySelector(".item");
+      if (!first) return;
+      var rect = first.getBoundingClientRect();
+      itemW = rect.width;
+      var cs = getComputedStyle(track);
+      gapPx =
+        parseFloat(cs.columnGap || cs.gap || "0") ||
+        parseFloat(viewport.dataset.gap || "16");
+      totalW = baseCount * (itemW + gapPx);
+    }
+
+    function setTransform(x) {
+      track.style.transform = "translate(-50%, -50%) translateX(" + x + "px)";
+    }
+
+    function normalize() {
+      if (totalW <= 0) return;
+      while (trackX <= -totalW) trackX += totalW;
+      while (trackX > 0) trackX -= totalW;
+    }
+
+    function currentIndex() {
+      // compute nearest item to center
+      var center = -trackX + viewport.clientWidth / 2;
+      var k = Math.round((center - itemW / 2) / (itemW + gapPx));
+      var idx = ((k % baseCount) + baseCount) % baseCount;
+      return { k: k, idx: idx };
+    }
+
+    function updateAria() {
+      var info = currentIndex();
+      if (live)
+        live.textContent = "Item " + (info.idx + 1) + " of " + baseCount;
+      var itemsEls = track.querySelectorAll(".item");
+      itemsEls.forEach(function (el) {
+        var base = parseInt(el.getAttribute("data-base-index") || "0", 10);
+        var img = el.querySelector("img");
+        if (base === info.idx) {
+          el.setAttribute("aria-current", "true");
+          el.tabIndex = 0;
+          if (img) img.setAttribute("fetchpriority", "high");
+        } else {
+          el.removeAttribute("aria-current");
+          el.tabIndex = -1;
+          if (img) img.removeAttribute("fetchpriority");
+        }
+      });
+    }
+
+    function animateTo(target, duration) {
+      if (reduced) {
+        trackX = target;
+        normalize();
+        setTransform(trackX);
+        updateAria();
+        return;
+      }
+      var start = trackX;
+      var startT = performance.now();
+      function easeOut(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+      function step(now) {
+        var p = Math.min(1, (now - startT) / duration);
+        trackX = start + (target - start) * easeOut(p);
+        normalize();
+        setTransform(trackX);
+        if (p < 1) {
+          rafId = requestAnimationFrame(step);
+        } else {
+          updateAria();
+        }
+      }
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(step);
+    }
+
+    function snapToNearest() {
+      if (!doSnap || totalW <= 0) return;
+      var info = currentIndex();
+      var targetCenter = info.k * (itemW + gapPx) + itemW / 2;
+      var targetX = -(targetCenter - viewport.clientWidth / 2);
+      // bring within range
+      while (targetX <= -totalW) targetX += totalW;
+      while (targetX > 0) targetX -= totalW;
+      animateTo(targetX, 300);
+    }
+
+    function tick(now) {
+      var dt = (now - last) / 1000;
+      last = now;
+      var playing = auto && !pointerActive && !hover && !focusWithin;
+      if (playing && totalW > 0) {
+        trackX -= speedPx * dt;
+        normalize();
+        setTransform(trackX);
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    // pointer interactions
+    viewport.addEventListener("pointerdown", function (e) {
+      pointerActive = true;
+      viewport.setPointerCapture(e.pointerId);
+      startX = e.clientX;
+      startTrack = trackX;
+      cancelAnimationFrame(rafId);
+    });
+    viewport.addEventListener("pointermove", function (e) {
+      if (!pointerActive) return;
+      var dx = e.clientX - startX;
+      trackX = startTrack + dx;
+      normalize();
+      setTransform(trackX);
+    });
+    function pointerEnd() {
+      if (!pointerActive) return;
+      pointerActive = false;
+      if (doSnap) snapToNearest();
+      if (auto)
+        setTimeout(function () {
+          last = performance.now();
+          rafId = requestAnimationFrame(tick);
+        }, 1000);
+    }
+    viewport.addEventListener("pointerup", pointerEnd);
+    viewport.addEventListener("pointercancel", pointerEnd);
+
+    // hover/focus pause
+    viewport.addEventListener("mouseenter", function () {
+      hover = true;
+    });
+    viewport.addEventListener("mouseleave", function () {
+      hover = false;
+    });
+    viewport.addEventListener("focusin", function () {
+      focusWithin = true;
+    });
+    viewport.addEventListener("focusout", function () {
+      focusWithin = false;
+    });
+
+    // keyboard nav
+    viewport.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        trackX -= itemW + gapPx;
+        normalize();
+        setTransform(trackX);
+        snapToNearest();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        trackX += itemW + gapPx;
+        normalize();
+        setTransform(trackX);
+        snapToNearest();
+      } else if (e.key === " " || e.key === "Spacebar" || e.key === "Enter") {
+        e.preventDefault(); /* no-op */
+      }
+    });
+
+    // buttons
+    if (prevBtn)
+      prevBtn.addEventListener("click", function () {
+        trackX += itemW + gapPx;
+        normalize();
+        setTransform(trackX);
+        snapToNearest();
+      });
+    if (nextBtn)
+      nextBtn.addEventListener("click", function () {
+        trackX -= itemW + gapPx;
+        normalize();
+        setTransform(trackX);
+        snapToNearest();
+      });
+
+    // resize
+    var ro = new ResizeObserver(function () {
+      measure();
+      updateAria();
+    });
+    ro.observe(viewport);
+    measure();
+    updateAria();
+
+    // start loop
+    last = performance.now();
+    rafId = requestAnimationFrame(tick);
+  })();
+</script>

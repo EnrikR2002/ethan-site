@@ -8,7 +8,7 @@ import Footer from "../components/Footer.astro";
 import Section from "../components/Section.astro";
 import Stat from "../components/Stat.astro";
 import CaseCard from "../components/CaseCard.astro";
-import InfiniteCanvas from "../components/InfiniteCanvas.astro";
+import InfiniteLoopCarousel from "../components/InfiniteLoopCarousel.astro";
 import StatsStrip from "../components/StatsStrip.astro";
 import ServicesGrid from "../components/ServicesGrid.astro";
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
@@ -17,26 +17,18 @@ import ServicesGrid from "../components/ServicesGrid.astro";
 
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 
-// Data for the InfiniteCanvas component (simplified shape)
-const canvasItems = [
-  {
-    id: "p1",
-    type: "image",
-    src: "/media/syfer-music.PNG",
-    title: "Placeholder 1",
-  },
-  {
-    id: "p2",
-    type: "image",
-    src: "/media/syfer-music.PNG",
-    title: "Placeholder 2",
-  },
-  {
-    id: "p3",
-    type: "image",
-    src: "/media/syfer-music.PNG",
-    title: "Placeholder 3",
-  },
+// Placeholder items for InfiniteLoopCarousel (images only)
+const highlightItems = [
+  { id: "h01", src: "/media/syfer-music.PNG", alt: "Highlight 01" },
+  { id: "h02", src: "/media/highlight-02.jpg", alt: "Highlight 02" },
+  { id: "h03", src: "/media/highlight-03.jpg", alt: "Highlight 03" },
+  { id: "h04", src: "/media/highlight-04.jpg", alt: "Highlight 04" },
+  { id: "h05", src: "/media/highlight-05.jpg", alt: "Highlight 05" },
+  { id: "h06", src: "/media/highlight-06.jpg", alt: "Highlight 06" },
+  { id: "h07", src: "/media/highlight-07.jpg", alt: "Highlight 07" },
+  { id: "h08", src: "/media/highlight-08.jpg", alt: "Highlight 08" },
+  { id: "h09", src: "/media/highlight-09.jpg", alt: "Highlight 09" },
+  { id: "h10", src: "/media/highlight-10.jpg", alt: "Highlight 10" },
 ];
 ---
 
@@ -130,14 +122,14 @@ const canvasItems = [
         </div>
       </section>
 
-      <!-- Infinite Canvas -->
+      <!-- Infinite Loop Carousel -->
       <Section
         id="canvas"
-        title="Highlights — Infinite Canvas (Flip to explore)"
+        title="Highlights — Infinite Loop (Drag or let it play)"
         eyebrow="Explore"
       >
         <div class="container px-6 md:px-8 lg:px-10">
-          <InfiniteCanvas items={canvasItems} />
+          <InfiniteLoopCarousel items={highlightItems} />
         </div>
       </Section>
 
