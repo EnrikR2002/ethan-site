@@ -1,0 +1,138 @@
+---
+import { capabilities } from "../data/site";
+import CapabilityIcon from "./CapabilityIcon.astro";
+---
+
+<section class="section capabilities" id="capabilities">
+  <div class="wrap grid12 capabilities__inner">
+    <div class="capabilities__head">
+      <p class="label label--line js-observe">Capabilities</p>
+      <h2 class="h2 capabilities__title">What I do</h2>
+      <p class="capabilities__note">
+        Six disciplines that compound — strategy through execution, measured
+        against outcomes.
+      </p>
+    </div>
+
+    <ul class="capabilities__list">
+      {
+        capabilities.map((cap, i) => (
+          <li class="cap reveal" data-delay={Math.min(i % 3, 5)}>
+            <div class="cap__top">
+              <CapabilityIcon name={cap.icon} />
+              <h3 class="h3 cap__title">{cap.title}</h3>
+            </div>
+            <ul class="cap__points">
+              {cap.points.map((p) => (
+                <li class="cap__point">{p}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .capabilities__inner {
+    row-gap: clamp(32px, 4vw, 52px);
+  }
+
+  .capabilities__head {
+    grid-column: 1 / -1;
+  }
+
+  .capabilities__title {
+    margin-top: 18px;
+  }
+
+  .capabilities__note {
+    margin: 16px 0 0;
+    font-size: var(--t-small);
+    line-height: 1.6;
+    color: var(--fg-muted);
+    max-width: 26ch;
+  }
+
+  .capabilities__list {
+    grid-column: 1 / -1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  /* Thin rules do the separating — no boxes */
+  .cap {
+    padding: 26px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .cap__top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .cap__title {
+    /* keeps the two-line titles from drifting away from the icon */
+    margin-top: -2px;
+  }
+
+  .cap__points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 9px;
+  }
+
+  .cap__point {
+    position: relative;
+    padding-left: 16px;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--fg-muted);
+    text-wrap: pretty;
+  }
+
+  .cap__point::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.66em;
+    width: 7px;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  @media (min-width: 640px) {
+    .capabilities__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: clamp(28px, 3vw, 48px);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .capabilities__head {
+      grid-column: 1 / span 3;
+      position: sticky;
+      top: 104px;
+      align-self: start;
+    }
+
+    .capabilities__list {
+      grid-column: 5 / span 8;
+    }
+  }
+
+  @media (min-width: 1180px) {
+    .capabilities__list {
+      grid-column: 4 / span 9;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,0 +1,142 @@
+---
+import { meta } from "../data/site";
+---
+
+<section class="section cta-section" id="contact">
+  <div class="wrap">
+    <div class="cta reveal">
+      <svg
+        class="cta__signal"
+        viewBox="0 0 600 300"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M0 232 C 120 232, 168 196, 246 168 S 392 104, 468 72 S 560 28, 600 12"
+          fill="none"
+          stroke="url(#ctaSignal)"
+          stroke-width="1.25"></path>
+        <defs>
+          <linearGradient id="ctaSignal" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#5B61FF" stop-opacity="0"></stop>
+            <stop offset="55%" stop-color="#5B61FF" stop-opacity="0.55"></stop>
+            <stop offset="100%" stop-color="#8B94FF" stop-opacity="0.95"></stop>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <div class="cta__content">
+        <p class="label">Let's build</p>
+        <h2 class="h2 cta__title">
+          Let's turn attention<br />
+          into <span class="serif accent">your advantage.</span>
+        </h2>
+      </div>
+
+      <div class="cta__action">
+        <p class="cta__copy">
+          Book a quick 15-minute intro and we'll scope a plan that moves the
+          needle.
+        </p>
+        <a
+          class="btn btn--primary"
+          href={meta.calendly}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Book a 15-min intro
+          <svg
+            class="btn__arrow"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M2.5 9.5 9.5 2.5M4 2.5h5.5V8"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: clamp(28px, 4vw, 48px);
+    padding: clamp(36px, 5vw, 72px);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background:
+      radial-gradient(
+        700px 320px at 88% 100%,
+        rgba(91, 97, 255, 0.1),
+        transparent 70%
+      ),
+      var(--bg-raised);
+  }
+
+  /* The signal line, one last time — as an edge, not a chart */
+  .cta__signal {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 62%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .cta__signal path {
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    transition: stroke-dashoffset 1800ms var(--ease) 200ms;
+  }
+
+  .cta.is-in .cta__signal path {
+    stroke-dashoffset: 0;
+  }
+
+  .cta__content,
+  .cta__action {
+    position: relative;
+  }
+
+  .cta__title {
+    margin-top: 18px;
+  }
+
+  .cta__copy {
+    margin: 0 0 22px;
+    font-size: var(--t-small);
+    line-height: 1.6;
+    color: var(--fg-muted);
+    max-width: 34ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta__signal path {
+      stroke-dashoffset: 0;
+      transition: none;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .cta {
+      grid-template-columns: 1.35fr 1fr;
+      align-items: end;
+      gap: clamp(32px, 4vw, 64px);
+    }
+
+    .cta__action {
+      padding-bottom: 4px;
+    }
+  }
+</style>

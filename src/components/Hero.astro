@@ -1,0 +1,245 @@
+---
+import { Image } from "astro:assets";
+import { meta } from "../data/site";
+import playbuttons from "../assets/media/playbuttons.jpg";
+---
+
+<section class="hero" id="top">
+  <div class="hero__grid-lines" aria-hidden="true"></div>
+
+  <div class="wrap hero__inner">
+    <div class="hero__copy reveal">
+      <p class="label hero__eyebrow">Video • Growth • Brand</p>
+
+      <h1 class="display hero__title">
+        I build<br />
+        audiences<br />
+        <span class="serif accent">that move.</span>
+      </h1>
+
+      <p class="lead hero__lead">
+        Turning attention into growth pipelines through media, systems, and
+        taste.
+      </p>
+
+      <div class="hero__actions">
+        <a
+          class="btn btn--primary"
+          href={meta.calendly}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Book a 15-min intro
+          <svg
+            class="btn__arrow"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M2.5 9.5 9.5 2.5M4 2.5h5.5V8"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </a>
+        <a class="btn btn--ghost" href="#channels">View highlights</a>
+      </div>
+    </div>
+
+    <div class="hero__artifact reveal" data-delay="2">
+      <figure class="artifact">
+        <div class="artifact__frame">
+          <Image
+            src={playbuttons}
+            alt="Two YouTube Silver Play Button awards presented to Syfer Music and Yamikaze for passing 100,000 subscribers"
+            widths={[560, 900, 1400]}
+            sizes="(min-width: 980px) 46vw, 92vw"
+            class="artifact__img"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <div class="artifact__scrim" aria-hidden="true"></div>
+
+          <figcaption class="artifact__caption">
+            <span class="artifact__tick" aria-hidden="true"></span>
+            <span class="artifact__caption-main"
+              >YouTube Silver Play Button ×2</span
+            >
+            <span class="artifact__caption-sub"
+              >Syfer Music · Yamikaze — 100,000+ subscribers each</span
+            >
+          </figcaption>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(56px, 8vw, 104px) clamp(56px, 7vw, 96px);
+    overflow: hidden;
+  }
+
+  /* Faint engineered grid — structure, not decoration */
+  .hero__grid-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, var(--line) 1px, transparent 1px),
+      radial-gradient(
+        900px 420px at 68% 12%,
+        rgba(91, 97, 255, 0.09),
+        transparent 72%
+      );
+    background-size:
+      calc(100% / 6) 100%,
+      100% 100%;
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
+    opacity: 0.75;
+  }
+
+  .hero__inner {
+    position: relative;
+    display: grid;
+    gap: clamp(40px, 5vw, 56px);
+    align-items: center;
+  }
+
+  .hero__eyebrow {
+    margin-bottom: clamp(20px, 2.5vw, 28px);
+  }
+
+  .hero__title {
+    /* the serif descends further than Inter; pull the block back optically */
+    margin-bottom: clamp(20px, 2.6vw, 30px);
+  }
+
+  .hero__lead {
+    max-width: 34ch;
+    margin-bottom: clamp(26px, 3vw, 36px);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* --- artifact ------------------------------------------------------- */
+
+  .artifact {
+    margin: 0;
+  }
+
+  .artifact__frame {
+    position: relative;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bg-sunken);
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+      0 30px 80px -40px rgba(0, 0, 0, 0.9);
+  }
+
+  .artifact__img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2200 / 1327;
+    object-fit: cover;
+    /* Grade toward the palette but keep the plaques bright — they are the
+       credibility anchor and need to read as metal, not as a grey block. */
+    filter: grayscale(0.34) contrast(1.09) brightness(1.03) saturate(0.85);
+  }
+
+  .artifact__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(6, 7, 10, 0.2) 0%,
+      transparent 22%,
+      transparent 54%,
+      rgba(6, 7, 10, 0.93) 100%
+    );
+  }
+
+  .artifact__caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* own backing so the caption stays legible when it wraps to two lines */
+    background: linear-gradient(
+      to top,
+      rgba(4, 5, 8, 0.94),
+      rgba(4, 5, 8, 0.82) 62%,
+      transparent
+    );
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "tick main"
+      ".    sub";
+    column-gap: 10px;
+    row-gap: 2px;
+    padding: 14px clamp(14px, 2vw, 20px);
+  }
+
+  .artifact__tick {
+    grid-area: tick;
+    align-self: center;
+    width: 14px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .artifact__caption-main {
+    grid-area: main;
+    font-size: var(--t-small);
+    font-weight: 600;
+    color: var(--fg-strong);
+    letter-spacing: -0.005em;
+  }
+
+  .artifact__caption-sub {
+    grid-area: sub;
+    font-size: var(--t-label);
+    letter-spacing: 0.04em;
+    color: var(--fg-muted);
+  }
+
+  @media (min-width: 980px) {
+    .hero__inner {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: clamp(32px, 4vw, 64px);
+      min-height: min(66vh, 640px);
+    }
+
+    .hero__copy {
+      grid-column: 1 / span 6;
+    }
+
+    .hero__artifact {
+      grid-column: 7 / span 6;
+    }
+  }
+
+  @media (min-width: 1180px) {
+    .hero__copy {
+      grid-column: 1 / span 5;
+    }
+
+    .hero__artifact {
+      grid-column: 7 / span 6;
+    }
+  }
+</style>

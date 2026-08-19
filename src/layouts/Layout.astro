@@ -1,122 +1,90 @@
 ---
 import "../styles/global.css";
+import { meta } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = meta.title, description = meta.description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <meta name="theme-color" content="#06070a" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    {/* Gate the reveal animation on JS so the page is never blank without it. */}
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&family=Instrument+Serif:ital@0;1&display=swap"
+    />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <slot />
 
     <script>
       /* @ts-nocheck */
-      // Keep scroll restoration manual so reloads don't preserve previous scroll
+      // Start at the top on reload rather than restoring the previous scroll.
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
-      // Ensure we start at the top on load and when navigating back/forward
-      function resetScrollToTop() {
-        // run after restoration to be safe
-        setTimeout(function () {
-          window.scrollTo(0, 0);
-        }, 0);
+      const reduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      // Reveal-on-enter. With reduced motion the CSS already shows everything,
+      // so we only need to flag the elements that gate a drawn line.
+      const targets = document.querySelectorAll(".reveal, .js-observe");
+
+      if (reduced || !("IntersectionObserver" in window)) {
+        targets.forEach((el) => el.classList.add("is-in"));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("is-in");
+              io.unobserve(entry.target);
+            });
+          },
+          { rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
+        );
+        targets.forEach((el) => io.observe(el));
       }
-      window.addEventListener("load", resetScrollToTop);
-      window.addEventListener("pageshow", function (e) {
-        if (e.persisted) resetScrollToTop();
-      });
 
-      // Smooth scroll duration: native smooth used (browser controls timing)
-      document.addEventListener(
-        "click",
-        function (e) {
-          var a = e.target instanceof Element ? e.target.closest("a") : null;
-          if (!a) return;
-          var href = a.getAttribute("href");
-          if (!href) return;
-
-          // Determine if this is a same-page hash (e.g. #taste or /#taste)
-          var samePageHash = false;
-          if (href.charAt(0) === "#") samePageHash = true;
-          else {
-            try {
-              var tmp = new URL(href, location.href);
-              samePageHash =
-                tmp.origin === location.origin &&
-                tmp.pathname === location.pathname &&
-                !!tmp.hash &&
-                tmp.hash.length > 1;
-            } catch (err) {
-              samePageHash = false;
-            }
-          }
-
-          if (samePageHash) {
-            e.preventDefault();
-            var hash =
-              href.charAt(0) === "#" ? href : new URL(href, location.href).hash;
-            try {
-              var target = document.querySelector(hash);
-              if (target) {
-                // custom smooth scroll using rAF for consistency across browsers
-                var targetY =
-                  target.getBoundingClientRect().top + window.scrollY;
-                var startY = window.scrollY;
-                var duration = 300; // ms
-                var startT = performance.now();
-                /** @type {(t: number) => number} */
-                var easeOut = function (t) {
-                  return 1 - Math.pow(1 - t, 3);
-                };
-                /** @type {(currentTime: number) => void} */
-                var step = function (currentTime) {
-                  var p = Math.min(1, (currentTime - startT) / duration);
-                  window.scrollTo(0, startY + (targetY - startY) * easeOut(p));
-                  if (p < 1) requestAnimationFrame(step);
-                  else {
-                    try {
-                      history.pushState(null, "", hash);
-                    } catch (e) {}
-                  }
-                };
-                requestAnimationFrame(step);
-              }
-            } catch (err) {
-              // fallback: jump
-              location.hash = hash;
-            }
-            return;
-          }
-
-          // keep mailto and tel as-is
-          if (href.startsWith("mailto:") || href.startsWith("tel:")) return;
-
-          // For all other links, ensure they open in a new tab per request
-          try {
-            var url = new URL(href, location.href);
-            // set attributes for internal and external links
-            a.setAttribute("target", "_blank");
-            a.setAttribute("rel", "noopener noreferrer");
-          } catch (err) {
-            // malformed URL, leave it
-          }
-        },
-        true
-      );
+      // Header gains a hairline once the page has moved off the top.
+      const header = document.querySelector("[data-header]");
+      if (header) {
+        const onScroll = () => {
+          header.classList.toggle("is-stuck", window.scrollY > 8);
+        };
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+      }
     </script>
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>

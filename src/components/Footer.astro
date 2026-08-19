@@ -1,45 +1,133 @@
 ---
-const links = [
-  { href: "#taste", label: "Philosophy" },
-  { href: "#services", label: "Services" },
-  { href: "#canvas", label: "Highlights" },
-  { href: "#case-studies", label: "Work" },
-  { href: "#cta", label: "Contact" },
-];
+import { Image } from "astro:assets";
+import { meta } from "../data/site";
+import mark from "../assets/media/syfer-mark.png";
 ---
 
-<footer class="border-t border-white/[0.06] py-10">
-  <div
-    class="container px-6 md:px-8 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-6"
-  >
-    <p class="text-sm text-zinc-500">
-      © {new Date().getFullYear()} Ethan Alfandary. All rights reserved.
-    </p>
-    <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-      {
-        links.map((l) => (
-          <li>
-            <a
-              class="text-sm text-zinc-400 hover:text-white transition-colors"
-              href={l.href}
-            >
-              {l.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-    <div class="flex items-center gap-5">
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div class="footer__brand">
+      <Image src={mark} alt="" width={64} height={64} class="footer__mark" />
+      <div>
+        <p class="footer__name">ETHAN ALFANDARY</p>
+        <p class="footer__desc">
+          {meta.role}<br />
+          Turning vision into scalable outcomes.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer__links">
+      <a class="footer__link" href={`mailto:${meta.email}`}>Email</a>
       <a
-        href="mailto:Ethan.alfandary@gmail.com"
-        class="text-sm text-zinc-400 hover:text-white transition-colors"
-        >Email</a
-      >
-      <a
-        href="https://linkedin.com/in/ethanialfandary"
-        class="text-sm text-zinc-400 hover:text-white transition-colors"
-        >LinkedIn</a
+        class="footer__link"
+        href={meta.linkedin}
+        target="_blank"
+        rel="noopener noreferrer">LinkedIn</a
       >
     </div>
   </div>
+
+  <div class="wrap footer__base">
+    <p class="footer__copy">
+      © {new Date().getFullYear()}
+      {meta.name}. All rights reserved.
+    </p>
+  </div>
 </footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-block: clamp(40px, 5vw, 64px) 28px;
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .footer__brand {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .footer__mark {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: invert(1);
+    flex: none;
+  }
+
+  .footer__name {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--fg-strong);
+  }
+
+  .footer__desc {
+    margin: 8px 0 0;
+    font-size: var(--t-small);
+    line-height: 1.6;
+    color: var(--fg-muted);
+  }
+
+  .footer__links {
+    display: flex;
+    gap: 8px;
+    margin-left: -12px; /* offset the tap padding so text stays aligned */
+  }
+
+  .footer__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px; /* comfortable touch target */
+    padding-inline: 12px;
+    font-size: var(--t-small);
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color 180ms var(--ease);
+  }
+
+  .footer__link::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 11px;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 260ms var(--ease);
+  }
+
+  .footer__link:hover {
+    color: var(--fg-strong);
+  }
+
+  .footer__link:hover::after {
+    transform: scaleX(1);
+  }
+
+  .footer__base {
+    margin-top: clamp(32px, 4vw, 52px);
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .footer__copy {
+    margin: 0;
+    font-size: var(--t-label);
+    letter-spacing: 0.04em;
+    color: var(--fg-faint);
+  }
+</style>

@@ -1,0 +1,127 @@
+---
+import { trackRecord } from "../data/site";
+---
+
+<section class="section section--tight" aria-labelledby="track-record-heading">
+  <div class="wrap">
+    <p class="label label--line js-observe" id="track-record-heading">
+      Track Record
+    </p>
+
+    <dl class="record">
+      {
+        trackRecord.map((item, i) => (
+          <div class="record__item reveal" data-delay={Math.min(i, 5)}>
+            <dt class="record__value">{item.value}</dt>
+            <dd class="record__label">
+              {item.label}
+              <span class="record__note">{item.note}</span>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .section--tight {
+    padding-block: clamp(40px, 5vw, 64px) clamp(56px, 7vw, 96px);
+  }
+
+  .record {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 28px 0 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .record__item {
+    padding: 22px 0 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Thin vertical separators instead of boxes */
+  .record__item:nth-child(odd) {
+    padding-right: 20px;
+    border-right: 1px solid var(--line);
+  }
+
+  .record__item:nth-child(even) {
+    padding-left: 20px;
+  }
+
+  .record__value {
+    font-size: var(--t-metric);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    color: var(--fg-strong);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .record__label {
+    margin: 8px 0 0;
+    font-size: var(--t-small);
+    line-height: 1.35;
+    color: var(--fg-muted);
+  }
+
+  .record__note {
+    display: block;
+    margin-top: 2px;
+    font-size: var(--t-label);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+  }
+
+  @media (min-width: 720px) {
+    .record {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .record__item,
+    .record__item:nth-child(odd),
+    .record__item:nth-child(even) {
+      padding: 24px 24px 22px 0;
+      border-right: 1px solid var(--line);
+      border-left: 0;
+    }
+
+    .record__item:nth-child(3n) {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .record__item:nth-child(n + 4) {
+      padding-top: 26px;
+    }
+  }
+
+  @media (min-width: 1060px) {
+    .record {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .record__item,
+    .record__item:nth-child(odd),
+    .record__item:nth-child(even),
+    .record__item:nth-child(n + 4) {
+      padding: 28px 20px 26px 0;
+      border-bottom: 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .record__item:nth-child(3n) {
+      border-right: 1px solid var(--line);
+      padding-right: 20px;
+    }
+
+    .record__item:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+  }
+</style>

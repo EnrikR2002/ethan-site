@@ -1,0 +1,279 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { caseStudies } from "../data/site";
+
+const files = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/media/*.{png,PNG,jpg,jpeg,JPG}",
+  { eager: true },
+);
+
+const items = caseStudies.map((cs) => {
+  const mod = files[`../assets/media/${cs.art}`];
+  if (!mod) throw new Error(`Missing case study asset: ${cs.art}`);
+  return { ...cs, image: mod.default };
+});
+---
+
+<section class="section work" id="work">
+  <div class="wrap">
+    <div class="work__head">
+      <p class="label label--line js-observe">Featured Work</p>
+      <h2 class="h2 work__title">Selected case studies</h2>
+    </div>
+
+    <ol class="work__list">
+      {
+        items.map((cs, i) => (
+          <li class="case reveal" data-delay={Math.min(i, 5)}>
+            <a
+              class="case__link"
+              href={cs.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div class="case__visual" style={`--tint:${cs.tint}`}>
+                <span class="case__index">{cs.index}</span>
+                <Image
+                  src={cs.image}
+                  alt={`${cs.client} brand mark`}
+                  widths={[320, 640]}
+                  sizes="(min-width: 900px) 30vw, 90vw"
+                  class={`case__art case__art--${cs.treatment}`}
+                  loading="lazy"
+                />
+                <span class="case__arrow" aria-hidden="true">
+                  <svg width="13" height="13" viewBox="0 0 12 12" fill="none">
+                    <path
+                      d="M2.5 9.5 9.5 2.5M4 2.5h5.5V8"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </div>
+
+              <div class="case__body">
+                <h3 class="h3 case__name">{cs.title}</h3>
+                <p class="case__client">{cs.client}</p>
+
+                <dl class="case__flow">
+                  <div class="case__step">
+                    <dt>Problem</dt>
+                    <dd>{cs.problem}</dd>
+                  </div>
+                  <div class="case__step">
+                    <dt>System</dt>
+                    <dd>{cs.system}</dd>
+                  </div>
+                </dl>
+
+                <ul class="case__results">
+                  {cs.results.map((r) => (
+                    <li class="case__result">
+                      <span class="case__result-value">{r.value}</span>
+                      <span class="case__result-label">{r.label}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .work__head {
+    margin-bottom: clamp(28px, 3.5vw, 44px);
+  }
+
+  .work__title {
+    margin-top: 18px;
+  }
+
+  .work__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(28px, 3vw, 36px);
+  }
+
+  .case__link {
+    display: block;
+    text-decoration: none;
+    height: 100%;
+  }
+
+  /* --- visual --------------------------------------------------------- */
+
+  .case__visual {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    padding: clamp(28px, 4vw, 44px);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 100% at 50% 0%, var(--tint), transparent 70%),
+      var(--bg-raised);
+    transition: border-color 240ms var(--ease);
+  }
+
+  .case__link:hover .case__visual {
+    border-color: var(--line-strong);
+  }
+
+  .case__art {
+    width: 100%;
+    height: 100%;
+    transition: transform 500ms var(--ease);
+  }
+
+  /* Line-art logo shipped as black on transparent — invert for dark UI */
+  .case__art--invert {
+    object-fit: contain;
+    filter: invert(1);
+    opacity: 0.92;
+  }
+
+  .case__art--contain {
+    object-fit: contain;
+  }
+
+  .case__art--cover {
+    object-fit: cover;
+    border-radius: 3px;
+  }
+
+  .case__link:hover .case__art {
+    transform: scale(1.02);
+  }
+
+  .case__index {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    z-index: 2;
+    font-size: var(--t-label);
+    letter-spacing: 0.16em;
+    color: var(--fg-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .case__arrow {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    color: var(--fg-strong);
+    opacity: 0;
+    transform: translateY(-3px);
+    transition:
+      opacity 240ms var(--ease),
+      transform 240ms var(--ease);
+  }
+
+  .case__link:hover .case__arrow,
+  .case__link:focus-visible .case__arrow {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* --- body ----------------------------------------------------------- */
+
+  .case__body {
+    padding-top: 18px;
+  }
+
+  .case__name {
+    transition: color 200ms var(--ease);
+  }
+
+  .case__link:hover .case__name {
+    color: var(--accent-text);
+  }
+
+  .case__client {
+    margin: 4px 0 0;
+    font-size: var(--t-small);
+    color: var(--fg-muted);
+  }
+
+  .case__flow {
+    margin: 16px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 10px;
+  }
+
+  .case__step {
+    display: grid;
+    grid-template-columns: 62px 1fr;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .case__step dt {
+    font-size: var(--t-label);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+  }
+
+  .case__step dd {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--fg-muted);
+    text-wrap: pretty;
+  }
+
+  .case__results {
+    list-style: none;
+    margin: 16px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    gap: 28px;
+  }
+
+  .case__result-value {
+    display: block;
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--fg-strong);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .case__result-label {
+    display: block;
+    margin-top: 2px;
+    font-size: var(--t-label);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+  }
+
+  @media (min-width: 900px) {
+    .work__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

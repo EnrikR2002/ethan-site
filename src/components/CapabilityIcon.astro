@@ -1,0 +1,51 @@
+---
+/**
+ * Geometric line glyphs — abstract marks rather than literal clipart, so they
+ * read as interface detail instead of stock iconography.
+ */
+interface Props {
+  name: string;
+}
+const { name } = Astro.props;
+
+const paths: Record<string, string> = {
+  // ascending nodes
+  growth: "M2 17.5 8 11l4 3.5L21.5 5M16.5 5h5v5",
+  // frame + play
+  edit: "M3 5.5h18v13H3zM3 9.5h18M9.5 12.5l4 2.5-4 2.5z",
+  // concentric target
+  strategy: "M12 3v3.5M12 17.5V21M3 12h3.5M17.5 12H21M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7",
+  // connected community
+  community: "M8 8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5M18 20.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5M5.5 20.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5M8 9v6.5M9.5 17.5h6",
+  // pulse readout
+  tracking: "M3 18.5h18M3 13l4.5-4 3.5 3.5L15 7l3 3.5",
+  // aperture / layers
+  direction: "M12 3.5 21 8.5l-9 5-9-5zM3 13.5l9 5 9-5",
+};
+
+const d = paths[name] ?? paths.strategy;
+---
+
+<svg
+  class="cap-icon"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  aria-hidden="true"
+>
+  <path
+    d={d}
+    stroke="currentColor"
+    stroke-width="1.25"
+    stroke-linecap="round"
+    stroke-linejoin="round"></path>
+</svg>
+
+<style>
+  .cap-icon {
+    display: block;
+    color: var(--accent-text);
+    opacity: 0.9;
+  }
+</style>

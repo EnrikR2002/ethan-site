@@ -1,0 +1,303 @@
+---
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { channels } from "../data/site";
+
+const files = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/media/*.{png,PNG,jpg,jpeg,JPG}",
+  { eager: true },
+);
+
+/**
+ * Each source is a full profile screenshot. Rather than show that chrome, we
+ * position the image inside a circular window so only the avatar is visible.
+ *
+ * For a square crop of size `c` at (x, y) within a `w × h` source:
+ *   background-size     = 100·w/c %  ,  100·h/c %
+ *   background-position = 100·x/(w−c) % , 100·y/(h−c) %
+ * which holds at any rendered avatar size.
+ */
+const items = await Promise.all(
+  channels.map(async (ch) => {
+    const mod = files[`../assets/media/${ch.source}`];
+    if (!mod) throw new Error(`Missing channel asset: ${ch.source}`);
+
+    const [w, h] = ch.img;
+    const [x, y, c] = ch.crop;
+
+    const optimized = await getImage({
+      src: mod.default,
+      width: Math.min(w, 700),
+      format: "webp",
+    });
+
+    return {
+      ...ch,
+      src: optimized.src,
+      sizeX: ((100 * w) / c).toFixed(2),
+      sizeY: ((100 * h) / c).toFixed(2),
+      posX: ((100 * x) / (w - c)).toFixed(2),
+      posY: ((100 * y) / (h - c)).toFixed(2),
+    };
+  }),
+);
+---
+
+<section class="section channels" id="channels">
+  <div class="wrap">
+    <div class="channels__head">
+      <div>
+        <p class="label label--line js-observe">Highlights</p>
+        <h2 class="h2 channels__title">
+          Channels I've <span class="serif accent">built & scaled.</span>
+        </h2>
+      </div>
+      <p class="channels__hint" aria-hidden="true">Drag to explore →</p>
+    </div>
+  </div>
+
+  <div class="channels__scroller" data-drag-scroll>
+    <ul class="channels__track">
+      {
+        items.map((ch, i) => (
+          <li class="channel reveal" data-delay={Math.min(i, 5)}>
+            <a
+              class="channel__link"
+              href={ch.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span
+                class="channel__avatar"
+                style={`background-image:url(${ch.src});background-size:${ch.sizeX}% ${ch.sizeY}%;background-position:${ch.posX}% ${ch.posY}%;`}
+                aria-hidden="true"
+              />
+              <span class="channel__meta">
+                <span class="channel__platform">{ch.platform}</span>
+                <span class="channel__name">{ch.name}</span>
+                <span class="channel__handle">{ch.handle}</span>
+              </span>
+              <span class="channel__stats">
+                <span class="channel__stat">{ch.stat}</span>
+                <span class="channel__detail">{ch.detail}</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .channels__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: clamp(28px, 3.5vw, 44px);
+  }
+
+  .channels__title {
+    margin-top: 18px;
+    max-width: 16ch;
+  }
+
+  .channels__hint {
+    display: none;
+    margin: 0;
+    font-size: var(--t-label);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    white-space: nowrap;
+  }
+
+  .channels__scroller {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    padding-inline: var(--gutter);
+    /* fade the strip out at both edges of the viewport */
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 4%,
+      #000 96%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 4%,
+      #000 96%,
+      transparent 100%
+    );
+  }
+
+  .channels__scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  .channels__scroller.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+  }
+
+  .channels__scroller.is-dragging .channel__link {
+    pointer-events: none;
+  }
+
+  .channels__track {
+    display: flex;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: max-content;
+    max-width: none;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .channel {
+    scroll-snap-align: start;
+    border-right: 1px solid var(--line);
+  }
+
+  .channel:first-child {
+    border-left: 1px solid var(--line);
+  }
+
+  .channel__link {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "avatar meta"
+      "stats  stats";
+    align-items: center;
+    gap: 14px;
+    width: 264px;
+    height: 100%;
+    padding: 22px 22px 20px;
+    text-decoration: none;
+    transition: background-color 200ms var(--ease);
+  }
+
+  .channel__link:hover {
+    background: rgba(255, 255, 255, 0.022);
+  }
+
+  .channel__avatar {
+    grid-area: avatar;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-color: var(--bg-raised);
+    border: 1px solid var(--line);
+    flex: none;
+  }
+
+  .channel__meta {
+    grid-area: meta;
+    display: grid;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .channel__platform {
+    font-size: var(--t-label);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+  }
+
+  .channel__name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--fg-strong);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .channel__handle {
+    font-size: var(--t-label);
+    color: var(--fg-muted);
+  }
+
+  .channel__stats {
+    grid-area: stats;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .channel__stat {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--fg-strong);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .channel__detail {
+    font-size: var(--t-label);
+    letter-spacing: 0.04em;
+    color: var(--accent-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 720px) {
+    .channels__hint {
+      display: block;
+    }
+
+    .channel__link {
+      width: 300px;
+      cursor: grab;
+    }
+  }
+</style>
+
+<script>
+  /* @ts-nocheck */
+  // Pointer-drag for mouse users; touch and trackpad already scroll natively.
+  document.querySelectorAll("[data-drag-scroll]").forEach((el) => {
+    let down = false;
+    let startX = 0;
+    let startLeft = 0;
+    let moved = 0;
+
+    el.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse") return;
+      down = true;
+      moved = 0;
+      startX = e.clientX;
+      startLeft = el.scrollLeft;
+    });
+
+    el.addEventListener("pointermove", (e) => {
+      if (!down) return;
+      const dx = e.clientX - startX;
+      moved = Math.abs(dx);
+      // only claim the gesture once it's clearly a drag, so clicks still work
+      if (moved > 4) el.classList.add("is-dragging");
+      el.scrollLeft = startLeft - dx;
+    });
+
+    const end = () => {
+      down = false;
+      el.classList.remove("is-dragging");
+    };
+
+    el.addEventListener("pointerup", end);
+    el.addEventListener("pointercancel", end);
+    el.addEventListener("pointerleave", end);
+  });
+</script>

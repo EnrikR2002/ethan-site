@@ -1,49 +1,135 @@
 ---
-const links = [
-  { href: "#taste", label: "Philosophy" },
-  { href: "#services", label: "Services" },
-  { href: "#canvas", label: "Highlights" },
-  { href: "#case-studies", label: "Work" },
-  { href: "#cta", label: "Contact" },
-];
+import { Image } from "astro:assets";
+import { nav, meta } from "../data/site";
+import mark from "../assets/media/syfer-mark.png";
 ---
 
-<header
-  class="sticky top-0 z-50 bg-[#0a0a0c]/80 backdrop-blur-md border-b border-white/[0.06]"
->
-  <nav
-    class="container flex items-center justify-between py-3.5 px-2 md:px-4 lg:px-6"
-    aria-label="Primary"
-  >
-    <a href="/" class="flex items-center gap-3 group">
-      <img
-        src="/media/syfer_logo.png"
-        alt="Syfer logo"
-        class="w-10 h-10 object-contain rounded-lg"
-      />
-      <span class="font-bold text-sm tracking-wide text-white">ETHAN ALFANDARY</span>
+<header class="header" data-header>
+  <div class="wrap header__inner">
+    <a href="#top" class="brand" aria-label={`${meta.name} — home`}>
+      <Image src={mark} alt="" width={64} height={64} class="brand__mark" />
+      <span class="brand__name">ETHAN ALFANDARY</span>
     </a>
-    <ul class="hidden md:flex items-center gap-8">
+
+    <nav class="header__nav" aria-label="Primary">
       {
-        links.map((l) => (
-          <li>
-            <a
-              class="text-sm text-zinc-400 hover:text-white transition-colors focus:outline-none focus-visible:text-white"
-              href={l.href}
-            >
-              {l.label}
-            </a>
-          </li>
+        nav.map((l) => (
+          <a class="header__link" href={l.href}>
+            {l.label}
+          </a>
         ))
       }
-    </ul>
+    </nav>
+
     <a
-      href="https://calendly.com/miningspartan2"
+      class="btn btn--primary header__cta"
+      href={meta.calendly}
       target="_blank"
-      rel="noopener noreferrer"
-      class="btn-nav hidden md:inline-flex"
+      rel="noopener noreferrer">Book a call</a
     >
-      Book a call
-    </a>
-  </nav>
+  </div>
 </header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border-bottom: 1px solid transparent;
+    transition: border-color 240ms var(--ease);
+  }
+
+  .header.is-stuck {
+    border-bottom-color: var(--line);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 68px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px; /* comfortable touch target */
+    text-decoration: none;
+    color: var(--fg-strong);
+    flex: none;
+  }
+
+  .brand__mark {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    /* mark ships as black art on transparent; invert to read on dark */
+    filter: invert(1);
+  }
+
+  .brand__name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+
+  .header__nav {
+    display: none;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .header__link {
+    position: relative;
+    font-size: 0.875rem;
+    color: var(--fg-muted);
+    text-decoration: none;
+    padding-block: 4px;
+    transition: color 180ms var(--ease);
+  }
+
+  .header__link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 260ms var(--ease);
+  }
+
+  .header__link:hover {
+    color: var(--fg-strong);
+  }
+
+  .header__link:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* Nav links collapse on small screens (single-page scroll), but the booking
+     CTA stays — it is the point of the site. */
+  .header__cta {
+    display: inline-flex;
+    padding: 9px 14px;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 900px) {
+    .header__nav {
+      display: flex;
+    }
+
+    .header__cta {
+      padding: 9px 16px;
+    }
+  }
+</style>
