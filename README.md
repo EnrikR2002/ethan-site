@@ -1,46 +1,199 @@
-# Astro Starter Kit: Basics
+# ethan-site
 
-```sh
-npm create astro@latest -- --template basics
+Portfolio for Ethan Alfandary — audience growth, media systems, and creative
+direction. Static site built with [Astro](https://astro.build) and Tailwind.
+
+Current version: **2.0** · see [CHANGELOG.md](CHANGELOG.md)
+
+---
+
+## Quick start
+
+```bash
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+```bash
+npm run dev
+```
 
-## 🚀 Project Structure
+Then open <http://localhost:4321>.
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command           | Does                                        |
+| ----------------- | ------------------------------------------- |
+| `npm run dev`     | Dev server with hot reload on port 4321     |
+| `npm run build`   | Production build into `dist/`               |
+| `npm run preview` | Serve the built site locally                |
+
+Requires Node 18+.
+
+---
+
+## Versions & rollback
+
+Every release is tagged, so any version can be restored at any time. Nothing is
+ever lost by moving forward.
+
+| Version | Tag    | What it is                                  |
+| ------- | ------ | ------------------------------------------- |
+| 2.0     | `v2.0` | Editorial redesign (current)                |
+| 1.0     | `v1.0` | Card-based dark theme — kept as a fallback  |
+
+Version 1.0 also lives on the branch `backup/v1.0`, so it stays visible in the
+GitHub branch list even if tags are ever pruned.
+
+### Look at an old version without changing anything
+
+```bash
+git checkout v1.0
+```
+
+Run `npm run dev` to view it. When you're done, return to current with:
+
+```bash
+git checkout main
+```
+
+### Roll the live site back to an earlier version
+
+This records the rollback as a new commit rather than erasing history, so you
+can always move forward again. Nothing is destroyed.
+
+```bash
+git revert --no-commit v1.0..HEAD
+```
+
+Then commit and push:
+
+```bash
+git commit -m "Roll back to v1.0"
+```
+
+To publish the rollback:
+
+```bash
+git push origin main
+```
+
+To undo the rollback afterwards and return to 2.0, revert the revert — the same
+command against the rollback commit. Because history is preserved, no version is
+ever a dead end.
+
+### Tag a new version
+
+After making changes worth marking as a release:
+
+```bash
+git tag -a v2.1 -m "v2.1 — short description"
+```
+
+```bash
+git push origin --tags
+```
+
+Add a matching entry at the top of [CHANGELOG.md](CHANGELOG.md).
+
+---
+
+## Editing content
+
+**All copy, metrics, links, and channel data live in
+[`src/data/site.ts`](src/data/site.ts).** Components read from it, so change a
+number once there and it updates everywhere it appears.
+
+That file holds:
+
+| Export         | Controls                                                   |
+| -------------- | ---------------------------------------------------------- |
+| `meta`         | Name, page title, description, email, LinkedIn, Calendly    |
+| `nav`          | Header navigation links                                     |
+| `trackRecord`  | The six headline metrics under the hero                     |
+| `philosophy`   | The "Taste is the Multiplier" thesis and body copy          |
+| `capabilities` | The six service areas and their bullets                     |
+| `channels`     | The highlights strip — names, handles, figures, avatar crop |
+| `caseStudies`  | The three case studies, their problem/system/result copy    |
+
+Every figure in that file is real and traceable to an asset in
+`src/assets/media/` or to the channel it links to. Keep it that way.
+
+### Adding a channel to the highlights strip
+
+Channel avatars are cropped out of full profile screenshots so the strip never
+shows YouTube's own interface. Add the screenshot to `src/assets/media/`, then
+add an entry to `channels` describing where the avatar sits inside it:
+
+```ts
+{
+  name: "Channel name",
+  handle: "@handle",
+  platform: "YouTube",
+  stat: "58.5K subscribers",
+  detail: "198 videos",
+  href: "https://www.youtube.com/@handle",
+  source: "screenshot.png",
+  img: [1280, 720],   // the screenshot's dimensions
+  crop: [47, 133, 430], // avatar square: x, y, size — in source pixels
+}
+```
+
+The component converts that box into background sizing that holds at any
+rendered avatar size, so you don't need to pre-crop the image.
+
+---
+
+## Project structure
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+src/
+├── data/site.ts        Single source of truth for all content
+├── layouts/
+│   └── Layout.astro    <head>, fonts, SEO, scroll-reveal script
+├── components/
+│   ├── Nav.astro
+│   ├── Hero.astro           Headline + play-button artifact
+│   ├── TrackRecord.astro    Horizontal metric strip
+│   ├── Philosophy.astro
+│   ├── Capabilities.astro   + CapabilityIcon.astro
+│   ├── Channels.astro       Draggable highlights strip
+│   ├── CaseStudies.astro
+│   ├── CTA.astro
+│   └── Footer.astro
+├── styles/global.css   Design tokens and shared primitives
+├── assets/
+│   ├── media/          Images the site renders  ← keep this folder tight
+│   └── source/         Originals, not shipped   ← see its README
+└── pages/index.astro
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+### A note on `assets/media` vs `assets/source`
 
-## 🧞 Commands
+`Channels.astro` and `CaseStudies.astro` use `import.meta.glob` to load images
+by filename. **Vite emits every file matching that glob into the build, whether
+or not a component renders it.** Two unused 3.8 MB photos sitting in
+`assets/media/` were being deployed for exactly this reason.
 
-All commands are run from the root of the project, from a terminal:
+So: only put files in `src/assets/media/` if the site actually renders them.
+Originals and pre-processing source material go in `src/assets/source/`, which
+is outside the glob. See [`src/assets/source/README.md`](src/assets/source/README.md)
+for how the transparent brand marks and the cropped hero photo were produced.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+---
 
-## 👀 Want to learn more?
+## Design system
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Tokens are defined at the top of [`src/styles/global.css`](src/styles/global.css).
+
+- **Palette** — `#06070A` base, `#0C0D11` raised, warm off-white text, and a
+  single accent blue `#5B61FF` used sparingly for markers, hover states, and
+  the CTA. The site is dark-only by design; there is no light mode.
+- **Type** — Inter for structure, Instrument Serif italic for a small number of
+  accent phrases. Don't extend the serif to whole blocks; the contrast is the
+  point.
+- **Layout** — 12-column grid, `1280px` max width, deliberate asymmetry.
+- **Cards** — used only where content behaves like a card. Prefer thin rules,
+  spacing, and alignment.
+- **Motion** — reveal on scroll, hover lifts, and one drawn line. Everything is
+  disabled under `prefers-reduced-motion`.
+
+Contrast was checked against the base background; the muted metadata tone sits
+at 4.87:1 to clear WCAG AA. If you darken any text token, re-check it.
