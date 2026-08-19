@@ -20,18 +20,10 @@ const {
 <style>
   .carousel {
     position: relative;
-    border: 1px solid #e5e7eb;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 1rem;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(4px);
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
     overflow: hidden;
-  }
-  @media (prefers-color-scheme: dark) {
-    .carousel {
-      border-color: #1e293b;
-      background: rgba(24, 24, 27, 0.7);
-    }
   }
   .viewport {
     position: relative;
@@ -55,7 +47,7 @@ const {
     border-radius: 12px;
     overflow: hidden;
     background: #0b0b0b;
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
   .item img {
     width: 100%;
@@ -76,33 +68,17 @@ const {
     left: 0;
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 1),
-      rgba(255, 255, 255, 0)
+      rgba(10, 10, 12, 1),
+      rgba(10, 10, 12, 0)
     );
   }
   .fade.right {
     right: 0;
     background: linear-gradient(
       270deg,
-      rgba(255, 255, 255, 1),
-      rgba(255, 255, 255, 0)
+      rgba(10, 10, 12, 1),
+      rgba(10, 10, 12, 0)
     );
-  }
-  @media (prefers-color-scheme: dark) {
-    .fade.left {
-      background: linear-gradient(
-        90deg,
-        rgba(24, 24, 27, 1),
-        rgba(24, 24, 27, 0)
-      );
-    }
-    .fade.right {
-      background: linear-gradient(
-        270deg,
-        rgba(24, 24, 27, 1),
-        rgba(24, 24, 27, 0)
-      );
-    }
   }
 
   /* nav buttons */
@@ -113,13 +89,17 @@ const {
     width: 36px;
     height: 36px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(24, 24, 27, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
     display: grid;
     place-items: center;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 150ms ease;
+    transition: opacity 150ms ease, background 150ms ease;
+  }
+  .nav-btn:hover {
+    background: rgba(40, 40, 46, 0.95);
   }
   .nav-btn:focus-visible {
     outline: 2px solid #6470f6;

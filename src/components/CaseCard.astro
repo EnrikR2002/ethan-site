@@ -7,16 +7,18 @@ const {
 } = Astro.props;
 ---
 
-<a href={href} class="block card overflow-hidden hover:shadow-md transition">
-  <img
-    src={thumb}
-    alt={title}
-    class="w-full h-48 object-cover"
-    loading="lazy"
-    decoding="async"
-  />
+<a href={href} class="group block card overflow-hidden">
+  <div class="overflow-hidden">
+    <img
+      src={thumb}
+      alt={title}
+      class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
   <div class="p-5">
-    <h3 class="font-semibold text-lg">{title}</h3>
-    {metric && <p class="text-sm text-zinc-500 mt-1">{metric}</p>}
+    <h3 class="font-semibold text-lg text-white">{title}</h3>
+    {metric && <p class="text-sm mt-1 text-brand-400">{metric}</p>}
   </div>
 </a>

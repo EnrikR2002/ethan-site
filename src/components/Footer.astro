@@ -1,10 +1,45 @@
-<footer class="section border-t border-zinc-200 dark:border-zinc-800">
+---
+const links = [
+  { href: "#taste", label: "Philosophy" },
+  { href: "#services", label: "Services" },
+  { href: "#canvas", label: "Highlights" },
+  { href: "#case-studies", label: "Work" },
+  { href: "#cta", label: "Contact" },
+];
+---
+
+<footer class="border-t border-white/[0.06] py-10">
   <div
-    class="container flex flex-col md:flex-row items-center justify-between gap-6"
+    class="container px-6 md:px-8 lg:px-10 flex flex-col md:flex-row items-center justify-between gap-6"
   >
     <p class="text-sm text-zinc-500">
       © {new Date().getFullYear()} Ethan Alfandary. All rights reserved.
     </p>
-    <div></div>
+    <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+      {
+        links.map((l) => (
+          <li>
+            <a
+              class="text-sm text-zinc-400 hover:text-white transition-colors"
+              href={l.href}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="flex items-center gap-5">
+      <a
+        href="mailto:Ethan.alfandary@gmail.com"
+        class="text-sm text-zinc-400 hover:text-white transition-colors"
+        >Email</a
+      >
+      <a
+        href="https://linkedin.com/in/ethanialfandary"
+        class="text-sm text-zinc-400 hover:text-white transition-colors"
+        >LinkedIn</a
+      >
+    </div>
   </div>
 </footer>
