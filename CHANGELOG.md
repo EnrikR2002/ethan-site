@@ -4,11 +4,56 @@ Every released version is tagged in git, so any of them can be restored at any
 time. See [Versions & rollback](README.md#versions--rollback) in the README for
 the commands.
 
-| Version           | Tag    | Summary                                              |
-| ----------------- | ------ | ---------------------------------------------------- |
-| [2.0](#20)        | `v2.0` | Editorial redesign built around real evidence        |
-| [1.0](#10)        | `v1.0` | Unified dark theme, card-based layout                |
-| [pre-1.0](#pre-10) | —     | Original build                                       |
+| Version            | Tag    | Summary                                          |
+| ------------------ | ------ | ------------------------------------------------ |
+| [2.1](#21)         | `v2.1` | Ember accent, serif dropped, alignment fixes      |
+| [2.0](#20)         | `v2.0` | Editorial redesign built around real evidence     |
+| [1.0](#10)         | `v1.0` | Unified dark theme, card-based layout             |
+| [pre-1.0](#pre-10) | —      | Original build                                    |
+
+---
+
+## 2.1
+
+**Tag:** `v2.1` · **Status:** current
+
+Design corrections on top of 2.0. No content or metrics changed.
+
+### Type
+
+- The serif italic used for accent phrases is gone. Emphasis is now carried by
+  colour alone, on the same Inter weight as the headline — it read as
+  calligraphic rather than editorial at display size.
+- Instrument Serif is no longer loaded, removing a webfont request.
+
+### Colour
+
+- Accent moved from indigo `#5B61FF` to ember `#FF5C39`. The indigo is the
+  default accent on a large share of comparable sites; the ember reads warmer
+  against the cool near-black and sits closer to the media work.
+- Filled accent surfaces (primary button, selection) now use dark ink rather
+  than white. White on ember only reaches 3.1:1, which fails WCAG AA; dark ink
+  reaches 6.4:1. Accent text is 6.6:1 on the base background.
+- The first case study's backdrop tint was indigo for no reason once the accent
+  changed; it is now neutral.
+
+### Fixed
+
+- **Track record columns were misaligned.** Every cell had `padding-left: 0`, so
+  metrics in columns 2–6 sat flush against the divider to their left while
+  column 1 sat at the page margin. Content is now inset equally from both
+  dividers, with the first cell in each row flush to the margin.
+- **The Yamikaze case-study art was too dark and too small.** The transparent
+  PNG avoided a white rectangle on the dark card, but left the character
+  low-contrast and surrounded by empty space. It is now cropped to
+  head-and-shoulders — dropping the "Yami" handwriting, drawn arrow, and plate
+  doodle — and allowed to fill the frame. A soft spotlight behind all three
+  case-study visuals lifts dark artwork off the card surface.
+- `yamikaze-talon.png` became an unused intermediate but stayed in the globbed
+  media folder, adding ~570 KB to the build. Moved to `src/assets/source/`.
+  Build output back to 652 KB.
+- Shortened the "Breakcore/music niche" caption, which wrapped to two lines
+  after the padding fix and broke the strip's baseline.
 
 ---
 

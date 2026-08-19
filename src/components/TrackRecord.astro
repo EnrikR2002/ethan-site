@@ -76,6 +76,9 @@ import { trackRecord } from "../data/site";
     color: var(--fg-faint);
   }
 
+  /* Content is inset equally from the divider on either side of a cell, so
+     every metric sits the same distance from its rules. The first cell in a
+     row stays flush left to line up with the section label and page margin. */
   @media (min-width: 720px) {
     .record {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -84,9 +87,13 @@ import { trackRecord } from "../data/site";
     .record__item,
     .record__item:nth-child(odd),
     .record__item:nth-child(even) {
-      padding: 24px 24px 22px 0;
+      padding: 24px 24px 22px 24px;
       border-right: 1px solid var(--line);
       border-left: 0;
+    }
+
+    .record__item:nth-child(3n + 1) {
+      padding-left: 0;
     }
 
     .record__item:nth-child(3n) {
@@ -108,15 +115,16 @@ import { trackRecord } from "../data/site";
     .record__item,
     .record__item:nth-child(odd),
     .record__item:nth-child(even),
+    .record__item:nth-child(3n),
+    .record__item:nth-child(3n + 1),
     .record__item:nth-child(n + 4) {
-      padding: 28px 20px 26px 0;
+      padding: 28px 20px 26px 20px;
       border-bottom: 0;
       border-right: 1px solid var(--line);
     }
 
-    .record__item:nth-child(3n) {
-      border-right: 1px solid var(--line);
-      padding-right: 20px;
+    .record__item:first-child {
+      padding-left: 0;
     }
 
     .record__item:last-child {

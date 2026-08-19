@@ -3,7 +3,7 @@
 Portfolio for Ethan Alfandary — audience growth, media systems, and creative
 direction. Static site built with [Astro](https://astro.build) and Tailwind.
 
-Current version: **2.0** · see [CHANGELOG.md](CHANGELOG.md)
+Current version: **2.1** · see [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -27,6 +27,23 @@ Then open <http://localhost:4321>.
 
 Requires Node 18+.
 
+### If the dev server renders the page unstyled
+
+Switching git branches while `npm run dev` is running can scramble Vite's
+module graph — it drops some component `<style>` blocks, so the page keeps its
+fonts and colours but loses every per-component rule (images render full-bleed,
+grids collapse). It looks catastrophic and affects only the dev server; the
+production build is unaffected.
+
+Stop the server, then:
+
+```bash
+rm -rf node_modules/.vite .astro
+```
+
+Restart with `npm run dev`. Stopping the dev server before switching branches
+avoids it entirely.
+
 ---
 
 ## Versions & rollback
@@ -36,7 +53,8 @@ ever lost by moving forward.
 
 | Version | Tag    | What it is                                  |
 | ------- | ------ | ------------------------------------------- |
-| 2.0     | `v2.0` | Editorial redesign (current)                |
+| 2.1     | `v2.1` | Ember accent, serif dropped (current)       |
+| 2.0     | `v2.0` | Editorial redesign, indigo accent + serif   |
 | 1.0     | `v1.0` | Card-based dark theme — kept as a fallback  |
 
 Version 1.0 also lives on the branch `backup/v1.0`, so it stays visible in the

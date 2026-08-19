@@ -29,7 +29,7 @@ export const trackRecord = [
   { value: "120M+", label: "short-form views", note: "UFC/MMA verticals" },
   { value: "425%", label: "YouTube growth", note: "Medical brand, <1 year" },
   { value: "45M+", label: "long-form views", note: "Gaming channels" },
-  { value: "330K+", label: "Twitter followers", note: "Breakcore/music niche" },
+  { value: "330K+", label: "Twitter followers", note: "Breakcore niche" },
   { value: "24M+", label: "medical vertical views", note: "Single vertical" },
   { value: "2×", label: "Silver Play Buttons", note: "Music & gaming" },
 ];
@@ -193,7 +193,7 @@ export const caseStudies = [
     art: "tansavatdi-mark.png",
     /** Line-art logo: knocked out and inverted to read on dark. */
     treatment: "invert",
-    tint: "rgba(139, 148, 255, 0.10)",
+    tint: "rgba(255, 255, 255, 0.05)",
     problem: "A surgical practice with expertise nobody could find.",
     system:
       "Vertical-first content engine with a repeatable hook library and booking-focused CTAs.",
@@ -223,9 +223,9 @@ export const caseStudies = [
     title: "Gaming Channel Long-Form",
     client: "Yamikaze",
     href: "https://www.youtube.com/@Yamikaze",
-    art: "yamikaze-talon.png",
-    treatment: "contain",
-    tint: "rgba(108, 92, 231, 0.16)",
+    art: "yamikaze-portrait.png",
+    treatment: "portrait",
+    tint: "rgba(124, 108, 245, 0.2)",
     problem: "Strong personality, inconsistent long-form retention.",
     system:
       "Narrative editing structure and thumbnail testing built to survive the algorithm.",

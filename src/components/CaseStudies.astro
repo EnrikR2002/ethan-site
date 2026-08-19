@@ -127,6 +127,19 @@ const items = caseStudies.map((cs) => {
     transition: border-color 240ms var(--ease);
   }
 
+  /* Soft spotlight so dark artwork separates from the card surface */
+  .case__visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      52% 56% at 50% 52%,
+      rgba(255, 255, 255, 0.07),
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
   .case__link:hover .case__visual {
     border-color: var(--line-strong);
   }
@@ -146,6 +159,14 @@ const items = caseStudies.map((cs) => {
 
   .case__art--contain {
     object-fit: contain;
+  }
+
+  /* Tall subject art: allowed to break the frame padding so it reads large */
+  .case__art--portrait {
+    object-fit: contain;
+    height: calc(100% + clamp(28px, 4vw, 44px));
+    margin-bottom: calc(-1 * clamp(28px, 4vw, 44px));
+    align-self: end;
   }
 
   .case__art--cover {
