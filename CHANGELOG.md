@@ -6,6 +6,7 @@ the commands.
 
 | Version            | Tag    | Summary                                          |
 | ------------------ | ------ | ------------------------------------------------ |
+| [2.2](#22)         | `v2.2` | Auto-scrolling highlights, original Yamikaze art  |
 | [2.1](#21)         | `v2.1` | Ember accent, serif dropped, alignment fixes      |
 | [2.0](#20)         | `v2.0` | Editorial redesign built around real evidence     |
 | [1.0](#10)         | `v1.0` | Unified dark theme, card-based layout             |
@@ -13,9 +14,45 @@ the commands.
 
 ---
 
+## 2.2
+
+**Tag:** `v2.2` · **Status:** current
+
+### Highlights strip now moves
+
+On a wide monitor all six channels fit on screen at once, so the strip sat
+still and "drag to explore" did nothing — it read flat.
+
+- The list renders twice and drifts continuously leftward at 34 px/s, wrapping
+  seamlessly at exactly one set's width. Cards enter from the right instead of
+  sitting in a static row.
+- Card width is `clamp(290px, 33vw, 400px)`, putting roughly three in view at
+  desktop widths and one plus a peek on mobile — so there is always more to
+  arrive.
+- Pauses on hover, on keyboard focus, and while scrolled off-screen. Draggable
+  to scrub; a movement under 4px doesn't latch drag mode, so links still click.
+- The duplicated set is `aria-hidden` and removed from the tab order, so the
+  channels are announced once.
+- Under `prefers-reduced-motion` there is no autoplay at all; the strip falls
+  back to a plain horizontal scroller.
+
+### Fixed
+
+- The strip was full-bleed while its heading sat inside the content grid, so
+  the first card never lined up with the title above it. It is now bounded by
+  the same grid, with the edge fades doing the work instead.
+
+### Changed
+
+- The Yamikaze case study uses the original `yamikaze_logo_talon.jpg` again,
+  on request. The transparent-background version is retired to
+  `src/assets/source/`.
+
+---
+
 ## 2.1
 
-**Tag:** `v2.1` · **Status:** current
+**Tag:** `v2.1`
 
 Design corrections on top of 2.0. No content or metrics changed.
 

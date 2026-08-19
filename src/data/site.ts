@@ -223,8 +223,8 @@ export const caseStudies = [
     title: "Gaming Channel Long-Form",
     client: "Yamikaze",
     href: "https://www.youtube.com/@Yamikaze",
-    art: "yamikaze-portrait.png",
-    treatment: "portrait",
+    art: "yamikaze_logo_talon.jpg",
+    treatment: "cover",
     tint: "rgba(124, 108, 245, 0.2)",
     problem: "Strong personality, inconsistent long-form retention.",
     system:

@@ -3,7 +3,7 @@
 Portfolio for Ethan Alfandary — audience growth, media systems, and creative
 direction. Static site built with [Astro](https://astro.build) and Tailwind.
 
-Current version: **2.1** · see [CHANGELOG.md](CHANGELOG.md)
+Current version: **2.2** · see [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -53,7 +53,8 @@ ever lost by moving forward.
 
 | Version | Tag    | What it is                                  |
 | ------- | ------ | ------------------------------------------- |
-| 2.1     | `v2.1` | Ember accent, serif dropped (current)       |
+| 2.2     | `v2.2` | Auto-scrolling highlights (current)         |
+| 2.1     | `v2.1` | Ember accent, serif dropped                 |
 | 2.0     | `v2.0` | Editorial redesign, indigo accent + serif   |
 | 1.0     | `v1.0` | Card-based dark theme — kept as a fallback  |
 
@@ -172,7 +173,7 @@ src/
 │   ├── TrackRecord.astro    Horizontal metric strip
 │   ├── Philosophy.astro
 │   ├── Capabilities.astro   + CapabilityIcon.astro
-│   ├── Channels.astro       Draggable highlights strip
+│   ├── Channels.astro       Auto-scrolling highlights marquee
 │   ├── CaseStudies.astro
 │   ├── CTA.astro
 │   └── Footer.astro
@@ -202,16 +203,22 @@ for how the transparent brand marks and the cropped hero photo were produced.
 Tokens are defined at the top of [`src/styles/global.css`](src/styles/global.css).
 
 - **Palette** — `#06070A` base, `#0C0D11` raised, warm off-white text, and a
-  single accent blue `#5B61FF` used sparingly for markers, hover states, and
+  single ember accent `#FF5C39` used sparingly for markers, hover states, and
   the CTA. The site is dark-only by design; there is no light mode.
-- **Type** — Inter for structure, Instrument Serif italic for a small number of
-  accent phrases. Don't extend the serif to whole blocks; the contrast is the
-  point.
+- **Type** — Inter throughout. Accent phrases are the same face and weight as
+  the headline, distinguished by colour alone. Keep it that way; an italic
+  serif was tried here and read as decorative at display size.
 - **Layout** — 12-column grid, `1280px` max width, deliberate asymmetry.
 - **Cards** — used only where content behaves like a card. Prefer thin rules,
   spacing, and alignment.
-- **Motion** — reveal on scroll, hover lifts, and one drawn line. Everything is
-  disabled under `prefers-reduced-motion`.
+- **Motion** — reveal on scroll, hover lifts, one drawn line, and the
+  highlights marquee. All of it is disabled under `prefers-reduced-motion`.
 
-Contrast was checked against the base background; the muted metadata tone sits
-at 4.87:1 to clear WCAG AA. If you darken any text token, re-check it.
+### Contrast
+
+Checked against the base background. Muted metadata sits at 4.87:1 and accent
+text at 6.6:1, both clearing WCAG AA.
+
+**Filled accent surfaces take dark ink (`--on-accent`), not white.** White on
+ember is only 3.1:1 and fails AA; the dark ink reaches 6.4:1. If you change
+`--accent`, re-check both the text-on-background and ink-on-accent pairings.
