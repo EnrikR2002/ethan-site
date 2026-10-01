@@ -6,7 +6,7 @@ import mark from "../assets/media/syfer-mark.png";
 
 <header class="header" data-header>
   <div class="wrap header__inner">
-    <a href="#top" class="brand" aria-label={`${meta.name} — home`}>
+    <a href="/" class="brand" aria-label={`${meta.name} — home`}>
       <Image src={mark} alt="" width={64} height={64} class="brand__mark" />
       <span class="brand__name">ETHAN ALFANDARY</span>
     </a>
@@ -81,7 +81,7 @@ import mark from "../assets/media/syfer-mark.png";
   .header__nav {
     display: none;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
   }
 
   .header__link {
@@ -131,5 +131,11 @@ import mark from "../assets/media/syfer-mark.png";
     .header__cta {
       padding: 9px 16px;
     }
+  }
+  @media (max-width: 450px) {
+    .header__inner { gap: 12px; }
+    .brand { gap: 6px; }
+    .brand__name { font-size: 10px; }
+    .header__cta { padding-inline: 11px; font-size: 12px; }
   }
 </style>

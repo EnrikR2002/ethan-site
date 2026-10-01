@@ -1,22 +1,20 @@
-/**
- * Single source of truth for site content.
- *
- * Every number here is real and traceable to an asset in src/assets/media or to
- * the live channel it links to. Nothing in this file is illustrative.
- */
+import { proof } from "./results";
+export { caseStudies } from "./results";
 
+// Shared content. Historical metrics use the August 2026 resume.
 export const meta = {
   name: "Ethan Alfandary",
   role: "Creative operator. Builder. Systems thinker.",
   title: "Ethan Alfandary — Audience Growth & Media Systems",
   description:
-    "I build audiences that move. Short-form engines, long-form trust, and the systems behind 120M+ views, two YouTube Silver Play Buttons, and 425% channel growth.",
+    `Content, audience growth and practical AI workflows. The work behind ${proof.overallViews} views, two YouTube Silver Play Buttons and ${proof.medical.growth} medical YouTube growth.`,
   email: "Ethan.alfandary@gmail.com",
   linkedin: "https://linkedin.com/in/ethanialfandary",
   calendly: "https://calendly.com/miningspartan2",
 };
 
 export const nav = [
+  { href: "/", label: "Meet Ethan" },
   { href: "#philosophy", label: "Philosophy" },
   { href: "#capabilities", label: "Services" },
   { href: "#channels", label: "Highlights" },
@@ -26,11 +24,11 @@ export const nav = [
 
 /** Headline proof. Rendered as a typographic strip, not as cards. */
 export const trackRecord = [
-  { value: "120M+", label: "short-form views", note: "UFC/MMA verticals" },
-  { value: "425%", label: "YouTube growth", note: "Medical brand, <1 year" },
-  { value: "45M+", label: "long-form views", note: "Gaming channels" },
-  { value: "330K+", label: "Twitter followers", note: "Breakcore niche" },
-  { value: "24M+", label: "medical vertical views", note: "Single vertical" },
+  { value: proof.mma.views, label: "short-form views", note: "UFC/MMA projects" },
+  { value: proof.medical.growth, label: "YouTube growth", note: "Tansavatdi · 8K → 62K" },
+  { value: proof.yamikaze.views, label: "views", note: "Yamikaze" },
+  { value: proof.breakcore.to, label: "X / Twitter followers", note: "Breakcore · +120%" },
+  { value: proof.medical.views, label: "medical content views", note: "Tansavatdi" },
   { value: "2×", label: "Silver Play Buttons", note: "Music & gaming" },
 ];
 
@@ -38,7 +36,7 @@ export const philosophy = {
   thesis: "In every industry, taste separates the forgettable from the iconic.",
   body: [
     "Over the last decade, I've built and scaled audiences in music, gaming, and digital media — earning two YouTube Silver Play Buttons (100K+) for work in both music promotion and gaming video editing. I've also been an early adopter of AI in my workflows, using it to streamline production and spot opportunities faster — without ever losing the human taste that makes content resonate.",
-    "But taste alone isn't enough — scaling requires systems. I design repeatable frameworks, train editors, and lead teams so projects don't just grow once, they grow consistently. From medical brands that turned my videos into booked clients, to UFC/MMA verticals hitting 120M+ views, to gaming channels pulling 45M+ long-form views, I've proven that the right structure accelerates results.",
+    "But taste alone isn't enough — scaling requires systems. I design repeatable frameworks, train editors, and lead teams so projects don't just grow once, they grow consistently. My work spans medical content strategy and AI training, UFC/MMA projects with 120M+ views, and gaming channels with 45M+ views.",
     "Whatever the field, I bring a curator's eye, the instincts of a builder, and the ability to turn vision into systems that scale.",
   ],
 };
@@ -53,7 +51,7 @@ export const capabilities = [
     title: "Audience Growth & Channel Scaling",
     points: [
       "Multi-platform growth strategy (YouTube, Instagram, TikTok, Twitter, Reddit, Discord)",
-      "Proven track record: 425%+ subscriber growth, 330K+ followers built, 120M+ vertical views",
+      `Selected results: ${proof.medical.growth} medical YouTube growth, ${proof.breakcore.to} Breakcore followers, ${proof.mma.views} MMA views`,
       "Platform-specific optimization for retention, engagement, and monetization",
     ],
   },
@@ -116,8 +114,8 @@ export const channels = [
     name: "Yamikaze",
     handle: "@Yamikaze",
     platform: "YouTube",
-    stat: "360K subscribers",
-    detail: "63K → 360K",
+    stat: `${proof.yamikaze.to} subscribers`,
+    detail: `${proof.yamikaze.from} → ${proof.yamikaze.to} · ${proof.yamikaze.growth}`,
     href: "https://www.youtube.com/@Yamikaze",
     source: "yamikaze_subs.png",
     img: [1280, 720],
@@ -127,8 +125,8 @@ export const channels = [
     name: "random videos with breakcore",
     handle: "@memesbreakcore",
     platform: "X / Twitter",
-    stat: "333K followers",
-    detail: "2,915 posts",
+    stat: `${proof.breakcore.to} followers`,
+    detail: `${proof.breakcore.from} → ${proof.breakcore.to} · +${proof.breakcore.growth}`,
     href: "https://twitter.com/memesbreakcore",
     source: "breakcore-333.png",
     img: [601, 551],
@@ -138,8 +136,8 @@ export const channels = [
     name: "Syfer Music",
     handle: "@SyferMusic",
     platform: "YouTube",
-    stat: "104K subscribers",
-    detail: "1.4K videos",
+    stat: `${proof.music.subscribers} subscribers`,
+    detail: `${proof.music.views} views`,
     href: "https://www.youtube.com/@SyferMusic",
     source: "syfer-music.PNG",
     img: [1280, 720],
@@ -149,8 +147,8 @@ export const channels = [
     name: "Yozu Lux",
     handle: "@YozuLux",
     platform: "YouTube",
-    stat: "78K subscribers",
-    detail: "17K → 78K",
+    stat: `${proof.yozu.to} subscribers`,
+    detail: `${proof.yozu.from} → ${proof.yozu.to}`,
     href: "https://www.youtube.com/@YozuLux",
     source: "yozu_lux.png",
     img: [1280, 720],
@@ -160,8 +158,8 @@ export const channels = [
     name: "MMA",
     handle: "@MMA",
     platform: "YouTube",
-    stat: "58.5K subscribers",
-    detail: "198 videos",
+    stat: `${proof.mma.to} subscribers`,
+    detail: `${proof.mma.from} → ${proof.mma.to} · +${proof.mma.growth}`,
     href: "https://www.youtube.com/@MMA",
     source: "mma_subs.png",
     img: [1280, 720],
@@ -171,67 +169,11 @@ export const channels = [
     name: "Tansavatdi Facial Plastic Surgery",
     handle: "@FaceliftExpert",
     platform: "YouTube",
-    stat: "58.3K subscribers",
-    detail: "7K → 58K",
+    stat: `${proof.medical.to} subscribers`,
+    detail: `${proof.medical.from} → ${proof.medical.to} · +${proof.medical.growth}`,
     href: "https://www.youtube.com/@FaceliftExpert",
     source: "plastic_surgery_subs.png",
     img: [1280, 720],
     crop: [51, 218, 254],
-  },
-];
-
-/**
- * Case studies framed as problem → system → result so the work reads as
- * repeatable operating leverage rather than one-off editing gigs.
- */
-export const caseStudies = [
-  {
-    index: "01",
-    title: "Medical Brand Growth",
-    client: "Tansavatdi Facial Plastic Surgery",
-    href: "https://www.youtube.com/@FaceliftExpert",
-    art: "tansavatdi-mark.png",
-    /** Line-art logo: knocked out and inverted to read on dark. */
-    treatment: "invert",
-    tint: "rgba(255, 255, 255, 0.05)",
-    problem: "A surgical practice with expertise nobody could find.",
-    system:
-      "Vertical-first content engine with a repeatable hook library and booking-focused CTAs.",
-    results: [
-      { value: "425%", label: "subscriber growth" },
-      { value: "24M+", label: "views in vertical" },
-    ],
-  },
-  {
-    index: "02",
-    title: "UFC/MMA Shorts Engine",
-    client: "MMA",
-    href: "https://www.youtube.com/@MMA",
-    art: "UFC_MMA_banner.png",
-    treatment: "cover",
-    tint: "rgba(214, 26, 26, 0.16)",
-    problem: "A saturated fight-content niche with no durable output cadence.",
-    system:
-      "High-volume shorts pipeline with templated editing and trained editors.",
-    results: [
-      { value: "120M+", label: "views in vertical" },
-      { value: "58.5K", label: "subscribers" },
-    ],
-  },
-  {
-    index: "03",
-    title: "Gaming Channel Long-Form",
-    client: "Yamikaze",
-    href: "https://www.youtube.com/@Yamikaze",
-    art: "yamikaze_logo_talon.jpg",
-    treatment: "cover",
-    tint: "rgba(124, 108, 245, 0.2)",
-    problem: "Strong personality, inconsistent long-form retention.",
-    system:
-      "Narrative editing structure and thumbnail testing built to survive the algorithm.",
-    results: [
-      { value: "45M+", label: "long-form views" },
-      { value: "360K", label: "subscribers" },
-    ],
   },
 ];
