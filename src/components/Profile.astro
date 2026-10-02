@@ -30,6 +30,7 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
           <p>I build audiences. <br />And the systems <br />that help them grow.</p>
           <a class="text-link" href="#case-studies">A few examples below <span aria-hidden="true">↓</span></a>
         </div>
+        <p class="profile-objective"><strong>Objective:</strong> Seeking to help ambitious brands grow through AI-assisted content strategy, audience intelligence, and performance marketing—turning creative work into measurable audience and business growth.</p>
       </div>
 
       <div class="profile-body">
@@ -141,7 +142,7 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
   .event-banner { background:#e5e8da; border-bottom:1px solid var(--rule); padding:14px 48px; display:flex; align-items:center; gap:10px; font-size:11px; letter-spacing:.06em; flex-wrap:wrap; }
   .event-dot { width:7px; height:7px; border-radius:50%; background:var(--orange); }
   .event-divider { opacity:.4; margin:0 6px; }
-  .profile-intro { display:grid; grid-template-columns:1.3fr 1fr; gap:40px; padding:48px 48px 40px; border-bottom:1px solid var(--rule); }
+  .profile-intro { display:grid; grid-template-columns:1.3fr 1fr; column-gap:40px; row-gap:24px; padding:48px 48px 40px; border-bottom:1px solid var(--rule); }
   .eyebrow { font-size:10px; font-weight:600; letter-spacing:.13em; line-height:1.5; color:var(--orange); margin:0 0 18px; }
   .intro-heading .eyebrow { display:flex; gap:28px; }
   .eyebrow span { color:var(--subtle); }
@@ -149,6 +150,8 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
   .name-period { color:var(--orange); }
   .position { font-size:15px; line-height:1.7; margin:22px 0 0; font-weight:600; }
   .position span { color:var(--subtle); font-weight:400; }
+  .profile-objective { grid-column:1 / -1; max-width:860px; margin:0; font-size:13px; line-height:1.8; color:var(--subtle); }
+  .profile-objective strong { color:var(--ink); font-weight:600; }
   .intro-note { border-left:1px solid var(--rule); padding-left:40px; align-self:stretch; display:flex; flex-direction:column; justify-content:center; }
   .note-symbol { color:var(--orange); font-size:32px; line-height:1; }
   .intro-note > p { font-size:clamp(22px,2.4vw,30px); letter-spacing:-.04em; line-height:1.3; margin:18px 0 22px; }
@@ -222,6 +225,7 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
   @media(max-width:700px) {
     .profile-shell { padding:0 16px; } .profile-nav { min-height:72px; } .wordmark span { display:none; }
     .profile-intro { grid-template-columns:1fr; gap:24px; padding:28px 24px; } h1 { font-size:60px; }
+    .profile-objective { font-size:14px; line-height:1.7; }
     .intro-note { border-left:0; border-top:1px solid var(--rule); padding:20px 0 0; } .note-symbol { display:none; }
     .intro-note > p { font-size:23px; margin:0 0 16px; } .intro-note > p br { display:none; } .intro-note > p br::after { content:' '; }
     .profile-body { display:flex; flex-direction:column; padding:28px 24px; gap:32px; }
