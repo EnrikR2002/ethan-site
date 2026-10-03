@@ -1,7 +1,7 @@
 import { proof } from "./results";
 export { caseStudies } from "./results";
 
-// Shared content. Historical metrics use the August 2026 resume.
+// Shared content. Historical metrics include the corrected October 2026 Instagram figure.
 export const meta = {
   name: "Ethan Alfandary",
   role: "Creative operator. Builder. Systems thinker.",

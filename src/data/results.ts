@@ -1,15 +1,16 @@
 /**
  * Historical results from Ethan's August 2026 resume, plus owner-supplied
- * September 2026 MemesBreakcore figures. These are not live analytics.
+ * September 2026 MemesBreakcore figures and the October 2026 Instagram correction.
+ * These are not live analytics.
  * Project figures can overlap: never sum them into a portfolio total.
- * Instagram growth corrects the resume's arithmetic: (46 - 13) / 13 = 253.85%.
+ * Instagram growth uses the corrected October resume: (41 - 13) / 13 = 215.38%.
  * Yozu's 195% views / 73% revenue increases are separately reported measures;
  * the source does not specify their comparison periods.
  */
 export const resultsAsOf = "Selected results through August 2026";
 export const proof = {
   overallViews: "200M+",
-  medical: { from: "8K", to: "62K", growth: "675%", views: "32M+", instagram: "13K → 46K", instagramGrowth: "≈254%" },
+  medical: { from: "8K", to: "62K", growth: "675%", views: "32M+", instagram: "13K → 41K", instagramGrowth: "≈215%" },
   yozu: { from: "17K", to: "82K+", views: "40M+", revenue: "$45K+", viewsGrowth: "195%", revenueGrowth: "73%" },
   mma: { from: "10K", to: "67K", growth: "570%", views: "120M+" },
   yamikaze: { from: "63K", to: "360K", growth: "≈471%", views: "45M+" },
