@@ -37,7 +37,7 @@ The header and final action lead into `/consulting/`. Résumé, profile and dire
 
 ## Preview
 
-From the repository, run `npm run dev -- --host 127.0.0.1 --port 4321` and open `http://127.0.0.1:4321/case-studies/`. This is a local revision; it has not been pushed or deployed.
+From the repository, run `npm run dev -- --host 127.0.0.1 --port 4321` and open `http://127.0.0.1:4321/case-studies/`. Published October 3, 2026 at `https://syfer-media.pages.dev/case-studies/` through feature release `5774359`; the live route returns the expected seven-project library.
 
 Production validation: `npm run build`, `git diff --check`, internal route/hash checks, legacy-record comparison, and desktop/tablet/phone browser checks. Phase 3 supplied the approved offer PDF and verified the owner's updated 20-minute Calendly event; see `docs/consulting-offer.md`.
 

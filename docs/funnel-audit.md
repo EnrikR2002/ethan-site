@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented and verified locally. Not committed, pushed or deployed. Preview origin: `http://127.0.0.1:4321`.
+Published October 3, 2026 through GitHub main to `https://syfer-media.pages.dev`. Feature release: `5774359`. Local preview origin: `http://127.0.0.1:4321`.
 
 ## Page roles and visitor paths
 
@@ -66,6 +66,6 @@ The website routes visitors to booking. Sprint purchase, test execution and next
 
 ## Practical limits
 
-- Not published yet; live-site checks remain for deployment.
+- Live checks pass: all seven routes return HTTP 200 with the expected new content; both PDFs return HTTP 200 as `application/pdf` and match the repository files exactly. The live consulting page uses the direct booking event and `/offer/` destinations.
 - The approved original PDF has no embedded hyperlinks, including its printed booking button. Site booking buttons are linked; the PDF itself is preserved unchanged.
 - Existing `data-funnel-action` attributes identify key actions, but no new analytics provider or conversion dashboard has been added. This audit verifies navigation and layout, not conversion lift.

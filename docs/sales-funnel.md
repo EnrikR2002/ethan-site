@@ -24,7 +24,7 @@ Consulting and Case Studies share footer navigation to profile, proof, consultin
 
 The exact v6 source was copied without editing. Its original PDF contains no clickable link annotations; the site's secondary actions open the actual PDF, while website booking remains the primary route.
 
-This work is local and has not been pushed or published.
+Published October 3, 2026 through GitHub main to `https://syfer-media.pages.dev` (feature release `5774359`). All seven live routes and both exact PDF assets are verified.
 
 ## Verified checks
 
