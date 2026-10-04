@@ -23,6 +23,8 @@ The approved v6 document is the source for the product, price, two-week timeline
 
 ## Preview and validation
 
+The consulting page also welcomes launch and early audience/community work, scoped on the Fit Call. Its fit section explicitly describes the Growth Bottleneck Sprint rather than Ethan's overall consulting capabilities. The starting-from-zero FAQ cites the existing Yamikaze second-channel result (0 to 50K subscribers) and explains that the Sprint needs real audience/customer signal, while launch work is scoped around the client's stage. The approved Sprint PDF and its product scope are unchanged.
+
 From this repository, run `npm run dev -- --host 127.0.0.1 --port 4321`. Open `http://127.0.0.1:4321/consulting/`; the preserved page is at `/consulting-archive/`.
 
 Run `npm run build` and `git diff --check`. Verify desktop/mobile layouts, booking destinations, FAQ keyboard interaction, case-study landing targets and legacy bookmarks. Publishing requires the normal GitHub main push and Cloudflare Pages route checks.
