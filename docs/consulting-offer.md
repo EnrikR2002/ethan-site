@@ -21,6 +21,8 @@ The approved `growth_bottleneck_sprint_offer_v6_final.pdf` supplies the text and
 
 The approved v6 document is the source for the product, price, two-week timeline, four deliverables and separately scoped implementation. Existing web detail is retained where it preserves that meaning. The process wording and scope line match v6. Shared `sprintOffer` data supplies the name, CTA wording and `$2,500 · 2 weeks` line used in the profile and consulting hero.
 
+On October 4, `/offer/` gained a mobile reading layout (700px and below): real text for the full approved offer, vertically stacked deliverables and pricing, and direct Fit Call buttons near the beginning and end. Mobile visitors do not need to open or zoom a PDF to read or book. The desktop preview remains the exact PDF image, with a separate accessible booking link positioned over the pictured bottom CTA; the rest of the preview opens the PDF. Open PDF and Download remain available at every width. The downloadable offer PDF and résumé are unchanged by this mobile revision.
+
 ## Preview and validation
 
 The consulting page also welcomes launch and early audience/community work, scoped on the Fit Call. Its fit section explicitly describes the Growth Bottleneck Sprint rather than Ethan's overall consulting capabilities. The starting-from-zero FAQ cites the existing Yamikaze second-channel result (0 to 50K subscribers) and explains that the Sprint needs real audience/customer signal, while launch work is scoped around the client's stage. The approved Sprint PDF and its product scope are unchanged.
