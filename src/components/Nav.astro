@@ -2,6 +2,13 @@
 import { Image } from "astro:assets";
 import { nav, meta } from "../data/site";
 import mark from "../assets/media/syfer-mark.png";
+interface Props {
+  links?: { href: string; label: string }[];
+  ctaLabel?: string;
+  ctaHref?: string;
+  mobileLinks?: { href: string; label: string }[];
+}
+const { links = nav, ctaLabel = "Book a call", ctaHref = meta.calendly, mobileLinks = [] } = Astro.props;
 ---
 
 <header class="header" data-header>
@@ -13,7 +20,7 @@ import mark from "../assets/media/syfer-mark.png";
 
     <nav class="header__nav" aria-label="Primary">
       {
-        nav.map((l) => (
+        links.map((l) => (
           <a class="header__link" href={l.href}>
             {l.label}
           </a>
@@ -22,12 +29,13 @@ import mark from "../assets/media/syfer-mark.png";
     </nav>
 
     <a
-      class="btn btn--primary header__cta"
-      href={meta.calendly}
-      target="_blank"
-      rel="noopener noreferrer">Book a call</a
+      class:list={["btn btn--primary header__cta", { "header__cta--internal": ctaHref.startsWith("/") }]}
+      href={ctaHref}
+      target={ctaHref.startsWith("http") ? "_blank" : undefined}
+      rel="noopener noreferrer">{ctaLabel}</a
     >
   </div>
+  {mobileLinks.length > 0 && <nav class="wrap header__mobile" aria-label="Page navigation">{mobileLinks.map(link => <a class="header__link" href={link.href}>{link.label}</a>)}</nav>}
 </header>
 
 <style>
@@ -89,6 +97,9 @@ import mark from "../assets/media/syfer-mark.png";
     font-size: 0.875rem;
     color: var(--fg-muted);
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     padding-block: 4px;
     transition: color 180ms var(--ease);
   }
@@ -118,12 +129,16 @@ import mark from "../assets/media/syfer-mark.png";
      CTA stays — it is the point of the site. */
   .header__cta {
     display: inline-flex;
+    min-height: 44px;
     padding: 9px 14px;
     font-size: 0.8125rem;
     white-space: nowrap;
   }
+  .header__mobile { display:flex; flex-wrap:wrap; gap:4px 24px; border-top:1px solid var(--line); padding-bottom:4px; }
+  .header__cta--internal { min-height:44px; }
 
   @media (min-width: 900px) {
+    .header__mobile { display:none; }
     .header__nav {
       display: flex;
     }
@@ -131,6 +146,9 @@ import mark from "../assets/media/syfer-mark.png";
     .header__cta {
       padding: 9px 16px;
     }
+  }
+  @media (max-width: 899px) {
+    :global(html:has(.header__mobile)) { scroll-padding-top:132px; }
   }
   @media (max-width: 450px) {
     .header__inner { gap: 12px; }

@@ -1,0 +1,69 @@
+---
+import type { Study } from "../data/case-studies";
+import StudyArtwork from "./StudyArtwork.astro";
+interface Props { study: Study; featured?: boolean }
+const { study, featured = false } = Astro.props;
+---
+
+<article class:list={["study-card", { "study-card--featured": featured }]} id={study.slug} aria-labelledby={`${study.slug}-heading`}>
+  <StudyArtwork kind={study.visual} index={study.index} featured={featured} />
+  <div class="study-body">
+    <p class="study-category">{study.category}</p>
+    <h2 id={`${study.slug}-heading`}>{study.title}</h2>
+    <p class="study-client">{study.client}</p>
+    <p class="study-role">{study.role}</p>
+    <dl class="study-metrics">{study.metrics.map(metric => <div><dt>{metric.label}</dt><dd class:list={{ "metric-long": metric.value.length > 7 }}>{metric.value}</dd></div>)}</dl>
+    {study.change && <div class="study-change"><p aria-label={`${study.change.from} to ${study.change.to} ${study.change.label}`}><span>{study.change.from}</span><span class="change-arrow" aria-hidden="true">→</span><strong>{study.change.to}</strong></p><span>{study.change.label}{study.change.note && <> · {study.change.note}</>}</span></div>}
+    {study.supportingMetrics && <dl class="supporting-metrics">{study.supportingMetrics.map(metric => <div><dt>{metric.label}</dt><dd>{metric.value}</dd></div>)}</dl>}
+    <p class="study-overview">{study.overview}</p>
+    <details class="study-details">
+      <summary><span>Inside the work<span class="sr-only">: {study.client}</span></span><span class="detail-plus" aria-hidden="true">+</span></summary>
+      <div class="study-detail-body"><h3>My contribution</h3><ul>{study.work.map(item => <li>{item}</li>)}</ul><p class="study-note">{study.detail}</p></div>
+    </details>
+    {study.link && <a class="study-external" href={study.link.href} target="_blank" rel="noopener noreferrer">{study.link.label}<span class="sr-only">: {study.client}</span><span aria-hidden="true">↗</span></a>}
+  </div>
+</article>
+
+<style>
+  .study-card { min-width:0; border:1px solid var(--line-strong); background:var(--bg-raised); scroll-margin-top:12px; }
+  .study-body { padding:32px; }
+  .study-category { color:var(--accent-text); margin:0 0 14px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; line-height:1.6; }
+  h2 { font-size:clamp(26px,2.7vw,34px); font-weight:500; letter-spacing:-.045em; line-height:1.1; margin:0; color:var(--fg-strong); max-width:23ch; text-wrap:balance; }
+  .study-client { font-size:13px; color:var(--fg); margin:14px 0 4px; }
+  .study-role { font-size:11px; color:var(--fg-muted); margin:0; }
+  .study-metrics { display:flex; gap:32px; flex-wrap:wrap; padding-top:24px; margin:24px 0 0; border-top:1px solid var(--line-strong); }
+  .study-metrics > div,.supporting-metrics > div { display:flex; flex-direction:column-reverse; }
+  .study-metrics dd { margin:0; font-size:clamp(36px,3.8vw,48px); font-weight:500; letter-spacing:-.06em; line-height:1; color:var(--fg-strong); font-variant-numeric:tabular-nums; }
+  .study-metrics dt { color:var(--fg-muted); font-size:11px; margin-top:7px; }
+  .study-metrics dd.metric-long { font-size:clamp(24px,3vw,28px); line-height:1.4; }
+  .study-change { margin-top:22px; }
+  .study-change p { display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin:0; font-size:22px; line-height:1.3; letter-spacing:-.035em; }
+  .study-change p > span:first-child { color:var(--fg-muted); }
+  .change-arrow { color:var(--accent-text); font-size:20px; }
+  .study-change strong { font-weight:500; color:var(--fg-strong); }
+  .study-change > span { display:block; font-size:11px; color:var(--fg-muted); margin-top:5px; }
+  .supporting-metrics { display:flex; flex-wrap:wrap; gap:16px 28px; margin:22px 0 0; padding-top:18px; border-top:1px solid var(--line); }
+  .supporting-metrics dd { font-size:20px; font-weight:500; letter-spacing:-.03em; margin:0; color:var(--fg); }
+  .supporting-metrics dt { font-size:10px; color:var(--fg-muted); margin-top:3px; }
+  .study-overview { font-size:14px; line-height:1.75; color:#acb0b9; margin:24px 0; max-width:62ch; }
+  .study-details { border-top:1px solid var(--line-strong); }
+  summary { display:flex; justify-content:space-between; align-items:center; gap:20px; min-height:48px; padding-block:10px; cursor:pointer; list-style:none; font-size:12px; color:var(--fg); }
+  summary::-webkit-details-marker { display:none; }
+  summary:hover { color:var(--accent-text); }
+  .detail-plus { font-size:20px; line-height:1; color:var(--accent-text); transition:transform 180ms var(--ease); }
+  details[open] .detail-plus { transform:rotate(45deg); }
+  .study-detail-body { padding:10px 0 20px; }
+  h3 { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--fg-muted); margin:0 0 14px; }
+  .study-detail-body ul { padding-left:17px; margin:0; display:grid; gap:12px; color:#acb0b9; font-size:13px; line-height:1.75; }
+  li::marker { color:var(--accent-text); }
+  .study-note { font-size:11px; line-height:1.7; color:var(--fg-muted); margin:18px 0 0; }
+  .study-external { display:inline-flex; align-items:center; gap:14px; min-height:44px; color:var(--fg-muted); text-decoration:none; font-size:11px; }
+  .study-external:hover { color:var(--accent-text); }
+  .study-external span:last-child { color:var(--accent-text); }
+  .study-card--featured { display:grid; grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr); background:#f3f1e9; border-color:#d4d7ca; --fg:#22251f; --fg-strong:#22251f; --fg-muted:#5d6159; --accent-text:#b83920; --line-strong:#d4d7ca; --line:#d4d7ca; }
+  .study-card--featured h2 { font-size:clamp(32px,3.7vw,46px); }
+  .study-card--featured .study-overview,.study-card--featured .study-detail-body ul { color:#5d6159; }
+  .study-card--featured .study-body { padding:clamp(28px,4vw,48px); }
+  @media(max-width:760px) { .study-card--featured { grid-template-columns:1fr; } .study-body,.study-card--featured .study-body { padding:24px; } h2 { font-size:28px; } .study-card--featured h2 { font-size:34px; } .study-metrics { gap:24px; padding-top:20px; margin-top:20px; } .study-metrics dd { font-size:38px; } .study-overview { font-size:14px; } }
+  @media(max-width:370px) { .study-body,.study-card--featured .study-body { padding:20px; } .study-card--featured h2 { font-size:31px; } .study-metrics { gap:20px; } .study-metrics dd { font-size:34px; } .study-metrics dt { font-size:10px; } }
+</style>

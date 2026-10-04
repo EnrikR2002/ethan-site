@@ -1,0 +1,80 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import StudyCard from "../components/StudyCard.astro";
+import { caseStudyLibrary } from "../data/case-studies";
+import { meta } from "../data/site";
+import { sprintOffer } from "../data/consulting";
+const pageNav = [{ href: "/", label: "Back to profile" }, { href: "#case-index", label: "The work" }, { href: "/resume", label: "Résumé" }];
+---
+
+<Layout title="Case Studies — Ethan Alfandary" description="Audience growth, creative leadership and content intelligence across healthcare, gaming, music and online communities. Explore seven projects and the work behind their results.">
+  <Nav links={pageNav} mobileLinks={[{href:"/",label:"← Back to profile"},{href:"/resume",label:"Résumé"}]} ctaLabel="Consulting" ctaHref="/consulting/" />
+  <main id="main" class="library wrap">
+    <header class="library-header">
+      <div><p class="label">Ethan Alfandary · The work</p><h1>Case studies<span>.</span></h1></div>
+      <div class="library-intro"><p>Audience growth. <br />Creative teams. <br />Systems that support both.</p><span>Healthcare, gaming, music & online communities.</span></div>
+    </header>
+    <nav class="project-index" id="case-index" aria-label="Case study projects">
+      {caseStudyLibrary.map(study => <a href={`#${study.slug}`}><span>{study.index}</span>{study.shortName}<span aria-hidden="true">↓</span></a>)}
+    </nav>
+    <div class="library-studies">
+      {caseStudyLibrary.map((study, index) => <div class="library-study"><StudyCard study={study} featured={index === 0} /></div>)}
+    </div>
+    <p class="library-note">Historical project results. Figures reflect each project's reporting period and may overlap. Growth percentages use the stated starting and ending counts where available.</p>
+    <section class="library-next" aria-labelledby="library-next-heading">
+      <div><p class="label">Put this to work</p><h2 id="library-next-heading">Have a growth problem <br />you want to investigate?</h2><p>Start with one journey, a focused diagnosis and a clear first test.</p></div>
+      <div class="library-actions"><a class="btn btn--primary" href="/consulting/" data-funnel-action="consulting" data-placement="case-studies">Explore the {sprintOffer.name} <span aria-hidden="true">↗</span></a><div><a href="/">Back to profile</a><a href="/resume">View résumé</a><a href={`mailto:${meta.email}`}>Start a conversation <span aria-hidden="true">↗</span></a></div></div>
+    </section>
+  </main>
+  <Footer siteLinks />
+</Layout>
+
+<script>
+  // A direct study link opens its contribution section. Native summaries remain
+  // usable without JavaScript and can still be closed independently.
+  const openLinkedStudy = () => {
+    const id = window.location.hash.slice(1);
+    document.querySelectorAll<HTMLAnchorElement>(".project-index a").forEach(link => {
+      if (link.hash === window.location.hash) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+    const study = document.getElementById(id);
+    if (!study?.classList.contains("study-card")) return;
+    const details = study.querySelector("details");
+    if (details) details.open = true;
+    study.scrollIntoView({ block: "start" });
+  };
+  openLinkedStudy();
+  window.addEventListener("hashchange", openLinkedStudy);
+</script>
+
+<style>
+  .library { padding-top:clamp(44px,6vw,84px); }
+  .library-header { display:grid; grid-template-columns:1.35fr 1fr; align-items:end; gap:48px; padding-bottom:44px; }
+  .library-header .label { margin-bottom:26px; }
+  h1 { font-size:clamp(52px,7.6vw,102px); letter-spacing:-.06em; line-height:.95; font-weight:500; color:var(--fg-strong); margin:0; }
+  h1 span { color:var(--accent-text); }
+  .library-intro { padding-left:32px; border-left:1px solid var(--line-strong); }
+  .library-intro p { font-size:clamp(19px,2.1vw,27px); line-height:1.3; letter-spacing:-.03em; margin:0 0 16px; }
+  .library-intro > span { font-size:12px; color:var(--fg-muted); line-height:1.6; }
+  .project-index { display:flex; flex-wrap:wrap; gap:0 24px; padding-block:12px; border-top:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong); margin-bottom:40px; }
+  .project-index a { display:inline-flex; align-items:center; gap:9px; min-height:44px; color:#b1b5bc; text-decoration:none; font-size:12px; }
+  .project-index a span:first-child { font-family:var(--mono); font-size:10px; color:var(--accent-text); }
+  .project-index a span:last-child { color:var(--fg-muted); }
+  .project-index a:hover { color:var(--fg-strong); }
+  .library-studies { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px; align-items:start; }
+  .library-studies > :first-child { grid-column:1 / -1; }
+  .library-note { margin:28px 0 0; max-width:76ch; font-size:11px; line-height:1.8; color:var(--fg-muted); }
+  .library-next { border-top:1px solid var(--line-strong); margin-top:72px; padding-block:56px 72px; display:flex; align-items:center; justify-content:space-between; gap:40px; }
+  .library-next h2 { font-size:clamp(28px,3vw,40px); line-height:1.1; font-weight:500; letter-spacing:-.04em; margin:20px 0 16px; }
+  .library-next > div > p:last-child { max-width:42ch; font-size:13px; color:var(--fg-muted); margin:0; line-height:1.7; }
+  .library-actions { flex:none; }
+  .library-actions .btn { font-size:13px; }
+  .library-actions > div { display:flex; justify-content:center; flex-wrap:wrap; gap:20px; margin-top:12px; }
+  .library-actions > div a { display:inline-flex; align-items:center; gap:8px; min-height:44px; color:var(--fg-muted); font-size:11px; text-underline-offset:5px; }
+  .library-actions > div a:hover { color:var(--accent-text); }
+  @media(max-width:980px) { .library-header { grid-template-columns:1.2fr 1fr; gap:32px; } .library-intro { padding-left:24px; } .library-next { display:block; } .library-actions { margin-top:28px; display:inline-block; } }
+  @media(max-width:760px) { .library { padding-top:40px; } .library-header { grid-template-columns:1fr; gap:26px; padding-bottom:28px; } h1 { font-size:clamp(52px,10vw,72px); } .library-header .label { font-size:10px; margin-bottom:22px; } .library-intro { border-left:0; padding-left:0; } .library-intro p { font-size:21px; line-height:1.4; margin-bottom:10px; } .library-intro p br { display:none; } .library-intro p br::after { content:" "; } .project-index { margin-bottom:28px; gap:0 18px; padding-block:8px; } .project-index a { font-size:11px; } .library-studies { grid-template-columns:1fr; gap:24px; } .library-note { margin-top:24px; } .library-next { margin-top:48px; padding-block:40px 52px; } .library-actions { display:block; } .library-actions .btn { display:flex; justify-content:center; text-align:center; padding-inline:16px; font-size:12px; } .library-actions .btn > span { flex:none; } .library-next h2 br { display:none; } }
+</style>

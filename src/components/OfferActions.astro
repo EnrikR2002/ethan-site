@@ -1,0 +1,17 @@
+---
+import { offerPageUrl, fitCallUrl, sprintOffer } from "../data/consulting";
+interface Props { placement: string }
+const { placement } = Astro.props;
+---
+<div class="offer-actions">
+  <a class="btn btn--primary" href={fitCallUrl} target="_blank" rel="noopener noreferrer" data-funnel-action="fit-call" data-placement={placement}>
+    {sprintOffer.fitCallLabel} <span class="btn__arrow" aria-hidden="true">↗</span>
+  </a>
+  <a class="offer-secondary" href={offerPageUrl} data-funnel-action="offer-page" data-placement={placement}>View the One-Page Offer <span aria-hidden="true">↗</span></a>
+</div>
+<style>
+  .offer-actions { display:flex; align-items:center; flex-wrap:wrap; gap:18px 24px; }
+  .offer-secondary { display:inline-flex; align-items:center; gap:12px; min-height:44px; color:var(--fg-muted); font-size:14px; text-decoration:none; border-bottom:1px solid var(--line-strong); }
+  .offer-secondary:hover { color:var(--fg-strong); border-color:var(--accent); }
+  @media(max-width:540px) { .offer-actions { align-items:stretch; flex-direction:column; } .offer-actions .btn { justify-content:center; padding-inline:14px; font-size:14px; } .offer-secondary { align-self:center; } }
+</style>

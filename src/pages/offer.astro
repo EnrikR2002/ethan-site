@@ -1,0 +1,48 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import offerPreview from "../assets/media/growth-bottleneck-sprint-v6.png";
+import { offerPdfUrl, fitCallUrl, sprintOffer } from "../data/consulting";
+---
+
+<Layout title="Growth Bottleneck Sprint — One-Page Offer" description="The approved one-page Growth Bottleneck Sprint offer: $2,500, two weeks. View the offer, download the PDF or book a free 20-minute Fit Call.">
+  <div class="offer-shell">
+    <header class="offer-nav"><a href="/consulting/">← Back to consulting</a><nav aria-label="Offer navigation"><a href="/">Profile</a><a href="/case-studies/">Case studies</a></nav></header>
+    <main id="main">
+      <div class="offer-heading">
+        <div><p class="eyebrow">GROWTH BOTTLENECK SPRINT</p><h1>One-page offer<span>.</span></h1><p>{sprintOffer.priceAndTimeline}</p></div>
+        <a class="pdf-link" href={offerPdfUrl} target="_blank" rel="noopener noreferrer">Open PDF <span aria-hidden="true">↗</span></a>
+      </div>
+      <a class="offer-preview" href={offerPdfUrl} target="_blank" rel="noopener noreferrer" aria-label="Open the Growth Bottleneck Sprint offer PDF">
+        <Image src={offerPreview} alt="Approved one-page Growth Bottleneck Sprint offer: one business goal, one customer journey and relevant data; bottleneck diagnosis, prioritized action plan, first test brief and final walkthrough; $2,500 over two weeks; implementation scoped separately." widths={[700, 1100, 1600]} sizes="(min-width: 1184px) 1024px, 100vw" loading="eager" />
+      </a>
+      <p class="offer-fallback">Tap the page or <a href={offerPdfUrl} target="_blank" rel="noopener noreferrer">open the original PDF</a> to zoom in. <a href={offerPdfUrl} download="growth-bottleneck-sprint.pdf">Download PDF</a>.</p>
+      <div class="offer-next"><a class="fit-link" href={fitCallUrl} target="_blank" rel="noopener noreferrer" data-funnel-action="fit-call" data-placement="offer">{sprintOffer.fitCallLabel} <span aria-hidden="true">↗</span></a><a class="back-link" href="/consulting/">Back to the Sprint details</a></div>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .offer-shell { --paper:#f3f1e9; --ink:#22251f; --subtle:#5d6159; max-width:1184px; margin:auto; padding:0 32px; }
+  .offer-nav { min-height:92px; display:flex; align-items:center; justify-content:space-between; gap:24px; font-size:12px; }
+  .offer-nav a { display:inline-flex; align-items:center; min-height:44px; text-decoration:none; border-bottom:1px solid #62645d; padding:8px 0; }
+  .offer-nav nav { display:flex; gap:24px; }
+  main { background:var(--paper); color:var(--ink); border-top:4px solid #ef6543; padding:48px; }
+  .offer-heading { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:28px; }
+  .eyebrow { color:#c74325; font-size:10px; font-weight:600; letter-spacing:.13em; margin:0 0 12px; }
+  h1 { font-size:clamp(48px,6.5vw,82px); line-height:.96; letter-spacing:-.065em; font-weight:600; margin:0; max-width:12ch; }
+  h1 span { color:#c74325; }
+  .offer-heading p:last-child { color:var(--subtle); font-size:14px; margin:16px 0 0; }
+  .pdf-link,.fit-link { display:inline-flex; align-items:center; justify-content:center; gap:22px; background:#ff7956; color:#201a15; min-height:48px; padding:14px 20px; border-radius:3px; text-decoration:none; font-size:12px; font-weight:600; }
+  .pdf-link { white-space:nowrap; }
+  .pdf-link:hover,.fit-link:hover { background:#ff9378; }
+  .offer-preview { display:block; border:1px solid #ced3c2; background:#0c0c0f; }
+  .offer-preview img { display:block; width:100%; height:auto; }
+  .offer-fallback { color:var(--subtle); font-size:12px; line-height:1.6; margin:14px 0 0; }
+  .offer-fallback a,.back-link { color:var(--ink); text-underline-offset:3px; }
+  .offer-next { margin-top:28px; padding-top:24px; border-top:1px solid #d4d7ca; display:flex; align-items:center; flex-wrap:wrap; gap:12px 24px; }
+  .back-link { display:inline-flex; align-items:center; min-height:44px; font-size:12px; }
+  main a:focus-visible { outline:3px solid #c74325; outline-offset:4px; }
+  @media(max-width:700px) { .offer-shell { padding:0 16px; } .offer-nav { min-height:72px; gap:12px; } .offer-nav nav { gap:16px; } main { padding:28px 24px; } .offer-heading { display:block; } .pdf-link { margin-top:22px; } .offer-next { display:block; } .fit-link { display:flex; padding-inline:12px; gap:12px; text-align:center; } .back-link { margin-top:10px; } }
+  @media(max-width:370px) { main { padding:24px 18px; } .offer-nav { font-size:11px; } .offer-nav nav { gap:12px; } }
+</style>

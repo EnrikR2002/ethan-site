@@ -3,6 +3,8 @@ import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import { meta } from "../data/site";
 import { proof, caseStudies, resultsAsOf } from "../data/results";
+import { caseStudyLinks, caseStudyPreviews } from "../data/case-studies";
+import { sprintOffer } from "../data/consulting";
 import awards from "../assets/media/playbuttons.jpg";
 import mark from "../assets/media/syfer-mark.png";
 interface Props { event?: boolean }
@@ -14,7 +16,7 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
   <div class="profile-shell">
     <header class="profile-nav">
       <a class="wordmark" href="/" aria-label="Ethan Alfandary home"><Image src={mark} alt="" width={28} height={28} />SYFER<span> / ETHAN ALFANDARY</span></a>
-      <a href="/consulting">Consulting <span aria-hidden="true">↗</span></a>
+      <nav aria-label="Profile navigation"><a href="/case-studies/">Case studies</a><a href="/consulting/">Consulting <span aria-hidden="true">↗</span></a></nav>
     </header>
 
     <main id="main" class="profile-sheet">
@@ -72,24 +74,37 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
       </div>
 
       <section class="profile-cases" id="case-studies" aria-labelledby="cases-heading">
-        <div class="cases-heading"><div><p class="eyebrow">THE WORK, IN BRIEF</p><h2 id="cases-heading">Case studies</h2></div><p>{resultsAsOf}</p></div>
+        <div class="cases-heading"><div><p class="eyebrow">THE WORK, IN BRIEF</p><h2 id="cases-heading">Case studies</h2></div><div class="cases-context"><a href="/case-studies/" class="text-link">View all case studies <span aria-hidden="true">↗</span></a><p>{resultsAsOf}</p></div></div>
         <div class="case-grid">
-          {caseStudies.map((item) => <article class="mini-case">
+          {caseStudies.map((item) => <article class="mini-case" id={`case-study-${item.index}`}>
             <p class="case-kicker"><span>{item.index}</span>{item.client}</p>
             <h3>{item.title}</h3>
             <p class="case-role">{item.role}</p>
-            <p class="case-summary">{item.system}</p>
+            <p class="case-summary">{caseStudyPreviews[item.index]}</p>
             <p class="case-change">{item.change}</p>
             <dl class="mini-metrics">{item.results.map((result) => <div><dt>{result.label}</dt><dd>{result.value}</dd></div>)}</dl>
-            <p class="case-detail">{item.detail}</p>
+            <a class="case-study-link" href={caseStudyLinks[item.index]} aria-label={`Read ${item.client} case study`}>Read case study <span aria-hidden="true">↗</span></a>
           </article>)}
         </div>
         <p class="results-note">Figures reflect work on each project; project totals may overlap. Growth percentages use the stated starting and ending counts where available.</p>
       </section>
 
       <section class="profile-next" aria-labelledby="next-heading">
-        <div><p class="eyebrow">LET’S PUT THIS TO WORK</p><h2 id="next-heading">Have something<br />you want to grow?</h2><p>Explore how I work with creators, brands and teams.</p></div>
-        <div class="next-actions"><a class="profile-button" href="/consulting" data-funnel-action="consulting">See my work & consulting <span aria-hidden="true">↗</span></a><a class="resume-link" href="/resume">View my résumé <span aria-hidden="true">↗</span></a><a href={`mailto:${meta.email}`} class="text-link">Or start a conversation <span aria-hidden="true">↗</span></a></div>
+        <div class="next-copy">
+          <p class="eyebrow">LET’S PUT THIS TO WORK</p>
+          <h2 id="next-heading">Have something<br />that should be growing faster?</h2>
+          <p>If you're already getting attention, users, leads or customers but something isn't moving the way it should, I have a focused consulting offer for finding the bottleneck.</p>
+        </div>
+        <div class="next-actions">
+          <div class="next-offer">
+            <a class="profile-button" href="/consulting/" data-funnel-action="consulting">Explore the {sprintOffer.name} <span aria-hidden="true">↗</span></a>
+            <p class="next-price">{sprintOffer.priceAndTimeline}</p>
+          </div>
+          <div class="next-secondary">
+            <a class="resume-link" href="/resume">View my résumé <span aria-hidden="true">↗</span></a>
+            <a href={`mailto:${meta.email}`} class="text-link">Start a conversation <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
       </section>
     </main>
     <footer class="profile-footer"><span>© {new Date().getFullYear()} Ethan Alfandary · Syfer Media</span><a href="#main">Back to top ↑</a></footer>
@@ -98,7 +113,7 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
   <dialog class="resume-dialog" aria-labelledby="resume-dialog-title" data-resume-dialog>
     <form method="dialog"><button class="dialog-close" aria-label="Close résumé prompt">×</button></form>
     <p class="eyebrow">FULL RÉSUMÉ</p>
-    <h2 id="resume-dialog-title">Want the full résumé?</h2>
+    <h2 id="resume-dialog-title">Want the full picture?</h2>
     <p>See the one-page overview of my roles, projects and results.</p>
     <div class="dialog-actions">
       <a class="profile-button" href="/resume">View résumé <span aria-hidden="true">↗</span></a>
@@ -135,8 +150,10 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
   .wordmark { display:flex; align-items:center; gap:10px; font-weight:600; letter-spacing:.1em; }
   .wordmark img { filter:invert(1); }
   .wordmark span { color:#a7aaa4; font-size:10px; font-weight:400; }
-  .profile-nav > a:last-child { color:#e5e5da; border-bottom:1px solid #62645d; padding:8px 0; }
-  .profile-nav > a:last-child span { margin-left:14px; color:#ff7959; }
+  .profile-nav nav { display:flex; align-items:center; gap:24px; }
+  .profile-nav nav a { display:inline-flex; align-items:center; min-height:44px; color:#e5e5da; border-bottom:1px solid #62645d; padding:8px 0; }
+  .profile-nav nav a:hover { color:#ff967c; }
+  .profile-nav nav a span { margin-left:8px; color:#ff7959; }
   .profile-sheet { background:var(--paper); color:var(--ink); border-top:4px solid #ef6543; }
   .profile-sheet a:focus-visible { outline:3px solid var(--orange); outline-offset:5px; }
   .event-banner { background:#e5e8da; border-bottom:1px solid var(--rule); padding:14px 48px; display:flex; align-items:center; gap:10px; font-size:11px; letter-spacing:.06em; flex-wrap:wrap; }
@@ -187,7 +204,9 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
   .cases-heading { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:28px; }
   .cases-heading .eyebrow { margin-bottom:12px; }
   .cases-heading h2,.profile-next h2 { font-size:32px; line-height:1.1; letter-spacing:-.045em; font-weight:500; margin:0; }
-  .cases-heading > p { font-size:10px; max-width:150px; color:var(--subtle); margin:0; }
+  .cases-context { text-align:right; }
+  .cases-context > p { font-size:10px; color:var(--subtle); margin:10px 0 0; }
+  .cases-context > a { display:inline-flex; align-items:center; min-height:44px; }
   .case-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
   .mini-case { background:var(--paper); border:1px solid #ced3c2; padding:24px; }
   .case-kicker { font-size:10px; color:var(--subtle); display:flex; align-items:baseline; gap:12px; line-height:1.5; margin:0 0 18px; }
@@ -200,12 +219,21 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
   .mini-metrics > div { display:flex; flex-direction:column-reverse; }
   .mini-metrics dt { font-size:10px; color:var(--subtle); margin-top:5px; }
   .mini-metrics dd { font-size:34px; line-height:1; font-weight:500; letter-spacing:-.05em; margin:0; }
-  .case-detail { font-size:10px; line-height:1.7; color:var(--subtle); margin:14px 0 0; }
+  .case-study-link { display:inline-flex; align-items:center; gap:12px; min-height:44px; font-size:11px; color:var(--ink); text-decoration:underline; text-underline-offset:4px; margin-top:8px; }
+  .case-study-link:hover { color:var(--orange); }
   .results-note { font-size:10px; line-height:1.7; color:var(--subtle); max-width:700px; margin:18px 0 0; }
   .profile-next { padding:40px 48px; background:#252a22; color:#f3f1e9; display:flex; align-items:center; justify-content:space-between; gap:32px; }
   .profile-next .eyebrow { color:#ff967c; margin-bottom:12px; }
-  .profile-next p:last-child { color:#c1c6b9; font-size:12px; margin:14px 0 0; }
-  .next-actions { display:flex; flex-direction:column; align-items:center; gap:20px; }
+  .next-copy { flex:1; min-width:0; }
+  .next-copy > p:last-child { color:#c1c6b9; font-size:12px; line-height:1.8; margin:14px 0 0; max-width:52ch; }
+  .next-actions { display:flex; flex:0 0 340px; flex-direction:column; align-items:stretch; gap:12px; }
+  .next-offer .next-price { color:#ff967c; font-size:11px; line-height:1.5; text-align:center; margin:10px 0 0; }
+  .next-secondary { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:4px 20px; }
+  .next-secondary a { display:inline-flex; align-items:center; gap:8px; min-height:44px; }
+  .next-secondary .resume-link { padding:0; }
+  .next-secondary .text-link span { margin:0; }
+  .next-offer .profile-button { gap:12px; text-align:center; }
+  .next-offer .profile-button span { flex:none; }
   .profile-button { display:flex; align-items:center; justify-content:center; gap:24px; background:#ff7956; color:#201a15; padding:17px 21px; border-radius:3px; text-decoration:none; font-size:12px; font-weight:600; min-height:48px; }
   .profile-button:hover { background:#ff9378; }
   .resume-link { border-bottom:1px solid #c1c6b9; padding:0 0 5px; color:#f3f1e9; font-size:12px; text-decoration:none; }
@@ -221,9 +249,9 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
   .resume-dialog button:focus-visible,.resume-dialog a:focus-visible,.resume-link:focus-visible { outline:3px solid #c74325; outline-offset:4px; }
   .profile-footer { display:flex; justify-content:space-between; gap:20px; padding:24px 0 32px; font-size:10px; color:#a8ada3; }
   .profile-footer a { text-decoration:none; }
-  @media(max-width:900px) { .profile-body { grid-template-columns:220px minmax(0,1fr); gap:32px; } .profile-intro,.profile-body,.profile-cases,.profile-next { padding-left:32px; padding-right:32px; } .intro-note { padding-left:28px; } }
+  @media(max-width:900px) { .profile-body { grid-template-columns:220px minmax(0,1fr); gap:32px; } .profile-intro,.profile-body,.profile-cases,.profile-next { padding-left:32px; padding-right:32px; } .intro-note { padding-left:28px; } .profile-next { display:block; } .next-actions { max-width:340px; margin-top:24px; } }
   @media(max-width:700px) {
-    .profile-shell { padding:0 16px; } .profile-nav { min-height:72px; } .wordmark span { display:none; }
+    .profile-shell { padding:0 16px; } .profile-nav { min-height:72px; gap:12px; } .profile-nav nav { gap:16px; } .wordmark span { display:none; }
     .profile-intro { grid-template-columns:1fr; gap:24px; padding:28px 24px; } h1 { font-size:60px; }
     .profile-objective { font-size:14px; line-height:1.7; }
     .intro-note { border-left:0; border-top:1px solid var(--rule); padding:20px 0 0; } .note-symbol { display:none; }
@@ -233,9 +261,9 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
     .identity-proof { border:0; padding:0; margin:0; } .identity-proof strong { font-size:38px; } .identity-proof > span { font-size:10px; }
     .identity-caption { margin:0; font-size:11px; } .contact-block { grid-column:1 / -1; margin-top:6px; padding-top:16px; }
     .email-address { display:none; } .profile-story p { font-size:14px; } .project-list p { font-size:13px; }
-    .profile-cases { padding:28px 24px; } .cases-heading { display:block; } .cases-heading > p { max-width:none; margin-top:14px; }
+    .profile-cases { padding:28px 24px; } .cases-heading { display:block; } .cases-context { text-align:left; margin-top:12px; } .cases-context > p { margin-top:4px; }
     .case-grid { grid-template-columns:1fr; } .mini-case { padding:20px; } .case-summary { font-size:13px; }
-    .profile-next { padding:28px 24px; display:block; } .next-actions { align-items:stretch; margin-top:26px; text-align:center; }
+    .profile-next { padding:28px 24px; display:block; } .next-actions { align-items:stretch; max-width:none; margin-top:26px; text-align:center; }
     .profile-footer { flex-wrap:wrap; font-size:9px; } .event-banner { padding:14px 24px; font-size:10px; } .resume-dialog { padding:26px; }
   }
   @media(max-width:370px) { h1 { font-size:50px; } .profile-intro,.profile-body,.profile-cases,.profile-next { padding-left:18px; padding-right:18px; } .mini-case { padding:16px; } .mini-metrics dd { font-size:29px; } .profile-button { gap:12px; padding-inline:12px; } .identity { grid-template-columns:1fr; } .award-photo { grid-row:auto; } .identity-caption { max-width:none; } }

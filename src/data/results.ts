@@ -1,6 +1,7 @@
 /**
  * Historical results from Ethan's August 2026 resume, plus owner-supplied
  * September 2026 MemesBreakcore figures and the October 2026 Instagram correction.
+ * Content intelligence research scope comes from the corrected October resume.
  * These are not live analytics.
  * Project figures can overlap: never sum them into a portfolio total.
  * Instagram growth uses the corrected October resume: (41 - 13) / 13 = 215.38%.
@@ -13,9 +14,10 @@ export const proof = {
   medical: { from: "8K", to: "62K", growth: "675%", views: "32M+", instagram: "13K → 41K", instagramGrowth: "≈215%" },
   yozu: { from: "17K", to: "82K+", views: "40M+", revenue: "$45K+", viewsGrowth: "195%", revenueGrowth: "73%" },
   mma: { from: "10K", to: "67K", growth: "570%", views: "120M+" },
-  yamikaze: { from: "63K", to: "360K", growth: "≈471%", views: "45M+" },
+  yamikaze: { from: "63K", to: "360K", growth: "≈471%", views: "45M+", secondaryFrom: "0", secondaryTo: "50K", secondaryVideos: "42", secondaryAverageViews: "110,310" },
   breakcore: { from: "150K", to: "330K", growth: "120%", growthMonths: "11 months", instagram: "45K+", reddit: "24K", playlistSaves: "4,200+" },
   music: { subscribers: "104K", views: "54M+", artists: "100+", releases: "250+", discord: "2K" },
+  intelligence: { videos: "90+" },
 };
 
 export const caseStudies = [
@@ -34,7 +36,7 @@ export const caseStudies = [
     role: "Creative lead & editor",
     system: "Led creative production, recruited and managed editors, and trained the team on titles and thumbnail design.",
     change: `${proof.yamikaze.from} → ${proof.yamikaze.to} YouTube subscribers`,
-    detail: "Second channel: 0 → 50K subscribers across 42 videos, averaging 110,310 views per video.",
+    detail: `Second channel: ${proof.yamikaze.secondaryFrom} → ${proof.yamikaze.secondaryTo} subscribers across ${proof.yamikaze.secondaryVideos} videos, averaging ${proof.yamikaze.secondaryAverageViews} views per video.`,
     results: [{ value: proof.yamikaze.growth, label: "subscriber growth" }, { value: proof.yamikaze.views, label: "views" }],
   },
   {

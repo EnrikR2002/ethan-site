@@ -2,6 +2,8 @@
 import { Image } from "astro:assets";
 import { meta } from "../data/site";
 import mark from "../assets/media/syfer-mark.png";
+interface Props { siteLinks?: boolean }
+const { siteLinks = false } = Astro.props;
 ---
 
 <footer class="footer">
@@ -27,6 +29,8 @@ import mark from "../assets/media/syfer-mark.png";
       >
     </div>
   </div>
+
+  {siteLinks && <nav class="wrap footer__routes" aria-label="Site navigation"><a class="footer__link" href="/">Profile</a><a class="footer__link" href="/case-studies/">Case studies</a><a class="footer__link" href="/consulting/">Consulting</a><a class="footer__link" href="/resume">Résumé</a></nav>}
 
   <div class="wrap footer__base">
     <p class="footer__copy">
@@ -123,6 +127,7 @@ import mark from "../assets/media/syfer-mark.png";
     padding-top: 20px;
     border-top: 1px solid var(--line);
   }
+  .footer__routes { display:flex; flex-wrap:wrap; gap:4px 12px; margin-top:24px; }
 
   .footer__copy {
     margin: 0;

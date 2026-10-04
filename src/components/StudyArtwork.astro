@@ -1,0 +1,70 @@
+---
+import { Image, getImage } from "astro:assets";
+import type { Study } from "../data/case-studies";
+import { channels } from "../data/site";
+import medical from "../assets/media/tansavatdi-mark.png";
+import yamikaze from "../assets/media/yamikaze_logo_talon.jpg";
+import mma from "../assets/media/UFC_MMA_banner.png";
+import yozu from "../assets/media/yozu_lux.png";
+import breakcore from "../assets/media/breakcore-333.png";
+import music from "../assets/media/syfer-music.PNG";
+
+interface Props { kind: Study["visual"]; index: string; featured?: boolean }
+const { kind, index, featured = false } = Astro.props;
+const avatarAssets = {
+  yozu: { image: yozu, source: "yozu_lux.png", name: "YOZU", caption: "Creator business" },
+  breakcore: { image: breakcore, source: "breakcore-333.png", name: "MEMESBREAKCORE", caption: "Music & internet culture" },
+  music: { image: music, source: "syfer-music.PNG", name: "SYFER MUSIC", caption: "Independent artist discovery" },
+};
+const avatar = kind in avatarAssets ? avatarAssets[kind as keyof typeof avatarAssets] : undefined;
+let avatarStyle = "";
+if (avatar) {
+  const channel = channels.find(item => item.source === avatar.source);
+  if (!channel) throw new Error(`Missing avatar crop for ${avatar.source}`);
+  const [w, h] = channel.img;
+  const [x, y, c] = channel.crop;
+  const optimized = await getImage({ src: avatar.image, width: Math.min(w, 700), format: "webp" });
+  avatarStyle = `background-image:url(${optimized.src});background-size:${100*w/c}% ${100*h/c}%;background-position:${100*x/(w-c)}% ${100*y/(h-c)}%;`;
+}
+---
+
+<div class:list={["study-art", `study-art--${kind}`, { "study-art--featured": featured }]} aria-hidden="true">
+  <span class="art-index">{index} /</span>
+  {kind === "medical" && <><span class="art-caption">Healthcare / Audience growth</span><Image class="medical-mark" src={medical} alt="" widths={[400, 700]} sizes="(min-width: 900px) 36vw, 90vw" loading="eager" /><span class="art-footer">Research · Content · AI workflows</span></>}
+  {kind === "gaming" && <><Image class="gaming-art" src={yamikaze} alt="" widths={[320, 640]} sizes="(min-width: 900px) 24vw, 65vw" loading="lazy" /><span class="art-footer">Yamikaze / Creative leadership</span></>}
+  {kind === "mma" && <><Image class="mma-art" src={mma} alt="" widths={[500, 900]} sizes="(min-width: 900px) 44vw, 90vw" loading="lazy" /><span class="art-footer">MMA / Short-form media</span></>}
+  {avatar && <div class="avatar-composition"><span class="art-avatar" style={avatarStyle}></span><span class="art-name">{avatar.name}</span><span class="art-category">{avatar.caption}</span></div>}
+  {kind === "intelligence" && <div class="research-art"><span>CONTENT<br />INTELLIGENCE</span><div><span>Titles</span><span>Thumbnails</span><span>Retention</span></div></div>}
+</div>
+
+<style>
+  .study-art { position:relative; min-height:240px; overflow:hidden; display:grid; place-items:center; background:#15171b; border-bottom:1px solid var(--line); }
+  .art-index { position:absolute; top:20px; left:24px; z-index:2; font-family:var(--mono); font-size:11px; color:var(--fg-muted); letter-spacing:.12em; }
+  .art-footer { position:absolute; left:24px; right:24px; bottom:20px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; z-index:2; }
+  .study-art--medical { background:#eeeee5; color:#22251f; }
+  .study-art--medical .art-index { color:#5d6159; }
+  .art-caption { position:absolute; top:20px; right:24px; font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:#5d6159; }
+  .medical-mark { width:82%; height:auto; mix-blend-mode:multiply; }
+  .study-art--gaming { background:#242034; }
+  .gaming-art { width:190px; height:190px; object-fit:cover; border-radius:50%; border:6px solid #ffffff12; object-position:center; }
+  .study-art--gaming::before { content:""; width:380px; height:380px; border:1px solid #ffffff12; border-radius:50%; position:absolute; }
+  .study-art--mma { background:#461218; }
+  .mma-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.72; }
+  .study-art--mma .art-index,.study-art--mma .art-footer { color:#fff; }
+  .study-art--yozu { background:#15212c; }
+  .study-art--breakcore { background:#20281f; }
+  .study-art--music { background:#27221c; }
+  .avatar-composition { display:flex; flex-direction:column; align-items:center; gap:10px; padding:38px 20px 24px; }
+  .art-avatar { width:116px; height:116px; border-radius:50%; background-repeat:no-repeat; background-color:var(--bg); border:1px solid #ffffff24; }
+  .art-name { font-size:18px; font-weight:600; letter-spacing:-.025em; }
+  .art-category { font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#bdc1c6; }
+  .study-art--intelligence { background:#171819; }
+  .research-art { padding:56px 28px 32px; width:100%; }
+  .research-art > span { display:block; font-size:clamp(24px,3vw,34px); font-weight:500; line-height:1.08; letter-spacing:-.035em; color:#ddd9cc; }
+  .research-art > div { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
+  .research-art > div span { padding:5px 9px; border:1px solid #ffffff24; font-size:11px; color:var(--fg-muted); }
+  .study-art--featured { min-height:100%; align-items:start; padding-top:72px; border-bottom:0; border-right:1px solid #d4d7ca; }
+  .study-art--featured .medical-mark { width:88%; max-width:440px; }
+  @media(max-width:760px) { .study-art { min-height:210px; } .study-art--featured { min-height:230px; align-items:center; padding-top:0; border-right:0; border-bottom:1px solid #d4d7ca; } .study-art--featured .medical-mark { width:76%; max-width:360px; } .art-caption { font-size:9px; right:20px; } .art-index { left:20px; } .art-footer { left:20px; font-size:9px; } .gaming-art { width:150px; height:150px; } .art-avatar { width:98px; height:98px; } .avatar-composition { padding-top:32px; gap:7px; } .art-name { font-size:16px; } }
+  @media(max-width:370px) { .art-caption { max-width:160px; text-align:right; } }
+</style>

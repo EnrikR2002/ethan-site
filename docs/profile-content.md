@@ -2,11 +2,13 @@
 
 ## Routes
 
-- `/`: personal introduction, conversation topics, selected projects, four brief case studies, then the consulting invitation.
-- `/consulting`: existing consulting portfolio, updated to the same figures.
+- `/`: personal introduction, conversation topics, selected projects, four case-study previews linking into the full library, then the consulting invitation.
+- `/case-studies`: seven project studies with original artwork, historical metrics and expandable contribution sections. Individual links open the matching contribution section.
+- `/consulting`: Growth Bottleneck Sprint offer, with compact proof linking into the full case-study library.
+- `/consulting-archive`: preserved consulting portfolio, excluded from search indexing.
 - `/sf-tech-week`: shared profile with event context, suitable for an event link or QR code. It does not claim attendance or a speaking role.
 - `/resume`: faithful page preview of the supplied corrected October 2026 PDF, with a direct link to the same file. The one-time prompt appears when the profile footer enters view; a persistent résumé link remains next to the consulting action.
-- Original homepage hashes (`#top`, `#philosophy`, `#capabilities`, `#channels`, `#work`, `#contact`) redirect to the corresponding consulting section, retaining query parameters.
+- Original homepage hashes redirect to consulting, retaining query parameters. Retired sections (`#philosophy`, `#capabilities`, `#channels`) continue to their preserved consulting archive targets; `#top`, `#work` and `#contact` remain on the current consulting page.
 
 ## Editorial source and arithmetic
 
@@ -36,6 +38,14 @@ The owner updated current interests to boxing rather than rugby and supplied a T
 ## Measurement
 
 The shared profile prevents event and homepage content from drifting. `data-funnel-action="consulting"` identifies the main handoff for a future analytics integration. No analytics provider or tracking transmission has been added. Track profile visits, consulting clicks and completed bookings separately when measurement is connected.
+
+The final profile CTA now leads with "Have something that should be growing faster?" and the owner's supplied bottleneck copy. Its primary action is "Explore the Growth Bottleneck Sprint" to `/consulting/`, with `$2,500 fixed · 2 weeks` directly below it. `/resume` and the existing email destination remain secondary options. This same component serves `/sf-tech-week/`.
+
+The profile keeps four short proof cards, with previews and links from `src/data/case-studies.ts`. Its header and "View all case studies" link open `/case-studies/`. Detailed project information lives in the library, while the existing `case-study-01` through `case-study-04` profile anchors continue to work. The résumé page has a library navigation link; the PDF and preview image are unchanged.
+
+The existing footer-triggered, once-per-session résumé prompt changes only its headline to "Want the full picture?" Its overview copy, résumé link, design, session behavior, close button and "Keep exploring" action remain intact. No offer PDF link is added to the profile.
+
+Homepage funnel verification on October 3, 2026: the primary action reaches the Sprint page directly; `/resume` and the PDF both return HTTP 200, with `application/pdf` for the original file; the conversation action retains `mailto:Ethan.alfandary@gmail.com`. Desktop (1366px), tablet (820px), mobile (390px) and narrow phone (320px) checks found no horizontal overflow. All three final CTA links have at least 44px target height. The prompt appears at the footer on a fresh visit; Escape, the close button and "Keep exploring" dismiss it, and it remains dismissed on reload in the same session. The existing popup close and secondary button targets are smaller than 44px and intentionally retain their styling under the owner's copy-only instruction. The booking page still lists only "1 Hour Consulting"; a free 20-minute Fit Call event remains a launch dependency as documented in `consulting-offer.md`.
 
 ## Local preview
 

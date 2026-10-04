@@ -1,37 +1,205 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
-import Hero from "../components/Hero.astro";
-import TrackRecord from "../components/TrackRecord.astro";
-import Philosophy from "../components/Philosophy.astro";
-import Capabilities from "../components/Capabilities.astro";
-import Channels from "../components/Channels.astro";
-import CaseStudies from "../components/CaseStudies.astro";
-import CTA from "../components/CTA.astro";
 import Footer from "../components/Footer.astro";
+import OfferActions from "../components/OfferActions.astro";
+import { consultingNav, fitCallUrl, sprintOffer } from "../data/consulting";
+import { proof } from "../data/results";
+import { caseStudyLinks } from "../data/case-studies";
+
+const steps = [
+  { label: "Start", title: "Free Fit Call", body: "See if there's a real bottleneck worth investigating." },
+  { label: "Step 1", title: sprintOffer.name, body: "Diagnose the bottleneck and define the first test." },
+  { label: "Step 2", title: "Run First Test", body: "Optional implementation." },
+  { label: "Outcome", title: "Next Decision", body: "Use the result to decide whether to continue, iterate, change direction, or stop." },
+];
+const scope = [
+  { title: "One business goal", body: "The outcome you're trying to improve." },
+  { title: "One customer journey", body: "The path we're investigating." },
+  { title: "Relevant data + access", body: "The information needed to understand what is actually happening." },
+];
+const goodFit = ["You're already getting some attention, users, leads or customers.", "There's a specific journey or business goal that isn't performing the way you want.", "You have enough real-world evidence for us to investigate.", "You or your team can act on what we discover."];
+const notFit = ["You're still pre-launch with almost no customer signal.", "You want someone to run your entire marketing department.", "There's nobody available to implement or test anything after the diagnosis."];
+const work = [
+  { name: "Tansavatdi Facial Plastic Surgery", result: `${proof.medical.from} → ${proof.medical.to} YouTube subscribers · ${proof.medical.views} views`, body: "Content strategy, audience research, performance analysis and growth systems.", href: caseStudyLinks["01"] },
+  { name: "Yamikaze", result: `${proof.yamikaze.from} → ${proof.yamikaze.to} YouTube subscribers · ${proof.yamikaze.views} views`, body: "Creative production, channel strategy, packaging and team leadership.", href: caseStudyLinks["02"] },
+  { name: "Yozu", result: `${proof.yozu.from} → ${proof.yozu.to} subscribers · +${proof.yozu.revenueGrowth} revenue`, body: "Channel management, content optimization and creator-business growth.", href: caseStudyLinks["04"] },
+];
+const implementation = ["Messaging changes", "Content or creative", "Funnel improvements", "Offer changes", "Customer-experience changes", "Product recommendations", "Coordination with your existing team"];
+const faqs = [
+  { question: "What do you need from me?", paragraphs: ["Access to the relevant data, materials, customer journey, and the people closest to the problem.", "We'll establish exactly what's needed during the Fit Call before the Sprint begins."] },
+  { question: "What does success look like for the Sprint?", paragraphs: ["By the end of the two weeks, you'll have a clear diagnosis of the most likely bottleneck, a prioritized action plan, and one concrete first test designed to validate what we learned."] },
+  { question: "Can you help implement the first test?", paragraphs: ["Yes, when the work fits my capabilities.", "If the test requires development, specialist design, media buying, or another specialized skill, we'll define who owns that work before moving forward.", "Implementation is scoped separately because we don't know what needs building until we've diagnosed the problem."] },
+  { question: "What if the answer isn't obvious?", paragraphs: ["That's part of the work.", "I separate what the evidence supports from what still needs testing, so assumptions don't quietly become strategy.", "The goal is to make the strongest next decision with the evidence available."] },
+];
 ---
 
-<Layout>
-  <Nav />
-  <main id="main">
-    <Hero />
-    <TrackRecord />
-    <hr class="rule wrap-rule" />
-    <Philosophy />
-    <hr class="rule wrap-rule" />
-    <Capabilities />
-    <Channels />
-    <CaseStudies />
-    <CTA />
+<Layout title="Growth Bottleneck Sprint — Ethan Alfandary" description="Investigate one customer journey, identify the most likely growth bottlenecks and choose a first test. $2,500 fixed, two weeks. Start with a free 20-minute Fit Call.">
+  <Nav links={consultingNav} mobileLinks={[{href:"/",label:"Profile"},{href:"/case-studies/",label:"Case studies"},{href:"/resume",label:"Résumé"}]} ctaLabel="Free fit call" ctaHref={fitCallUrl} />
+  <main id="main" class="consulting">
+    <section class="offer-hero wrap" id="top" aria-labelledby="offer-heading">
+      <p class="label hero-eyebrow">Ethan Alfandary · Growth Bottleneck Sprint</p>
+      <div class="hero-grid">
+        <div>
+          <h1 id="offer-heading">Find where your growth is <span class="accent">getting stuck.</span></h1>
+          <div class="hero-copy"><p>You already have attention, users, leads, or customers.</p><p>But somewhere between getting someone interested and getting them to take the next step, the system is underperforming.</p><p>I investigate one important customer journey, identify the most likely bottlenecks, and give you a clear first test for what to change next.</p></div>
+          <p class="hero-offer"><strong>{sprintOffer.name}</strong><span>{sprintOffer.priceAndTimeline}</span></p>
+          <OfferActions placement="hero" />
+        </div>
+        <aside class="journey-panel" aria-label="A focused investigation">
+          <p class="panel-label">One journey. A clear next step.</p>
+          <ol class="journey"><li><span class="journey-number">01</span><div><h2>Getting interested</h2><p>Attention, users, leads or customers</p></div></li><li class="journey-bottleneck"><span class="journey-number">?</span><div><h2>Where is it getting stuck?</h2><p>The focus of the Sprint</p></div></li><li><span class="journey-number">02</span><div><h2>Taking the next step</h2><p>One business goal to improve</p></div></li></ol>
+          <p class="panel-footer">Diagnose the bottleneck.<br />Choose the first test.</p>
+        </aside>
+      </div>
+    </section>
+    <section class="proof-strip wrap" aria-label="Experience at a glance"><div><strong>{proof.overallViews}</strong><span>views across my work</span></div><div><strong>{proof.medical.growth}</strong><span>YouTube growth · medical</span></div><div><strong>2×</strong><span>YouTube Silver Play Buttons</span></div><div><strong>10+</strong><span>years building audiences</span></div></section>
+    <section class="offer-section wrap" id="process" aria-labelledby="process-heading">
+      <div class="section-heading"><p class="label">How it works</p><h2 id="process-heading" class="h2">A focused path forward.</h2></div>
+      <ol class="process">{steps.map((step, i) => <li class:list={["process-step", { "process-outcome": i === 3 }]}><p class="step-label">{step.label}</p><h3>{step.title}</h3><p>{step.body}</p>{i < 3 && <span class="process-arrow" aria-hidden="true">→</span>}</li>)}</ol>
+    </section>
+    <section class="sprint-section" id="sprint" aria-labelledby="sprint-heading">
+      <div class="wrap">
+        <div class="sprint-head"><div><p class="label">Step 1 · The product</p><h2 id="sprint-heading">Growth<br />Bottleneck Sprint<span>.</span></h2><p class="sprint-subhead">Find what's breaking — and what to test first.</p></div><p class="sprint-price"><strong>$2,500</strong><span>fixed · 2 weeks</span></p></div>
+        <div class="scope-grid">{scope.map((item, i) => <div><span class="scope-index">0{i + 1}</span><h3>{item.title}</h3><p>{item.body}</p></div>)}</div>
+        <div class="sprint-detail"><div><p>I review the parts of that journey that matter — messaging, acquisition, content, offer, customer experience, product/service experience and available performance data.</p><p class="scope-boundary">This is a focused investigation, not a full audit of your entire business.</p></div><div class="journey-examples"><h3>Example journeys</h3><ul><li>Content <span>→</span> Website <span>→</span> Consultation</li><li>Ad <span>→</span> Landing Page <span>→</span> Signup <span>→</span> Product</li><li>Social <span>→</span> Offer <span>→</span> Purchase</li></ul></div></div>
+      </div>
+    </section>
+    <section class="offer-section wrap" id="deliverables" aria-labelledby="deliverables-heading">
+      <div class="section-heading"><p class="label">What you get</p><h2 id="deliverables-heading" class="h2">Everything needed to make<br />the next decision.</h2></div>
+      <div class="deliverables">
+        <article><p class="deliverable-number">01</p><h3>Bottleneck diagnosis</h3><p>Where the journey is most likely breaking, why, and what evidence supports it.</p><p>I separate what the evidence shows from what still needs to be tested.</p></article>
+        <article><p class="deliverable-number">02</p><h3>Prioritized action plan</h3><p>What I recommend changing first.</p><p>For each priority:</p><ul><li>What should change</li><li>Why it matters</li><li>Who owns it</li><li>What we expect to learn</li></ul></article>
+        <article><p class="deliverable-number">03</p><h3>First test brief</h3><p>One clearly defined experiment for the highest-priority hypothesis.</p><p>You'll know:</p><ul><li>What changes</li><li>What stays constant</li><li>What needs to be created</li><li>Who owns each part</li><li>What we measure</li><li>What the result should help us decide</li></ul></article>
+        <article><p class="deliverable-number">04</p><h3>Final walkthrough</h3><p>We review:</p><ul><li>What we know</li><li>What remains uncertain</li><li>What I would do first</li><li>What happens next</li></ul></article>
+      </div><p class="deliverables-close"><strong>Scope:</strong> Investigation · analysis · recommendations · test design · final walkthrough. <strong>Implementation:</strong> Scoped separately after the Sprint.</p>
+    </section>
+    <section class="offer-section fit-section wrap" id="fit" aria-labelledby="fit-heading"><div class="section-heading"><p class="label">Fit</p><h2 id="fit-heading" class="h2">Is this a good fit?</h2></div><div class="fit-grid"><div><h3>Good fit if</h3><ul>{goodFit.map(item => <li>{item}</li>)}</ul></div><div><h3>Probably not a fit if</h3><ul>{notFit.map(item => <li>{item}</li>)}</ul></div></div></section>
+    <section class="offer-section wrap" id="work" aria-labelledby="work-heading"><div class="section-heading work-heading"><div><p class="label">Selected work</p><h2 id="work-heading" class="h2">Experience behind the approach.</h2></div><a class="inline-link" href="/case-studies/">See all case studies <span aria-hidden="true">↗</span></a></div><div class="compact-work">{work.map(item => <article><h3>{item.name}</h3><p class="work-result">{item.result}</p><p>{item.body}</p><a class="inline-link" href={item.href} aria-label={`View ${item.name} case study`}>View case study <span aria-hidden="true">↗</span></a></article>)}</div></section>
+    <section class="offer-section wrap" id="implementation" aria-labelledby="implementation-heading"><div class="implementation-grid"><div class="section-heading"><p class="label">Step 2 · After the Sprint</p><h2 id="implementation-heading" class="h2">Run the<br />first test.</h2><p class="implementation-note">No ongoing engagement is required.</p></div><div class="implementation-copy"><p>If the Sprint identifies an opportunity worth pursuing, I can help turn the recommendation into an actual experiment.</p><p>Implementation is scoped separately because the work depends on what we discover.</p><h3>That could include</h3><ul>{implementation.map(item => <li>{item}</li>)}</ul><p>I can directly execute work within my skillset.</p><p>Development, specialist design, paid-media buying and other specialized work may require your team or another specialist.</p></div></div></section>
+    <section class="offer-section pricing-section wrap" id="pricing" aria-labelledby="pricing-heading"><div class="section-heading"><p class="label">Pricing</p><h2 id="pricing-heading" class="h2">A clear scope.<br />A contained engagement.</h2></div><div class="pricing-grid"><div class="price-item"><p class="step-label">Start</p><h3>Free 20-Minute Fit Call</h3><p>Fit + scope decision</p><p class="price-value">$0</p></div><div class="price-item price-sprint"><p class="step-label">Step 1</p><h3>Growth Bottleneck Sprint</h3><p>Diagnosis + prioritized plan + first test brief</p><p class="price-value">$2,500 <span>fixed · 2 weeks</span></p></div><div class="price-item"><p class="step-label">Step 2</p><h3>Run the First Test</h3><p>Implementation based on what the Sprint uncovers</p><p class="price-value price-scoped">Scoped separately</p></div></div></section>
+    <section class="offer-section faq-section wrap" id="faq" aria-labelledby="faq-heading"><div class="section-heading"><p class="label">FAQ</p><h2 id="faq-heading" class="h2">Before we start.</h2></div><div class="faq-list">{faqs.map(item => <details><summary>{item.question}<span aria-hidden="true">+</span></summary><div class="faq-answer">{item.paragraphs.map(paragraph => <p>{paragraph}</p>)}</div></details>)}</div></section>
+    <section class="offer-section final-section wrap" id="contact" aria-labelledby="contact-heading"><p class="label">Start with a conversation</p><h2 id="contact-heading">Stop guessing what's<br />holding growth back<span>.</span></h2><div class="final-copy"><p>Start with a free 20-minute Fit Call.</p><p>We'll identify the journey you want to improve and determine whether a Growth Bottleneck Sprint makes sense.</p></div><OfferActions placement="final" /></section>
   </main>
-  <Footer />
+  <Footer siteLinks />
 </Layout>
 
-<style>
-  /* section dividers held to the content column */
-  .wrap-rule {
-    width: 100%;
-    max-width: var(--wrap);
-    margin-inline: auto;
+<script is:inline>
+  // Old bookmarks still reach the preserved portfolio sections.
+  if (["#philosophy", "#capabilities", "#channels"].includes(window.location.hash)) {
+    window.location.replace("/consulting-archive/" + window.location.search + window.location.hash);
   }
+</script>
+
+<style>
+  .consulting { --offer-space:clamp(64px,7vw,100px); }
+  .offer-hero { padding-block:clamp(44px,6vw,80px) 56px; }
+  .hero-eyebrow { margin-bottom:28px; }
+  .hero-grid { display:grid; grid-template-columns:minmax(0,1.65fr) minmax(0,1fr); align-items:center; gap:clamp(40px,6vw,84px); }
+  h1 { max-width:14ch; font-size:clamp(44px,5.5vw,72px); font-weight:600; line-height:1.02; letter-spacing:-.05em; color:var(--fg-strong); margin:0; text-wrap:balance; }
+  .hero-copy { max-width:58ch; margin:24px 0; font-size:16px; line-height:1.65; color:#acb0b9; }
+  .hero-copy p { margin:0 0 12px; }
+  .hero-offer { display:flex; flex-wrap:wrap; gap:4px 18px; font-size:15px; margin:26px 0 22px; }
+  .hero-offer strong { font-weight:600; color:var(--fg-strong); } .hero-offer span { color:var(--accent-text); white-space:nowrap; }
+  .journey-panel { padding:32px; background:var(--bg-raised); border:1px solid var(--line-strong); border-top:2px solid var(--accent); }
+  .panel-label { margin:0 0 32px; font-size:13px; color:var(--fg-muted); }
+  .journey { list-style:none; padding:0; margin:0; display:grid; gap:0; }
+  .journey li { display:flex; gap:16px; padding:22px 0; position:relative; }
+  .journey li + li { border-top:1px solid var(--line); }
+  .journey-number { flex:none; font-family:var(--mono); font-size:12px; padding-top:3px; color:var(--fg-muted); }
+  .journey h2 { font-size:18px; letter-spacing:-.02em; line-height:1.3; margin:0 0 6px; font-weight:500; }
+  .journey p { font-size:13px; margin:0; color:var(--fg-muted); }
+  .journey-bottleneck h2,.journey-bottleneck .journey-number { color:var(--accent-text); }
+  .panel-footer { border-top:1px solid var(--line); margin:24px 0 0; padding-top:22px; font-size:15px; line-height:1.5; }
+  .proof-strip { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-block:1px solid var(--line); padding-block:24px; gap:24px; }
+  .proof-strip > div { padding-right:16px; } .proof-strip > div + div { border-left:1px solid var(--line); padding-left:24px; }
+  .proof-strip strong { display:block; font-size:28px; font-weight:600; line-height:1.2; letter-spacing:-.035em; }
+  .proof-strip span { display:block; color:var(--fg-muted); font-size:12px; margin-top:8px; }
+  .offer-section { padding-block:var(--offer-space); }
+  .section-heading { margin-bottom:32px; } .section-heading .label { margin-bottom:16px; }
+  .process { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); list-style:none; padding:0; margin:0; gap:32px; }
+  .process-step { position:relative; padding:22px 20px 0 0; border-top:1px solid var(--line-strong); }
+  .step-label { font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:var(--fg-muted); margin:0 0 16px; }
+  .process h3 { font-size:17px; line-height:1.35; font-weight:600; margin:0; }
+  .process-step > p:last-of-type { color:var(--fg-muted); font-size:14px; line-height:1.6; margin:12px 0 0; }
+  .process-arrow { position:absolute; right:-22px; top:20px; color:var(--fg-muted); }
+  .process-outcome { border-top-style:dashed; border-top-color:var(--fg-faint); }
+  .process-outcome h3 { font-weight:400; } .process-outcome .step-label { color:var(--accent-text); }
+  .sprint-section { background:#f3f1e9; color:#22251f; padding-block:var(--offer-space); border-top:3px solid var(--accent); }
+  .sprint-section .label { color:#5d6159; }
+  .sprint-head { display:flex; align-items:flex-end; justify-content:space-between; gap:32px; }
+  .sprint-head h2 { font-size:clamp(40px,5vw,64px); line-height:1.03; letter-spacing:-.05em; font-weight:600; margin:22px 0 0; }
+  .sprint-head h2 span { color:#c74325; }
+  .sprint-subhead { font-size:17px; color:#5d6159; margin:22px 0 0; }
+  .sprint-price { margin:0; text-align:right; flex:none; }
+  .sprint-price strong { font-size:44px; letter-spacing:-.045em; line-height:1.2; font-weight:600; display:block; }
+  .sprint-price span { font-size:15px; color:#5d6159; }
+  .scope-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px; border-block:1px solid #ced0c5; padding-block:32px; margin-top:40px; }
+  .scope-index { display:block; font-family:var(--mono); color:#b83f24; font-size:11px; margin-bottom:14px; }
+  .scope-grid h3 { font-size:17px; font-weight:600; line-height:1.4; margin:0; }
+  .scope-grid p { color:#5d6159; font-size:14px; line-height:1.6; max-width:30ch; margin:10px 0 0; }
+  .sprint-detail { display:grid; grid-template-columns:1fr 1fr; gap:64px; margin-top:32px; }
+  .sprint-detail p { color:#5d6159; font-size:15px; line-height:1.7; margin:0 0 16px; max-width:58ch; }
+  .sprint-detail .scope-boundary { color:#22251f; font-weight:500; }
+  .journey-examples h3 { font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; margin:0 0 16px; }
+  .journey-examples ul { list-style:none; margin:0; padding:0; display:grid; gap:10px; font-size:14px; }
+  .journey-examples li { line-height:1.7; } .journey-examples span { color:#b83f24; padding-inline:3px; }
+  .deliverables { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px 56px; }
+  .deliverables article { border-top:1px solid var(--line-strong); padding-top:22px; }
+  .deliverable-number { color:var(--accent-text); font-family:var(--mono); font-size:12px; margin:0 0 12px; }
+  .deliverables h3,.fit-grid h3,.compact-work h3,.implementation-copy h3,.pricing-grid h3 { font-size:19px; font-weight:600; line-height:1.4; margin:0; letter-spacing:-.02em; }
+  .deliverables article > p:not(.deliverable-number) { color:var(--fg-muted); max-width:48ch; font-size:15px; margin:14px 0 0; line-height:1.7; }
+  .deliverables ul { margin:12px 0 0; padding-left:18px; color:var(--fg-muted); font-size:14px; line-height:1.8; }
+  .deliverables li::marker { color:var(--accent-text); }
+  .deliverables-close { border-top:1px solid var(--line); padding-top:24px; margin:36px 0 0; font-size:17px; }
+  .fit-section { border-block:1px solid var(--line); }
+  .fit-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; }
+  .fit-grid h3 { font-size:16px; } .fit-grid > div:first-child h3 { color:var(--accent-text); }
+  .fit-grid ul { list-style:none; margin:16px 0 0; padding:0; }
+  .fit-grid li { padding-block:12px; border-bottom:1px solid var(--line); font-size:15px; color:var(--fg-muted); line-height:1.65; max-width:52ch; }
+  .work-heading { display:flex; justify-content:space-between; gap:24px; align-items:flex-end; }
+  .inline-link { display:inline-flex; gap:14px; align-items:center; min-height:44px; font-size:13px; color:var(--fg); text-decoration:none; border-bottom:1px solid var(--line-strong); }
+  .inline-link:hover { color:var(--accent-text); border-color:var(--accent); }
+  .compact-work { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+  .compact-work article { display:flex; flex-direction:column; padding:24px; border:1px solid var(--line); background:var(--bg-raised); }
+  .compact-work h3 { font-size:16px; }
+  .compact-work p { font-size:14px; color:var(--fg-muted); line-height:1.65; margin:16px 0; }
+  .compact-work .work-result { color:var(--fg-strong); font-size:16px; line-height:1.5; font-weight:500; margin-bottom:0; }
+  .compact-work .inline-link { margin-top:auto; align-self:flex-start; }
+  .implementation-grid { display:grid; grid-template-columns:1fr 1.4fr; gap:80px; border-top:1px solid var(--line); padding-top:var(--offer-space); }
+  #implementation { padding-top:0; }
+  .implementation-note { color:var(--accent-text); font-size:14px; margin:28px 0 0; }
+  .implementation-copy { max-width:60ch; }
+  .implementation-copy > p { color:var(--fg-muted); font-size:15px; margin:0 0 18px; line-height:1.7; }
+  .implementation-copy h3 { font-size:14px; margin-top:28px; }
+  .implementation-copy ul { display:grid; grid-template-columns:1fr 1fr; padding-left:18px; column-gap:24px; row-gap:8px; margin:16px 0 28px; color:var(--fg-muted); font-size:14px; }
+  .implementation-copy li::marker { color:var(--accent-text); }
+  .pricing-section { border-block:1px solid var(--line); }
+  .pricing-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; }
+  .price-item { padding:28px; border:1px solid var(--line); display:flex; flex-direction:column; }
+  .price-item + .price-item { border-left:0; }
+  .price-sprint { background:var(--bg-raised); border-top:2px solid var(--accent); }
+  .price-sprint .step-label { color:var(--accent-text); }
+  .price-item > p:not(.step-label):not(.price-value) { font-size:14px; line-height:1.65; color:var(--fg-muted); margin:16px 0 28px; }
+  .price-item .price-value { font-size:32px; line-height:1.3; font-weight:500; letter-spacing:-.025em; margin:auto 0 0; }
+  .price-value span { display:block; font-size:13px; color:var(--fg-muted); letter-spacing:0; font-weight:400; margin-top:6px; }
+  .price-item .price-scoped { font-size:19px; }
+  .faq-section { display:grid; grid-template-columns:1fr 1.5fr; gap:80px; }
+  .faq-list details { border-top:1px solid var(--line-strong); }
+  .faq-list details:last-child { border-bottom:1px solid var(--line-strong); }
+  .faq-list summary { display:flex; justify-content:space-between; gap:24px; padding-block:22px; list-style:none; font-size:16px; font-weight:500; cursor:pointer; }
+  .faq-list summary::-webkit-details-marker { display:none; }
+  .faq-list summary span { color:var(--accent-text); font-size:20px; line-height:1.2; flex:none; transition:transform 180ms var(--ease); }
+  .faq-list details[open] summary span { transform:rotate(45deg); }
+  .faq-list summary:hover { color:var(--accent-text); }
+  .faq-answer { padding-bottom:22px; max-width:58ch; }
+  .faq-answer p { color:var(--fg-muted); font-size:15px; margin:0 0 14px; line-height:1.7; } .faq-answer p:last-child { margin-bottom:0; }
+  .final-section { border-top:1px solid var(--line); padding-bottom:clamp(80px,9vw,120px); }
+  .final-section h2 { font-size:clamp(36px,4.5vw,60px); font-weight:600; line-height:1.08; letter-spacing:-.04em; margin:24px 0; text-wrap:balance; }
+  .final-section h2 span { color:var(--accent-text); }
+  .final-copy { max-width:58ch; color:var(--fg-muted); font-size:16px; line-height:1.7; margin-bottom:28px; }
+  .final-copy p { margin:0 0 12px; }
+  @media(max-width:980px) { .hero-grid { grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:32px; } h1 { font-size:52px; } .journey-panel { padding:24px; } .process { gap:24px; } .sprint-detail { gap:32px; } .compact-work article { padding:20px; } .implementation-grid,.faq-section { gap:40px; } .price-item { padding:22px; } }
+  @media(max-width:760px) { .hero-grid { grid-template-columns:1fr; } h1 { font-size:clamp(40px,7vw,56px); max-width:16ch; } .hero-copy { max-width:60ch; } .journey-panel { display:none; } .offer-hero { padding-block:40px; } .hero-eyebrow { font-size:10px; letter-spacing:.1em; margin-bottom:22px; } .hero-offer { flex-direction:column; gap:6px; } .proof-strip { grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; } .proof-strip > div { padding:0; } .proof-strip > div + div { border:0; padding:0; } .proof-strip strong { font-size:26px; } .process { grid-template-columns:1fr; gap:24px; } .process-step { padding:18px 0 0 26px; border-top:0; border-left:1px solid var(--line-strong); } .process-arrow { left:22px; right:auto; top:auto; bottom:-26px; transform:rotate(90deg); } .process-outcome { border-left-style:dashed; } .process-step > p:last-of-type { max-width:50ch; } .step-label { margin-bottom:10px; } .sprint-head { display:block; } .sprint-price { text-align:left; margin-top:24px; } .sprint-price strong { font-size:36px; } .scope-grid { grid-template-columns:1fr; gap:24px; padding-block:24px; margin-top:28px; } .scope-index { margin-bottom:8px; } .scope-grid p { max-width:none; } .sprint-detail { grid-template-columns:1fr; gap:24px; } .deliverables { grid-template-columns:1fr; gap:28px; } .fit-grid { grid-template-columns:1fr; gap:32px; } .work-heading { display:block; } .work-heading > .inline-link { margin-top:16px; } .compact-work { grid-template-columns:1fr; gap:16px; } .compact-work article { padding:24px; } .implementation-grid,.faq-section { grid-template-columns:1fr; gap:24px; } .implementation-grid .section-heading { margin-bottom:0; } .implementation-copy ul { grid-template-columns:1fr; } .pricing-grid { grid-template-columns:1fr; gap:16px; } .price-item { padding:24px; } .price-item + .price-item { border-left:1px solid var(--line); } .price-item .price-value { margin-top:0; } .faq-section .section-heading { margin-bottom:0; } .final-section h2 br { display:none; } .final-section h2 { max-width:18ch; } }
+  @media(max-width:370px) { h1 { font-size:38px; } .hero-copy { font-size:15px; } .proof-strip span { font-size:11px; } .sprint-head h2 { font-size:36px; } }
 </style>

@@ -6,7 +6,7 @@ import resumePreview from "../assets/media/ethan-resume-oct-2026.png";
 
 <Layout title="Ethan Alfandary — Résumé" description="Ethan Alfandary's one-page résumé, with experience in audience growth, content strategy and AI workflows.">
   <div class="resume-shell">
-    <header class="resume-nav"><a href="/">← Back to profile</a><a href="/consulting">Consulting ↗</a></header>
+    <header class="resume-nav"><a href="/">← Back to profile</a><nav aria-label="Résumé navigation"><a href="/case-studies/">Case studies</a><a href="/consulting/">Consulting ↗</a></nav></header>
     <main id="main">
       <div class="resume-heading">
         <div><p class="eyebrow">THE FULL OVERVIEW</p><h1>Résumé<span>.</span></h1><p>Roles, projects and results in one page.</p></div>
@@ -24,6 +24,8 @@ import resumePreview from "../assets/media/ethan-resume-oct-2026.png";
   .resume-shell { --paper:#f3f1e9; --ink:#22251f; --subtle:#5d6159; max-width:1184px; margin:auto; padding:0 32px; }
   .resume-nav { min-height:92px; display:flex; align-items:center; justify-content:space-between; gap:24px; font-size:12px; }
   .resume-nav a { text-decoration:none; border-bottom:1px solid #62645d; padding:8px 0; }
+  .resume-nav nav { display:flex; gap:24px; }
+  .resume-nav nav a { display:inline-flex; align-items:center; min-height:44px; }
   main { background:var(--paper); color:var(--ink); border-top:4px solid #ef6543; padding:48px; }
   .resume-heading { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:28px; }
   .eyebrow { color:#c74325; font-size:10px; font-weight:600; letter-spacing:.13em; margin:0 0 12px; }
@@ -37,6 +39,6 @@ import resumePreview from "../assets/media/ethan-resume-oct-2026.png";
   .resume-fallback { color:var(--subtle); font-size:12px; line-height:1.6; margin:14px 0 0; }
   .resume-fallback a { color:var(--ink); text-underline-offset:3px; }
   main a:focus-visible { outline:3px solid #c74325; outline-offset:4px; }
-  @media(max-width:700px) { .resume-shell { padding:0 16px; } .resume-nav { min-height:72px; } main { padding:28px 24px; } .resume-heading { display:block; } .pdf-link { margin-top:22px; } }
+  @media(max-width:700px) { .resume-shell { padding:0 16px; } .resume-nav { min-height:72px; gap:12px; } .resume-nav nav { gap:16px; } main { padding:28px 24px; } .resume-heading { display:block; } .pdf-link { margin-top:22px; } }
   @media(max-width:370px) { main { padding:24px 18px; } }
 </style>
