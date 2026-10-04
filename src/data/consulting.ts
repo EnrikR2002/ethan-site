@@ -1,4 +1,4 @@
-// Approved v6 PDF, copied verbatim from the owner-supplied file.
+// Approved v6 text and design; its booking button links to the Fit Call below.
 export const offerPdfUrl = "/growth-bottleneck-sprint.pdf";
 export const offerPageUrl = "/offer/";
 export const sprintOffer = {

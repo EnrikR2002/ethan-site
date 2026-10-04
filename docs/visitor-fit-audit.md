@@ -39,11 +39,11 @@ The revised copy invites visitors to discuss their stage and goals. The Sprint s
 
 The resume wrapper and source PDF do not state a minimum audience, revenue, team size or geographic requirement. The approved Objective uses "ambitious brands"; that exact owner-supplied copy is preserved, with broader invitation language elsewhere.
 
-The approved Sprint PDF is accurately specific to its product, including its existing-signal opening. Its content and preview image remain unchanged; the web wrapper now provides broader consulting context. Someone receiving only the downloaded PDF will still see the Sprint's narrower positioning, so share the profile/consulting URL for a general introduction.
+The approved Sprint PDF is accurately specific to its product, including its existing-signal opening. Its text, design and preview image remain unchanged; the web wrapper now provides broader consulting context. Someone receiving only the downloaded PDF will still see the Sprint's narrower positioning, so share the profile/consulting URL for a general introduction.
 
 The original consulting archive remains preserved and noindexed. It is outside the active navigation and retains an old 15-minute intro label and general Calendly URL. That is a legacy inconsistency, not an active funnel qualification. A future archive notice could point to current consulting without rewriting the preserved content.
 
-The Sprint PDF's printed booking button has no embedded booking hyperlink. The offer web page has working Fit Call links above and below the preview. A future PDF link-only update would improve downloaded-document navigation without changing the product.
+At audit time, the Sprint PDF's printed booking button had no embedded booking hyperlink. This was resolved on October 4 with one invisible link annotation over the yellow button, pointing to the existing 20-minute Calendly event. Text and page content are unchanged, and the rendered PNG matches the pre-edit render exactly. The offer web page also has working Fit Call links above and below the preview.
 
 The automatic resume prompt appears at the profile footer and covers the consulting invitation on a phone. Its close and "Keep exploring" controls work. The owner previously requested the popup, so this audit preserves it; an inline or manually opened resume invitation would reduce that interruption if the owner chooses to change it.
 
