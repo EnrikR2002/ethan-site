@@ -50,6 +50,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
     <slot />
 
     <script>
+      import { startFunnelTracking } from "../lib/funnel-tracker.js";
+      startFunnelTracking().catch(() => {});
+    </script>
+
+    <script>
       /* @ts-nocheck */
       // Start at the top on reload rather than restoring the previous scroll.
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";

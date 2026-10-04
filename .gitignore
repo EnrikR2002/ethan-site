@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Private visitor exports and local analytics reports
+analytics-private/
+.dev.vars
+.wrangler/
