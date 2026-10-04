@@ -49,7 +49,7 @@ export const caseStudyLibrary: Study[] = [
     index: "02", slug: "yamikaze", client: "Yamikaze & YamikazeXZ", shortName: "Yamikaze",
     category: "Gaming · Creative leadership", title: "Growing the channel. Building the team.",
     role: "Creative lead & editor", visual: "gaming",
-    preview: "Creative production, editor recruitment and training across two gaming channels.",
+    preview: `Creative production, editor training and a second channel built from ${proof.yamikaze.secondaryFrom} to ${proof.yamikaze.secondaryTo} subscribers.`,
     overview: "As creative lead and editor, I worked on channel growth while recruiting, managing and training editors. That work also extended to building YamikazeXZ from its first subscribers.",
     work: [
       "Led creative production while recruiting and managing the editing team.",
@@ -58,6 +58,7 @@ export const caseStudyLibrary: Study[] = [
     ],
     detail: "The second-channel results show the production work beyond the main channel's subscriber growth.",
     metrics: [{ value: proof.yamikaze.growth, label: "subscriber growth" }, { value: proof.yamikaze.views, label: "views" }],
+    supportingMetrics: [{ value: `${proof.yamikaze.secondaryFrom} → ${proof.yamikaze.secondaryTo}`, label: "second-channel subscribers" }],
     change: { from: proof.yamikaze.from, to: proof.yamikaze.to, label: "YouTube subscribers" },
     link: { href: "https://www.youtube.com/@Yamikaze", label: "Visit the channel" },
   },

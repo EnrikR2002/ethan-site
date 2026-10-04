@@ -9,7 +9,7 @@ import awards from "../assets/media/playbuttons.jpg";
 import mark from "../assets/media/syfer-mark.png";
 interface Props { event?: boolean }
 const { event = false } = Astro.props;
-const topics = ["AI content workflows", "YouTube growth & retention", "Competitive content research", "Music & online communities", "Creative teams & production"];
+const topics = ["AI content workflows", "YouTube growth & retention", "Competitive content research", "Music & online communities", "Creative teams & production", "Launches & first audiences"];
 ---
 
 <Layout title={`${meta.name} — ${event ? "SF Tech Week · " : ""}Content, Growth & AI`}>
@@ -92,13 +92,13 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
       <section class="profile-next" aria-labelledby="next-heading">
         <div class="next-copy">
           <p class="eyebrow">LET’S PUT THIS TO WORK</p>
-          <h2 id="next-heading">Have something<br />that should be growing faster?</h2>
-          <p>If you're already getting attention, users, leads or customers but something isn't moving the way it should, I have a focused consulting offer for finding the bottleneck.</p>
+          <h2 id="next-heading">Building something new?<br />Ready for the next stage?</h2>
+          <p>Whether you're launching a project, building a community or growing an existing audience, let's talk about the next step. I help with audience strategy, content and practical AI workflows, with work scoped around your stage and goals.</p>
         </div>
         <div class="next-actions">
           <div class="next-offer">
-            <a class="profile-button" href="/consulting/" data-funnel-action="consulting">Explore the {sprintOffer.name} <span aria-hidden="true">↗</span></a>
-            <p class="next-price">{sprintOffer.priceAndTimeline}</p>
+            <a class="profile-button" href="/consulting/" data-funnel-action="consulting">Explore consulting <span aria-hidden="true">↗</span></a>
+            <p class="next-price"><span>{sprintOffer.name}</span>{sprintOffer.priceAndTimeline}</p>
           </div>
           <div class="next-secondary">
             <a class="resume-link" href="/resume">View my résumé <span aria-hidden="true">↗</span></a>
@@ -228,6 +228,7 @@ const topics = ["AI content workflows", "YouTube growth & retention", "Competiti
   .next-copy > p:last-child { color:#c1c6b9; font-size:12px; line-height:1.8; margin:14px 0 0; max-width:52ch; }
   .next-actions { display:flex; flex:0 0 340px; flex-direction:column; align-items:stretch; gap:12px; }
   .next-offer .next-price { color:#ff967c; font-size:11px; line-height:1.5; text-align:center; margin:10px 0 0; }
+  .next-price > span { display:block; color:#c7ccbf; margin-bottom:2px; }
   .next-secondary { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:4px 20px; }
   .next-secondary a { display:inline-flex; align-items:center; gap:8px; min-height:44px; }
   .next-secondary .resume-link { padding:0; }

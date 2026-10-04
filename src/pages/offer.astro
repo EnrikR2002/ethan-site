@@ -13,6 +13,7 @@ import { offerPdfUrl, fitCallUrl, sprintOffer } from "../data/consulting";
         <div><p class="eyebrow">GROWTH BOTTLENECK SPRINT</p><h1>One-page offer<span>.</span></h1><p>{sprintOffer.priceAndTimeline}</p></div>
         <a class="pdf-link" href={offerPdfUrl} target="_blank" rel="noopener noreferrer">Open PDF <span aria-hidden="true">↗</span></a>
       </div>
+      <p class="offer-context">This PDF covers the Growth Bottleneck Sprint. Starting from zero or exploring other content and community work? We can scope the right approach on a <a href={fitCallUrl} target="_blank" rel="noopener noreferrer" data-funnel-action="fit-call" data-placement="offer">free Fit Call</a>.</p>
       <a class="offer-preview" href={offerPdfUrl} target="_blank" rel="noopener noreferrer" aria-label="Open the Growth Bottleneck Sprint offer PDF">
         <Image src={offerPreview} alt="Approved one-page Growth Bottleneck Sprint offer: one business goal, one customer journey and relevant data; bottleneck diagnosis, prioritized action plan, first test brief and final walkthrough; $2,500 over two weeks; implementation scoped separately." widths={[700, 1100, 1600]} sizes="(min-width: 1184px) 1024px, 100vw" loading="eager" />
       </a>
@@ -33,6 +34,8 @@ import { offerPdfUrl, fitCallUrl, sprintOffer } from "../data/consulting";
   h1 { font-size:clamp(48px,6.5vw,82px); line-height:.96; letter-spacing:-.065em; font-weight:600; margin:0; max-width:12ch; }
   h1 span { color:#c74325; }
   .offer-heading p:last-child { color:var(--subtle); font-size:14px; margin:16px 0 0; }
+  .offer-context { color:var(--subtle); font-size:14px; line-height:1.7; max-width:72ch; margin:0 0 24px; }
+  .offer-context a { color:var(--ink); text-underline-offset:3px; }
   .pdf-link,.fit-link { display:inline-flex; align-items:center; justify-content:center; gap:22px; background:#ff7956; color:#201a15; min-height:48px; padding:14px 20px; border-radius:3px; text-decoration:none; font-size:12px; font-weight:600; }
   .pdf-link { white-space:nowrap; }
   .pdf-link:hover,.fit-link:hover { background:#ff9378; }

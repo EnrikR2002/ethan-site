@@ -5,7 +5,6 @@ import Footer from "../components/Footer.astro";
 import StudyCard from "../components/StudyCard.astro";
 import { caseStudyLibrary } from "../data/case-studies";
 import { meta } from "../data/site";
-import { sprintOffer } from "../data/consulting";
 const pageNav = [{ href: "/", label: "Back to profile" }, { href: "#case-index", label: "The work" }, { href: "/resume", label: "Résumé" }];
 ---
 
@@ -24,8 +23,8 @@ const pageNav = [{ href: "/", label: "Back to profile" }, { href: "#case-index",
     </div>
     <p class="library-note">Historical project results. Figures reflect each project's reporting period and may overlap. Growth percentages use the stated starting and ending counts where available.</p>
     <section class="library-next" aria-labelledby="library-next-heading">
-      <div><p class="label">Put this to work</p><h2 id="library-next-heading">Have a growth problem <br />you want to investigate?</h2><p>Start with one journey, a focused diagnosis and a clear first test.</p></div>
-      <div class="library-actions"><a class="btn btn--primary" href="/consulting/" data-funnel-action="consulting" data-placement="case-studies">Explore the {sprintOffer.name} <span aria-hidden="true">↗</span></a><div><a href="/">Back to profile</a><a href="/resume">View résumé</a><a href={`mailto:${meta.email}`}>Start a conversation <span aria-hidden="true">↗</span></a></div></div>
+      <div><p class="label">Put this to work</p><h2 id="library-next-heading">Launching something new <br />or growing what you've built?</h2><p>Audience strategy, content and community building can start at any stage. Let's discuss your project and choose a useful next step.</p></div>
+      <div class="library-actions"><a class="btn btn--primary" href="/consulting/" data-funnel-action="consulting" data-placement="case-studies">Explore consulting <span aria-hidden="true">↗</span></a><div><a href="/">Back to profile</a><a href="/resume">View résumé</a><a href={`mailto:${meta.email}`}>Start a conversation <span aria-hidden="true">↗</span></a></div></div>
     </section>
   </main>
   <Footer siteLinks />
